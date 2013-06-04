@@ -38,7 +38,7 @@ The module is build using Grunt. The easiest way to build is, however,
 to run the `build` script. Before that you need to run `npm install -g
 grunt` though.
 
-Build javascript files are under the `dist` directory.
+Built javascript files are under the `dist` directory.
 
 ## Example Application
 

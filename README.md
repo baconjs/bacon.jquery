@@ -11,12 +11,26 @@ allows you to `push` a new value explicitly to the UI. You can also add
 external value source using `addSource`. The `Binding` object extends
 `Property` so the one-way interface hasn't changed.
 
+## BJQ API
+
 Currently there's just one method in the API so it's not practically
 useful yet!
 
-## BJQ API
-
 `bjq.textFieldValue(field [, initValue])` binding for a text field
+
+Example:
+
+```js
+// binding for "left" text field
+left = bjq.textFieldValue($("#left"))
+// binding for "right" text field
+right = bjq.textFieldValue($("#right"))
+// make a two-way binding between these two
+right.bind(left)
+// Make a one-way side effect: update label text on changes, make it
+uppercase
+right.map(".toUpperCase").changes().assign($("#output"), "text")
+```
 
 ## Binding API
 

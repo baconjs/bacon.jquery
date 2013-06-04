@@ -32,6 +32,25 @@ than this.
 
 `binding.bind(other)` makes a two-way binding between the two bindings.
 
+## Use with AMD
+
+The [example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/example-app) uses RequireJS, like this:
+
+```js
+require.config({
+  paths: {
+    "bacon-jquery-bindings": "../dist/Bacon.JQuery.Bindings",
+    "bacon": "components/bacon/dist/Bacon",
+    "jquery": "components/jquery/jquery"
+  }})
+require(["bacon-jquery-bindings", "jquery"], function(bjq, $) {
+  left = bjq.textFieldValue($("#left"))
+  right = bjq.textFieldValue($("#right"))
+  right.bind(left)
+  right.assign($("#output"), "text")
+})
+```
+
 ## Building
 
 The module is build using Grunt. The easiest way to build is, however,
@@ -53,3 +72,12 @@ Actually there's something already.
     python -m SimpleHTTPServer
 
 Example app will appear to http://localhost:8000/example-app/
+
+## What next?
+
+- Proper tests for textFieldValue
+- Catch up with Bacon.UI (but this time there have to be tests for all
+  methods!)
+
+If this seems like a good idea, please tell me so! If you'd like to
+contribute, please do!

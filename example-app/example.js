@@ -11,6 +11,9 @@ require(["bacon-jquery-bindings", "jquery"], function(bjq, $) {
   right = bjq.textFieldValue($("#right"))
   // make a two-way binding between these two
   right.bind(left)
-  // Make a one-way side effect: update a label text
+  // Make a one-way side effect: update label text on changes, make it
+uppercase
   right.map(".toUpperCase").changes().assign($("#output"), "text")
+  // Add an input stream for resetting the value
+  left.addSource($("#reset").asEventStream("click").map(""))
 })

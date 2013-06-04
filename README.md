@@ -22,15 +22,17 @@ You can optionally supply an initial value.
 Example:
 
 ```js
-// binding for "left" text field
-left = bjq.textFieldValue($("#left"))
-// binding for "right" text field
-right = bjq.textFieldValue($("#right"))
-// make a two-way binding between these two
-right.bind(left)
-// Make a one-way side effect: update label text on changes, make it
+  // binding for "left" text field
+  left = bjq.textFieldValue($("#left"))
+  // binding for "right" text field
+  right = bjq.textFieldValue($("#right"))
+  // make a two-way binding between these two
+  right.bind(left)
+  // Make a one-way side effect: update label text on changes, make it
 uppercase
-right.map(".toUpperCase").changes().assign($("#output"), "text")
+  right.map(".toUpperCase").changes().assign($("#output"), "text")
+  // Add an input stream for resetting the value
+  left.addSource($("#reset").asEventStream("click").map(""))
 ```
 
 ## Binding API

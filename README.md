@@ -35,7 +35,8 @@ than this.
 ## Building
 
 The module is build using Grunt. The easiest way to build is, however,
-to run the `build` script.
+to run the `build` script. Before that you need to run `npm install -g
+grunt` though.
 
 Build javascript files are under the `dist` directory.
 
@@ -43,6 +44,9 @@ Build javascript files are under the `dist` directory.
 
 There will be an example application under the [example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/example-app) directory.
 
+Actually there's something already.
+
+    npm install -g bower
     cd example-app
     bower install
     cd -

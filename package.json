@@ -1,0 +1,27 @@
+{
+  "name": "bacon-jquery-bindings",
+  "version": "0.0.1",
+  "author": "Juha Paananen",
+  "licenses": [
+    "MIT"
+  ],
+  "dependencies": {
+    "baconjs": "~0.4"
+  },
+  "devDependencies": {
+    "coffee-script": "1.4.0",
+    "mocha": "1.10.0",
+    "chai": "1.6.0",
+    "grunt": "0.4.1",
+    "grunt-cli": "0.1.5",
+    "grunt-contrib-coffee": "~0.4.0",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-copy": "~0.4.0",
+    "grunt-contrib-uglify": "~0.2.2"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha --compilers coffee:coffee-script test/**",
+    "pre-publish": "grunt"
+  },
+  "main": "dist/Bacon.JQuery.Bindings.js"
+}

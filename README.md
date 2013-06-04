@@ -19,8 +19,10 @@ Property so the one-way interface hasn't changed.
 In addition to the Bacon.js Property API, the `Binding` class has
 
 `binding.push(value)` force a new value for the binding
+
 `binding.addSource(stream)` add an input source for pushing values to
 the binding. The source may be an EventStream or a Property.
+
 `binding.bind(other)` make a two-way binding between the two bindings.
 
 ## Building

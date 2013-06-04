@@ -16,8 +16,9 @@ init = (Bacon, $) ->
         binding
 
     ValueChange = (source, value) -> { source, value }
-  Bacon.$ =
-    textFieldValue: (element, initValue) ->
+
+  $.fn.asEventStream = Bacon.$.asEventStream
+  Bacon.$.textFieldValue = (element, initValue) ->
       current = -> element.val()
       inputs = element.asEventStream("keyup").map(current)
       initValue = current() if not initValue?
@@ -25,6 +26,7 @@ init = (Bacon, $) ->
       externalChanges = binding.addSource(inputs)
       externalChanges.assign(element, "val")
       binding
+  Bacon.$
 
 if module?
   Bacon = require("baconjs")

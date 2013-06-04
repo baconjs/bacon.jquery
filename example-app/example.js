@@ -3,13 +3,7 @@ require.config({
     "bacon-jquery-bindings": "../dist/Bacon.JQuery.Bindings",
     "bacon": "components/bacon/dist/Bacon",
     "jquery": "components/jquery/jquery"
-  },
-  shim: {
-    "bacon": {
-      deps: ["jquery"]
-    }
-  }
-})
+  }})
 require(["bacon-jquery-bindings", "jquery"], function(bjq, $) {
   left = bjq.textFieldValue($("#left"))
   right = bjq.textFieldValue($("#right"))

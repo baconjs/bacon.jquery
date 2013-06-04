@@ -40,22 +40,22 @@
         };
       };
     }
-    return Bacon.$ = {
-      textFieldValue: function(element, initValue) {
-        var binding, current, externalChanges, inputs;
-        current = function() {
-          return element.val();
-        };
-        inputs = element.asEventStream("keyup").map(current);
-        if (!(initValue != null)) {
-          initValue = current();
-        }
-        binding = Bacon.Binding(initValue);
-        externalChanges = binding.addSource(inputs);
-        externalChanges.assign(element, "val");
-        return binding;
+    $.fn.asEventStream = Bacon.$.asEventStream;
+    Bacon.$.textFieldValue = function(element, initValue) {
+      var binding, current, externalChanges, inputs;
+      current = function() {
+        return element.val();
+      };
+      inputs = element.asEventStream("keyup").map(current);
+      if (!(initValue != null)) {
+        initValue = current();
       }
+      binding = Bacon.Binding(initValue);
+      externalChanges = binding.addSource(inputs);
+      externalChanges.assign(element, "val");
+      return binding;
     };
+    return Bacon.$;
   };
 
   if (typeof module !== "undefined" && module !== null) {

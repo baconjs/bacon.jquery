@@ -2,13 +2,17 @@
 
 *This library is in an experimental stage*
 
-A JQuery data binding library for Bacon.js.
+A JQuery data binding library for [Bacon.js](https://github.com/raimohanska/bacon.js).
 
-Main difference to Bacon.UI at this point is that instead of returning a 
+Main difference to [Bacon.UI](https://github.com/raimohanska/Bacon.UI.js) 
+at this point is that instead of returning a 
 one-way Property, the methods in BJB return a `Binding` object that
 allows you to `push` a new value explicitly to the UI. You can also add
-external value source using `addSource`. The Binding object extends
-Property so the one-way interface hasn't changed.
+external value source using `addSource`. The `Binding` object extends
+`Property` so the one-way interface hasn't changed.
+
+Currently there's just one method in the API so it's not practically
+useful yet!
 
 ## BJQ API
 
@@ -18,14 +22,15 @@ Property so the one-way interface hasn't changed.
 
 In addition to the Bacon.js Property API, the `Binding` class has
 
-`binding.push(value)` force a new value for the binding
+`binding.push(value)` forces a new value for the binding, pushing this
+value to all two-way sources.
 
 `binding.addSource(stream)` add an input source for pushing values to
 the binding. The source may be an EventStream or a Property. The method
 returns an EventStream that contains all changes from *other sources*
 than this.
 
-`binding.bind(other)` make a two-way binding between the two bindings.
+`binding.bind(other)` makes a two-way binding between the two bindings.
 
 ## Building
 
@@ -36,7 +41,7 @@ Build javascript files are under the `dist` directory.
 
 ## Example Application
 
-There will be an example application under the `example-app` directory.
+There will be an example application under the [example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/example-app) directory.
 
     cd example-app
     bower install

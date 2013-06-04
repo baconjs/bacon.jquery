@@ -16,7 +16,8 @@ external value source using `addSource`. The `Binding` object extends
 Currently there's just one method in the API so it's not practically
 useful yet!
 
-`bjq.textFieldValue(field [, initValue])` binding for a text field
+`bjq.textFieldValue(field [, initValue])` creates a `Binding` for a text field. 
+You can optionally supply an initial value.
 
 Example:
 

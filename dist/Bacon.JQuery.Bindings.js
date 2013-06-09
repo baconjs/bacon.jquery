@@ -47,7 +47,9 @@
         return element.val();
       };
       inputs = element.asEventStream("keyup").map(current);
-      if (!(initValue != null)) {
+      if (initValue != null) {
+        element.val(initValue);
+      } else {
         initValue = current();
       }
       binding = Bacon.Binding(initValue);
@@ -66,7 +68,7 @@
     if (typeof require === 'function') {
       define('bacon-jquery-bindings', ["bacon", "jquery"], init);
     } else {
-      init(this.Bacon);
+      init(this.Bacon, this.$);
     }
   }
 

@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>bacon-jquery-bindings Mocha Tests</title>
+    <link rel="stylesheet" href="lib/mocha/mocha.css" />
+    <script src="http://code.jquery.com/jquery.min.js"></script>
+    <script src="lib/chai/chai.js"></script>
+    <script src="lib/chai/chai-jquery.js"></script>
+    <script src="lib/mocha/mocha.js"></script>
+    <script src="../node_modules/baconjs/dist/Bacon.js"></script>
+    <script src="../dist/Bacon.JQuery.Bindings.js"></script>
+    <script>mocha.setup('bdd')</script>
+    <script src="BJB-tests.js"></script>
+    <script>
+      $(function(){
+      mocha
+      .globals([
+      'getInterface',
+      '__screenCapturePageContext__',
+      'Drag',
+      'pixelPerfect',
+      'console',
+      'dataStream',
+      'initialState',
+      'put',
+      'key'
+      ]) // acceptable globals
+      .run()
+      })
+    </script>
+  </head>
+  <body>
+    <div id="mocha">
+    </div>
+    <div id="bacon-dom"></div>
+  </body>
+</html>

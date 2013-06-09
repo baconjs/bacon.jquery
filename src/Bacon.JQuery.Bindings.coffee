@@ -21,7 +21,10 @@ init = (Bacon, $) ->
   Bacon.$.textFieldValue = (element, initValue) ->
       current = -> element.val()
       inputs = element.asEventStream("keyup").map(current)
-      initValue = current() if not initValue?
+      if initValue?
+        element.val(initValue)
+      else
+        initValue = current()
       binding = Bacon.Binding(initValue)
       externalChanges = binding.addSource(inputs)
       externalChanges.assign(element, "val")
@@ -36,4 +39,4 @@ else
   if typeof require is 'function'
     define 'bacon-jquery-bindings', ["bacon", "jquery"], init
   else
-    init(this.Bacon)
+    init(this.Bacon, this.$)

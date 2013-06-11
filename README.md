@@ -67,6 +67,24 @@ require(["bacon-jquery-bindings", "jquery"], function(bjq, $) {
 })
 ```
 
+The prebuilt javascript file can be found in the `dist` directory, or [here](https://raw.github.com/raimohanska/bacon-jquery-bindings/master/dist/Bacon.JQuery.Bindings.js).
+
+## Use without AMD
+
+Should work without AMD too, so feel free to use plain old `<script>` tags to include Bacon, JQuery and BJQ.
+
+The BJQ methods are exposed through `Bacon.$`, so you can call them as in `Bacon.$.textFieldValue(..)`.
+
+The prebuilt javascript file can be found in the `dist` directory, or [here](https://raw.github.com/raimohanska/bacon-jquery-bindings/master/dist/Bacon.JQuery.Bindings.js).
+
+## Use with Node
+
+Haven't published this to NPM yet, but will do. The idea is to keep this compatible with the Node environment too. Not sure if it makes any sense though.
+
+## Use with Bower
+
+Will publish with Bower when the stuff is bit more mature.
+
 ## Building
 
 The module is build using Grunt. The easiest way to build is, however,

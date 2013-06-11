@@ -91,9 +91,7 @@ Example app will appear to http://localhost:8000/example-app/
 
 ## What next?
 
-- Proper tests for textFieldValue
-- Catch up with Bacon.UI (but this time there have to be tests for all
-  methods!)
+See [Issues](https://github.com/raimohanska/bacon-jquery-bindings/issues).
 
 If this seems like a good idea, please tell me so! If you'd like to
-contribute, please do!
+contribute, please do! Pull Requests, Issues etc appreciated. Star this project to let me know that you care.

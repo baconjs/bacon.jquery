@@ -67,6 +67,32 @@ require(["bacon-jquery-bindings", "jquery"], function(bjq, $) {
 })
 ```
 
+The prebuilt javascript file can be found in the `dist` directory, or [here](https://raw.github.com/raimohanska/bacon-jquery-bindings/master/dist/Bacon.JQuery.Bindings.js).
+
+## Use without AMD
+
+Should work without AMD too, so feel free to use plain old `<script>` tags to include Bacon, JQuery and BJQ.
+
+The BJQ methods are exposed through `Bacon.$`, so you can call them as in `Bacon.$.textFieldValue(..)`.
+
+The prebuilt javascript file can be found in the `dist` directory, or [here](https://raw.github.com/raimohanska/bacon-jquery-bindings/master/dist/Bacon.JQuery.Bindings.js).
+
+## Use with Node
+
+Haven't published this to NPM yet, but will do. The idea is to keep this compatible with the Node environment too. Not sure if it makes any sense though.
+
+## Use with Bower
+
+Will publish with Bower when the stuff is bit more mature.
+
+## Building
+
+The module is build using Grunt. The easiest way to build is, however,
+to run the `build` script. Before that you need to run `npm install -g
+grunt` though.
+
+Built javascript files are under the `dist` directory.
+
 ## Example Application
 
 There will be an example application under the [example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/example-app) directory.
@@ -101,9 +127,7 @@ The browser tests can also be run by opening the
 
 ## What next?
 
-- Proper tests for textFieldValue
-- Catch up with Bacon.UI (but this time there have to be tests for all
-  methods!)
+See [Issues](https://github.com/raimohanska/bacon-jquery-bindings/issues).
 
 If this seems like a good idea, please tell me so! If you'd like to
-contribute, please do!
+contribute, please do! Pull Requests, Issues etc appreciated. Star this project to let me know that you care.

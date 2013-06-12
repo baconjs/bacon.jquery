@@ -1,0 +1,10 @@
+{
+  "name": "bacon-jquery-bindings",
+  "version": "0.0.1",
+  "dependencies": {
+    "baconjs": {
+      "version": "0.4.2",
+      "from": "baconjs@~0.4"
+    }
+  }
+}

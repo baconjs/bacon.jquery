@@ -93,6 +93,8 @@ grunt` though.
 
 Built javascript files are under the `dist` directory.
 
+[![Build Status](https://travis-ci.org/raimohanska/bacon-jquery-bindings.png)](https://travis-ci.org/raimohanska/bacon-jquery-bindings)
+
 ## Example Application
 
 There will be an example application under the [example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/example-app) directory.

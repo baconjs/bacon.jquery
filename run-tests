@@ -1,2 +1,5 @@
-export test=$1
+#!/bin/bash -e
+
 npm install&&npm test
+
+node_modules/mocha-phantomjs/bin/mocha-phantomjs browsertest/runner.html 

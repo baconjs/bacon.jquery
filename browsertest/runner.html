@@ -12,10 +12,14 @@
     <script>mocha.setup('bdd')</script>
     <script src="BJB-tests.js"></script>
     <script>
+      console.log("init")
       $(function() {
+        console.log("$")
         if (window.mochaPhantomJS) { 
+          console.log("found mocha-phantom")
           mochaPhantomJS.run(); 
         } else {
+          console.log("oops")
           mocha.run(); 
         }
       })

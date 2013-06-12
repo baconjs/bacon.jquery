@@ -109,13 +109,6 @@ Actually there's something already.
 
 Example app will appear to http://localhost:8000/example-app/
 
-## Building
-
-The module is build using Grunt. The easiest way to build is, however,
-to run the `build` script. 
-
-Built javascript files are under the `dist` directory.
-
 ## Automatic tests
 
 Use the `run-tests` script to run all tests.
@@ -126,6 +119,8 @@ directory. The test script uses [mocha-phantomjs](http://metaskills.net/mocha-ph
 
 The browser tests can also be run by opening the
 `browsertest/runner.html` in the browser.
+
+I'd like to have all tests run automatically on [Travis CI](https://travis-ci.org/) but the mocha-phantomjs tests don't seem to work there. So, only the node.js tests are run for now.
 
 ## What next?
 

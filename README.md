@@ -67,14 +67,6 @@ require(["bacon-jquery-bindings", "jquery"], function(bjq, $) {
 })
 ```
 
-## Building
-
-The module is build using Grunt. The easiest way to build is, however,
-to run the `build` script. Before that you need to run `npm install -g
-grunt` though.
-
-Built javascript files are under the `dist` directory.
-
 ## Example Application
 
 There will be an example application under the [example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/example-app) directory.
@@ -88,6 +80,24 @@ Actually there's something already.
     python -m SimpleHTTPServer
 
 Example app will appear to http://localhost:8000/example-app/
+
+## Building
+
+The module is build using Grunt. The easiest way to build is, however,
+to run the `build` script. 
+
+Built javascript files are under the `dist` directory.
+
+## Automatic tests
+
+Use the `run-tests` script to run all tests.
+
+Tests include mocha tests under the `test` directory (currently just a
+placeholder test), and mocha browser tests under the `browsertest`
+directory. The test script uses [mocha-phantomjs](http://metaskills.net/mocha-phantomjs/) to run the browser tests headless.
+
+The browser tests can also be run by opening the
+`browsertest/runner.html` in the browser.
 
 ## What next?
 

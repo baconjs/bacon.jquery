@@ -88,8 +88,7 @@ Will publish with Bower when the stuff is bit more mature.
 ## Building
 
 The module is build using Grunt. The easiest way to build is, however,
-to run the `build` script. Before that you need to run `npm install -g
-grunt` though.
+to run the `build` script.
 
 Built javascript files are under the `dist` directory.
 

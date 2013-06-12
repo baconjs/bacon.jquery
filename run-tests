@@ -1,7 +1,5 @@
 #!/bin/bash -e
 
-npm install
-
-./node_modules/mocha/bin/mocha --compilers coffee:coffee-script test/**
+npm install&&npm test
 
 node_modules/mocha-phantomjs/bin/mocha-phantomjs browsertest/runner.html 

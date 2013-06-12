@@ -22,7 +22,7 @@
     "jquery": "~1.8"
   },
   "scripts": {
-    "test": "./run-tests",
+    "test": "./node_modules/mocha/bin/mocha --compilers coffee:coffee-script test/**",
     "pre-publish": "grunt"
   },
   "main": "dist/Bacon.JQuery.Bindings.js"

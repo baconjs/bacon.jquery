@@ -93,8 +93,6 @@ grunt` though.
 
 Built javascript files are under the `dist` directory.
 
-[![Build Status](https://travis-ci.org/raimohanska/bacon-jquery-bindings.png)](https://travis-ci.org/raimohanska/bacon-jquery-bindings)
-
 ## Example Application
 
 There will be an example application under the [example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/example-app) directory.
@@ -111,7 +109,7 @@ Example app will appear to http://localhost:8000/example-app/
 
 ## Automatic tests
 
-Use the `run-tests` script to run all tests.
+Use the `npm test` to run all tests.
 
 Tests include mocha tests under the `test` directory (currently just a
 placeholder test), and mocha browser tests under the `browsertest`
@@ -120,7 +118,9 @@ directory. The test script uses [mocha-phantomjs](http://metaskills.net/mocha-ph
 The browser tests can also be run by opening the
 `browsertest/runner.html` in the browser.
 
-I'd like to have all tests run automatically on [Travis CI](https://travis-ci.org/) but the mocha-phantomjs tests don't seem to work there. So, only the node.js tests are run for now.
+The tests are also run automatically on [Travis CI](https://travis-ci.org/). See build status below.
+
+[![Build Status](https://travis-ci.org/raimohanska/bacon-jquery-bindings.png)](https://travis-ci.org/raimohanska/bacon-jquery-bindings)
 
 ## What next?
 

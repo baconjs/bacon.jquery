@@ -1,17 +1,21 @@
 init = (Bacon, $) ->
+  count = 0
   if not Bacon.Binding
-    Bacon.Binding = (initValue) ->
+    Bacon.Binding = Bacon.$.Binding = (initValue) ->
+        myCount = ++count
         valueBus = new Bacon.Bus()
-        binding = valueBus.toProperty().map((change) -> change.value).skipDuplicates()
+        binding = valueBus.map((change) -> 
+          change.value).toProperty().skipDuplicates()
         binding.addSource = (source) ->
-          valueBus.plug(source.map((value) -> ValueChange(source, value)))
+          valueBus.plug(source.map((value) -> 
+            ValueChange(source, value)))
           valueBus.filter((change) -> change.source != source).map((change) -> change.value)
         binding.bind = (other) ->
-          this.addSource(other)
-          other.addSource(this)
+          this.addSource(other.toEventStream())
+          other.addSource(this.toEventStream())
         binding.push = (value) ->
           valueBus.push(ValueChange(undefined, value))
-        binding.onValue(->)
+        binding.onValue()
         binding.push(initValue) if (initValue?)
         binding
 

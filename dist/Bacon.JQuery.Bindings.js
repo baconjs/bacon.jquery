@@ -2,14 +2,16 @@
   var $, Bacon, init;
 
   init = function(Bacon, $) {
-    var ValueChange;
+    var ValueChange, count;
+    count = 0;
     if (!Bacon.Binding) {
-      Bacon.Binding = function(initValue) {
-        var binding, valueBus;
+      Bacon.Binding = Bacon.$.Binding = function(initValue) {
+        var binding, myCount, valueBus;
+        myCount = ++count;
         valueBus = new Bacon.Bus();
-        binding = valueBus.toProperty().map(function(change) {
+        binding = valueBus.map(function(change) {
           return change.value;
-        }).skipDuplicates();
+        }).toProperty().skipDuplicates();
         binding.addSource = function(source) {
           valueBus.plug(source.map(function(value) {
             return ValueChange(source, value);
@@ -21,13 +23,13 @@
           });
         };
         binding.bind = function(other) {
-          this.addSource(other);
-          return other.addSource(this);
+          this.addSource(other.toEventStream());
+          return other.addSource(this.toEventStream());
         };
         binding.push = function(value) {
           return valueBus.push(ValueChange(void 0, value));
         };
-        binding.onValue(function() {});
+        binding.onValue();
         if ((initValue != null)) {
           binding.push(initValue);
         }
@@ -42,19 +44,41 @@
     }
     $.fn.asEventStream = Bacon.$.asEventStream;
     Bacon.$.textFieldValue = function(element, initValue) {
-      var binding, current, externalChanges, inputs;
-      current = function() {
-        return element.val();
-      };
-      inputs = element.asEventStream("keyup").map(current);
+      return Bacon.$.domBinding({
+        initValue: initValue,
+        currentFromDom: function() {
+          return element.val();
+        },
+        domEvents: element.asEventStream("keyup"),
+        setToDom: function(value) {
+          return element.val(value);
+        }
+      });
+    };
+    Bacon.$.checkBoxValue = function(element, initValue) {
+      return Bacon.$.domBinding({
+        initValue: initValue,
+        currentFromDom: function() {
+          return !!element.attr("checked");
+        },
+        domEvents: element.asEventStream("change"),
+        setToDom: function(value) {
+          return element.attr("checked", value);
+        }
+      });
+    };
+    Bacon.$.domBinding = function(_arg) {
+      var binding, currentFromDom, domEvents, externalChanges, initValue, inputs, setToDom;
+      initValue = _arg.initValue, currentFromDom = _arg.currentFromDom, domEvents = _arg.domEvents, setToDom = _arg.setToDom;
+      inputs = domEvents.map(currentFromDom);
       if (initValue != null) {
-        element.val(initValue);
+        setToDom(initValue);
       } else {
-        initValue = current();
+        initValue = currentFromDom();
       }
       binding = Bacon.Binding(initValue);
       externalChanges = binding.addSource(inputs);
-      externalChanges.assign(element, "val");
+      externalChanges.assign(setToDom);
       return binding;
     };
     return Bacon.$;

@@ -33,6 +33,18 @@ init = (Bacon, $) ->
       externalChanges = binding.addSource(inputs)
       externalChanges.assign(element, "val")
       binding
+  Bacon.$.checkBoxValue = (element, initValue) ->
+    current = -> !!element.attr("checked")
+    inputs = element.asEventStream("change").map(current)
+    if initValue?
+      element.attr "checked", initValue
+    else
+      initValue = current()
+    binding = Bacon.Binding(initValue)
+    externalChanges = binding.addSource(inputs)
+    externalChanges.assign(element, "attr", "checked")
+    binding
+
   Bacon.$
 
 if module?

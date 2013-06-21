@@ -23,26 +23,29 @@ init = (Bacon, $) ->
 
   $.fn.asEventStream = Bacon.$.asEventStream
   Bacon.$.textFieldValue = (element, initValue) ->
-      current = -> element.val()
-      inputs = element.asEventStream("keyup").map(current)
-      if initValue?
-        element.val(initValue)
-      else
-        initValue = current()
-      binding = Bacon.Binding(initValue)
-      externalChanges = binding.addSource(inputs)
-      externalChanges.assign(element, "val")
-      binding
+    Bacon.$.domBinding {
+      initValue,
+      currentFromDom: -> element.val(),
+      domEvents: element.asEventStream("keyup"),
+      setToDom: (value) -> element.val(value)
+    }
   Bacon.$.checkBoxValue = (element, initValue) ->
-    current = -> !!element.attr("checked")
-    inputs = element.asEventStream("change").map(current)
+    Bacon.$.domBinding {
+      initValue,
+      currentFromDom: -> !!element.attr("checked"),
+      domEvents: element.asEventStream("change"),
+      setToDom: (value) -> element.attr "checked", value
+    }
+
+  Bacon.$.domBinding = ({ initValue, currentFromDom, domEvents, setToDom}) ->
+    inputs = domEvents.map(currentFromDom)
     if initValue?
-      element.attr "checked", initValue
+      setToDom(initValue)
     else
-      initValue = current()
+      initValue = currentFromDom()
     binding = Bacon.Binding(initValue)
     externalChanges = binding.addSource(inputs)
-    externalChanges.assign(element, "attr", "checked")
+    externalChanges.assign(setToDom)
     binding
 
   Bacon.$

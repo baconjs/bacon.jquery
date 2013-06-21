@@ -23,7 +23,7 @@ describe "Binding.addSource", ->
     values = collect(b)
     b.addSource(Bacon.once("wat"))
     expect(values).to.deep.equal(["wat"])
-  it "returns stream of other values", ->
+  it "returns stream of values from other sources", ->
     b = bjb.Binding()
     values = collect(b)
     otherValues = collect(b.addSource(Bacon.once("wat")))

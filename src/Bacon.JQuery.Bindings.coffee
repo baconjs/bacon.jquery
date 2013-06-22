@@ -5,25 +5,23 @@ init = (Bacon, $) ->
   if not Bacon.Binding
     Bacon.Binding = Bacon.$.Binding = (initValue) ->
         myCount = ++count
-        valueBus = new Bacon.Bus()
-        binding = valueBus.map((change) -> 
-          change.value).toProperty().skipDuplicates()
+        modificationBus = new Bacon.Bus()
+        valueWithSource = modificationBus.scan(
+          {}
+          ({value}, {source, f}) -> {source, value: f(value)}
+        ).changes()
+        binding = valueWithSource.toProperty().map(".value").skipDuplicates()
         binding.addSource = (source) ->
-          valueBus.plug(source.map((value) -> 
-            ValueChange(source, value)))
-          valueBus.filter((change) -> change.source != source).map((change) -> change.value)
+          modificationBus.plug(source.map((value) -> {source, f: -> value}))
+          valueWithSource.filter((change) -> change.source != source).map((change) -> change.value)
         binding.bind = (other) ->
           this.addSource(other.toEventStream())
           other.addSource(this.toEventStream())
-        binding.set = (value) ->
-          valueBus.push(ValueChange(undefined, value))
+        binding.modify = (f) -> modificationBus.push { f }
+        binding.set = (value) -> binding.modify(-> value)
         binding.onValue()
         binding.set(initValue) if (initValue?)
         binding
-
-    ValueChange = (source, value) -> { source, value }
-
-
 
   $.fn.asEventStream = Bacon.$.asEventStream
   Bacon.$.textFieldValue = (element, initValue) ->

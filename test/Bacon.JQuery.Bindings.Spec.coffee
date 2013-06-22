@@ -17,6 +17,15 @@ describe "Binding.set", ->
     b.set("wat")
     expect(values).to.deep.equal(["wat"])
 
+describe "Binding.modify", ->
+  it "modifies current value with given function", ->
+    b = bjb.Binding(1)
+    values = collect(b)
+    b.modify((x) -> x * 2)
+    b.modify((x) -> x * 2)
+    expect(values).to.deep.equal([1, 2, 4])
+
+
 describe "Binding.addSource", ->
   it "connects new input stream", ->
     b = bjb.Binding()

@@ -42,6 +42,11 @@ In addition to the Bacon.js Property API, the `Binding` class has
 `binding.set(value)` Sets a new value for the binding, also pushing this
 value to all two-way sources.
 
+`binding.modify(f)` Modifies the value of the binding by applying the
+given function to the current value. For instance, if the current value
+was `1` and you applied a `multiplyBy2` function, the value would be set
+to `2`.
+
 `binding.addSource(stream)` add an input source for pushing values to
 the binding. The source may be an EventStream or a Property. The method
 returns an EventStream that contains all changes from *other sources*

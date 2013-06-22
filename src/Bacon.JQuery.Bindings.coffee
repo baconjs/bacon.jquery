@@ -2,8 +2,8 @@ init = (Bacon, $) ->
   isChrome = navigator?.userAgent?.toLowerCase().indexOf("chrome") > -1
 
   count = 0
-  if not Bacon.Binding
-    Bacon.Binding = Bacon.$.Binding = (initValue) ->
+
+  Bacon.Model = Bacon.$.Model = (initValue) ->
         myCount = ++count
         modificationBus = new Bacon.Bus()
         valueWithSource = modificationBus.scan(
@@ -24,49 +24,61 @@ init = (Bacon, $) ->
         binding.set(initValue) if (initValue?)
         binding
 
+  Bacon.Binding = Bacon.$.Binding = ({ initValue, get, events, set}) ->
+    inputs = events.map(get)
+    if initValue?
+      set(initValue)
+    else
+      initValue = get()
+    binding = Bacon.Model(initValue)
+    externalChanges = binding.addSource(inputs)
+    externalChanges.assign(set)
+    binding
+
+
   $.fn.asEventStream = Bacon.$.asEventStream
   Bacon.$.textFieldValue = (element, initValue) ->
     nonEmpty = (x) -> x.length > 0
-    currentFromDom = -> element.val()
+    get = -> element.val()
     autofillPoller = ->
       if element.attr("type") is "password"
         Bacon.interval 100
       else if isChrome
-        Bacon.interval(100).take(20).map(currentFromDom).filter(nonEmpty).take 1
+        Bacon.interval(100).take(20).map(get).filter(nonEmpty).take 1
       else
         Bacon.never()
-    domEvents = element.asEventStream("keyup input")
+    events = element.asEventStream("keyup input")
       .merge(element.asEventStream("cut paste").delay(1))
       .merge(autofillPoller())
 
-    Bacon.$.domBinding {
+    Bacon.Binding {
       initValue,
-      currentFromDom,
-      domEvents,
-      setToDom: (value) -> element.val(value)
+      get,
+      events,
+      set: (value) -> element.val(value)
     }
   Bacon.$.checkBoxValue = (element, initValue) ->
-    Bacon.$.domBinding {
+    Bacon.Binding {
       initValue,
-      currentFromDom: -> !!element.attr("checked"),
-      domEvents: element.asEventStream("change"),
-      setToDom: (value) -> element.attr "checked", value
+      get: -> !!element.attr("checked"),
+      events: element.asEventStream("change"),
+      set: (value) -> element.attr "checked", value
     }
   
   Bacon.$.selectValue = (element, initValue) ->
-    Bacon.$.domBinding {
+    Bacon.Binding {
       initValue,
-      currentFromDom: -> element.val(),
-      domEvents: element.asEventStream("change"),
-      setToDom: (value) -> element.val value
+      get: -> element.val(),
+      events: element.asEventStream("change"),
+      set: (value) -> element.val value
     }
 
   Bacon.$.radioGroupValue = (radios, initValue) ->
-    Bacon.$.domBinding {
+    Bacon.Binding {
       initValue,
-      currentFromDom: -> radios.filter(":checked").first().val(),
-      domEvents: radios.asEventStream("change"),
-      setToDom: (value) ->
+      get: -> radios.filter(":checked").first().val(),
+      events: radios.asEventStream("change"),
+      set: (value) ->
         radios.each (i, elem) ->
           if elem.value is value
             $(elem).attr "checked", true 
@@ -75,26 +87,15 @@ init = (Bacon, $) ->
     }
 
   Bacon.$.checkBoxGroupValue = (checkBoxes, initValue) ->
-    Bacon.$.domBinding {
+    Bacon.Binding {
       initValue,
-      currentFromDom: -> selectedValues = ->
+      get: -> selectedValues = ->
         checkBoxes.filter(":checked").map((i, elem) -> $(elem).val()).toArray()
-      domEvents: checkBoxes.asEventStream("click,change"),
-      setToDom: (value) ->
+      events: checkBoxes.asEventStream("click,change"),
+      set: (value) ->
         checkBoxes.each (i, elem) ->
           $(elem).attr "checked", value.indexOf($(elem).val()) >= 0
     }
-
-  Bacon.$.domBinding = ({ initValue, currentFromDom, domEvents, setToDom}) ->
-    inputs = domEvents.map(currentFromDom)
-    if initValue?
-      setToDom(initValue)
-    else
-      initValue = currentFromDom()
-    binding = Bacon.Binding(initValue)
-    externalChanges = binding.addSource(inputs)
-    externalChanges.assign(setToDom)
-    binding
 
   Bacon.$
 

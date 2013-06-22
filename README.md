@@ -1,4 +1,4 @@
-# Bacon.JQuery.Bindings
+# Bacon.JQuery.Bindings (BJQ)
 
 *This library is in an experimental stage*
 
@@ -6,18 +6,20 @@ A JQuery data binding library for [Bacon.js](https://github.com/raimohanska/baco
 
 Main difference to [Bacon.UI](https://github.com/raimohanska/Bacon.UI.js) 
 at this point is that instead of returning a 
-one-way Property, the methods in BJB return a `Binding` object that
+one-way Property, the methods in BJB return a `Model` object that
 allows you to `push` a new value explicitly to the UI using the `set`
 method. You can also add
-external value source using `addSource`. The `Binding` object extends
+external value source using `addSource`. The `Model` object extends
 `Property` so the one-way interface hasn't changed.
 
 ## BJQ API
 
+TODO: update this section, as there's more than one method there!
+
 Currently there's just one method in the API so it's not practically
 useful yet!
 
-`bjq.textFieldValue(field [, initValue])` creates a `Binding` for a text field. 
+`bjq.textFieldValue(field [, initValue])` creates a `Model` for a text field. 
 You can optionally supply an initial value.
 
 Example:
@@ -35,24 +37,45 @@ Example:
   left.addSource($("#reset").asEventStream("click").map(""))
 ```
 
-## Binding API
+## Model API
 
-In addition to the Bacon.js Property API, the `Binding` class has
+All the BJB methods, such as `textFieldValue` return a `Model` object, which is a Bacon.js `Property`, but extends that API by the following methods.
 
-`binding.set(value)` Sets a new value for the binding, also pushing this
+`model.set(value)` Sets a new value for the model, also pushing this
 value to all two-way sources.
 
-`binding.modify(f)` Modifies the value of the binding by applying the
+`model.modify(f)` Modifies the value of the model by applying the
 given function to the current value. For instance, if the current value
 was `1` and you applied a `multiplyBy2` function, the value would be set
 to `2`.
 
-`binding.addSource(stream)` add an input source for pushing values to
-the binding. The source may be an EventStream or a Property. The method
+`model.addSource(stream)` add an input source for pushing values to
+the model. The source may be an EventStream or a Property. The method
 returns an EventStream that contains all changes from *other sources*
 than this.
 
-`binding.bind(other)` makes a two-way binding between the two bindings.
+`model.apply(stream)` add an input source for modifications to the model. The source may be an EventStream or a Property, and is supposed to contain functions as values. Each of these functions are applied as modifications to the value of the model (as with using the `modify` method). The method returns an EventStream that contains all changes from *other sources* than this.
+
+`model.bind(other)` makes a two-way binding between the two models.
+
+`Bacon.Model(initValue)` creates a new model, with the given (optional)
+initial value.
+
+## Binding API
+
+BJB uses a simple `Binding` API for creating `Model` objects bound to
+DOM elements. `Bacon.Binding(options)` creates a new bound `Model`. The options
+is an object containing the following fields:
+
+`get` : zero-arg function that returns the current value from the UI
+
+`set` : 1-arg function that pushes the given new value to the UI
+
+`events` : an `EventStream` of input events from the UI. The content of
+these events are ignored; they are only used to trigger the polling of
+the new value from the UI using the `get` function.
+
+`initValue (optional)` : initial value to be set for the model
 
 ## Use with AMD
 

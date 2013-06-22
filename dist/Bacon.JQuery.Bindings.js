@@ -95,6 +95,24 @@
         }
       });
     };
+    Bacon.$.radioGroupValue = function(radios, initValue) {
+      return Bacon.$.domBinding({
+        initValue: initValue,
+        currentFromDom: function() {
+          return radios.filter(":checked").first().val();
+        },
+        domEvents: radios.asEventStream("change"),
+        setToDom: function(value) {
+          return radios.each(function(i, elem) {
+            if (elem.value === value) {
+              return $(elem).attr("checked", true);
+            } else {
+              return $(elem).removeAttr("checked");
+            }
+          });
+        }
+      });
+    };
     Bacon.$.domBinding = function(_arg) {
       var binding, currentFromDom, domEvents, externalChanges, initValue, inputs, setToDom;
       initValue = _arg.initValue, currentFromDom = _arg.currentFromDom, domEvents = _arg.domEvents, setToDom = _arg.setToDom;

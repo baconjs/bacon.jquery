@@ -12,17 +12,7 @@ method. You can also add
 external value source using `addSource`. The `Model` object extends
 `Property` so the one-way interface hasn't changed.
 
-## BJQ API
-
-TODO: update this section, as there's more than one method there!
-
-Currently there's just one method in the API so it's not practically
-useful yet!
-
-`bjq.textFieldValue(field [, initValue])` creates a `Model` for a text field. 
-You can optionally supply an initial value.
-
-Example:
+## Example code
 
 ```js
   // binding for "left" text field
@@ -36,6 +26,32 @@ Example:
   // Add an input stream for resetting the value
   left.addSource($("#reset").asEventStream("click").map(""))
 ```
+
+## BJQ API
+
+`bjq.textFieldValue(field [, initValue])` creates a `Model` for an
+`<input type="text">` element, given as a JQuery object. You can optionally supply an initial value.
+
+`bjq.checkBoxValue(field [, initValue])` creates a `Model` for a
+`<input type="checkbox">` element, given as a JQuery object. The value is `true` if the checkbox is checked and
+`false` otherwise.
+
+`bjq.selectValue(field [,initValue])` creates a `Model` for a `<select>`
+element, given as a JQuery object. The value of the model corresponds to the `value` attribute of the selected `<option>` element.
+
+`bjq.radioGroupValue(fields, [,initValue])` creates a `Model` for a set
+of `<input type="radio">` elements, given as a JQuery object. The value
+of the model corresponds to the `value` attribute of the selected radio
+input element.
+
+`bjq.checkBoxGroupValue(fields, [,initValue])` creates a `Model` for a set
+of `<input type="checkbox">` elements, given as a JQuery object. The value
+of the model is an array of the `value` attributes of the checked
+checkbox input elements. For instance, if you have checkboxes and 2 of
+these are checked, having values `a` and `b`, the value of the Model is
+`["a", "b"]`.
+
+TODO: add HTML/JS examples
 
 ## Model API
 

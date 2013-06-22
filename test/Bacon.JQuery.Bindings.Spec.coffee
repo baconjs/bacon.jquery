@@ -1,6 +1,7 @@
 expect = require("chai").expect
 Bacon = require "baconjs"
 bjb = require "../src/Bacon.JQuery.Bindings"
+twice = (x) -> x * 2
 
 grep = process.env.grep
 if grep
@@ -21,10 +22,16 @@ describe "Binding.modify", ->
   it "modifies current value with given function", ->
     b = bjb.Binding(1)
     values = collect(b)
-    b.modify((x) -> x * 2)
-    b.modify((x) -> x * 2)
+    b.modify(twice)
+    b.modify(twice)
     expect(values).to.deep.equal([1, 2, 4])
 
+describe "Binding.apply", ->
+  it "Applies given stream of functions to the Binding", ->
+    b = bjb.Binding(1)
+    values = collect(b)
+    b.apply(Bacon.fromArray([twice, twice, twice]))
+    expect(values).to.deep.equal([1, 2, 4, 8])
 
 describe "Binding.addSource", ->
   it "connects new input stream", ->

@@ -11,14 +11,15 @@ init = (Bacon, $) ->
           ({value}, {source, f}) -> {source, value: f(value)}
         ).changes()
         binding = valueWithSource.toProperty().map(".value").skipDuplicates()
-        binding.addSource = (source) ->
-          modificationBus.plug(source.map((value) -> {source, f: -> value}))
+        binding.apply = (source) -> 
+          modificationBus.plug(source.map((f) -> {source, f: (value) -> f(value)}))
           valueWithSource.filter((change) -> change.source != source).map((change) -> change.value)
+        binding.addSource = (source) -> binding.apply(source.map((v) -> (->v)))
+        binding.modify = (f) -> binding.apply(Bacon.once(f))
+        binding.set = (value) -> binding.modify(-> value)
         binding.bind = (other) ->
           this.addSource(other.toEventStream())
           other.addSource(this.toEventStream())
-        binding.modify = (f) -> modificationBus.push { f }
-        binding.set = (value) -> binding.modify(-> value)
         binding.onValue()
         binding.set(initValue) if (initValue?)
         binding

@@ -1,0 +1,32 @@
+<html>
+  <head>
+  <script src="components/jquery/jquery.js"></script>
+  <script src="components/bacon/dist/Bacon.js"></script>
+  <script src="components/bacon-jquery-bindings/dist/Bacon.JQuery.Bindings.js"></script>
+  <script type="text/javascript" language="javascript">
+    $(function() {
+      // binding for "left" text field
+      var left = Bacon.$.textFieldValue($("#left"))
+      // binding for "right" text field
+      var right = Bacon.$.textFieldValue($("#right"))
+      // make a two-way binding between these two
+      right.bind(left)
+      // Make a one-way side effect: update label text on changes, uppercase
+      right.map(".toUpperCase").changes().assign($("#output"), "text")
+      // Add an input stream for resetting the value
+      left.addSource($("#reset").asEventStream("click").map(""))
+    })
+  </script>
+  </head>
+  <body>
+    <p>
+      <h2>Text field binding</h2>
+      <input type="text" id="left" placeholder="left">
+      &lt;--&gt;
+      <input type="text" id="right" placeholder="right">
+      -->
+      <label id="output">output</label>
+      <input type="button" id="reset" value="Reset">
+    </p>
+  </body>
+</html>

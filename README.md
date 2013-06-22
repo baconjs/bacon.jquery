@@ -71,11 +71,13 @@ The prebuilt javascript file can be found in the `dist` directory, or [here](htt
 
 ## Use without AMD
 
-Should work without AMD too, so feel free to use plain old `<script>` tags to include Bacon, JQuery and BJQ.
+Works without AMD too, so feel free to use plain old `<script>` tags to include Bacon, JQuery and BJQ.
 
 The BJQ methods are exposed through `Bacon.$`, so you can call them as in `Bacon.$.textFieldValue(..)`.
 
 The prebuilt javascript file can be found in the `dist` directory, or [here](https://raw.github.com/raimohanska/bacon-jquery-bindings/master/dist/Bacon.JQuery.Bindings.js).
+
+An example is provided at `example-app/without-require.html`.
 
 ## Use with Node
 

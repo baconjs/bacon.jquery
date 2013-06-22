@@ -53,6 +53,14 @@ init = (Bacon, $) ->
       domEvents: element.asEventStream("change"),
       setToDom: (value) -> element.attr "checked", value
     }
+  
+  Bacon.$.optionValue = (element, initValue) ->
+    Bacon.$.domBinding {
+      initValue,
+      currentFromDom: -> element.val(),
+      domEvents: element.asEventStream("change"),
+      setToDom: (value) -> element.val value
+    }
 
   Bacon.$.domBinding = ({ initValue, currentFromDom, domEvents, setToDom}) ->
     inputs = domEvents.map(currentFromDom)

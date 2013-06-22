@@ -74,6 +74,43 @@ describe('checkBoxValue', function() {
   })
 })
 
+describe('optionValue', function() {
+  var field
+  beforeEach(function() {
+    $('#bacon-dom').html('<select id="select"><option value="a">A</option><option value="b" selected>B</option></select>')
+    field = $('#bacon-dom #select')
+  })
+
+  describe('with initVal', function() {
+    it('sets value to DOM', function() {
+      var binding = Bacon.$.optionValue(field, 'a')
+      expect(field.val()).to.equal('a')
+    })
+    it('sets the initVal as the initial value of the Binding', function() {
+      var binding = Bacon.$.optionValue(field, 'a')
+      specifyValue(binding, 'a')
+    })
+  })
+
+  describe('without initVal', function() {
+    it('leaves DOM unaffected', function() {
+      var binding = Bacon.$.optionValue(field)
+      expect(field.val()).to.equal('b')
+    })
+    it('uses value from DOM as initial value of the Binding', function() {
+      var binding = Bacon.$.optionValue(field)
+      specifyValue(binding, 'b')
+    })
+  })
+
+  describe('when pushing value to Binding', function() {
+    it('sets value to DOM', function() {
+      Bacon.$.optionValue(field).push('a')
+      expect(field.val()).to.equal('a')
+    })
+  })
+})
+
 function specifyValue(binding, value) {
   binding.onValue(function(value) {
     expect(value).to.equal(value)

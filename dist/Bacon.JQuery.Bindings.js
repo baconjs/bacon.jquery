@@ -113,6 +113,25 @@
         }
       });
     };
+    Bacon.$.checkBoxGroupValue = function(checkBoxes, initValue) {
+      return Bacon.$.domBinding({
+        initValue: initValue,
+        currentFromDom: function() {
+          var selectedValues;
+          return selectedValues = function() {
+            return checkBoxes.filter(":checked").map(function(i, elem) {
+              return $(elem).val();
+            }).toArray();
+          };
+        },
+        domEvents: checkBoxes.asEventStream("click,change"),
+        setToDom: function(value) {
+          return checkBoxes.each(function(i, elem) {
+            return $(elem).attr("checked", value.indexOf($(elem).val()) >= 0);
+          });
+        }
+      });
+    };
     Bacon.$.domBinding = function(_arg) {
       var binding, currentFromDom, domEvents, externalChanges, initValue, inputs, setToDom;
       initValue = _arg.initValue, currentFromDom = _arg.currentFromDom, domEvents = _arg.domEvents, setToDom = _arg.setToDom;

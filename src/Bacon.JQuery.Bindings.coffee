@@ -75,6 +75,17 @@ init = (Bacon, $) ->
             $(elem).removeAttr "checked"
     }
 
+  Bacon.$.checkBoxGroupValue = (checkBoxes, initValue) ->
+    Bacon.$.domBinding {
+      initValue,
+      currentFromDom: -> selectedValues = ->
+        checkBoxes.filter(":checked").map((i, elem) -> $(elem).val()).toArray()
+      domEvents: checkBoxes.asEventStream("click,change"),
+      setToDom: (value) ->
+        checkBoxes.each (i, elem) ->
+          $(elem).attr "checked", value.indexOf($(elem).val()) >= 0
+    }
+
   Bacon.$.domBinding = ({ initValue, currentFromDom, domEvents, setToDom}) ->
     inputs = domEvents.map(currentFromDom)
     if initValue?

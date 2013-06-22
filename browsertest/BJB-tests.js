@@ -146,7 +146,48 @@ describe('bacon-jquery-bindings', function() {
     describe('when pushing value to Binding', function() {
       it('sets value to DOM', function() {
         Bacon.$.radioGroupValue(field).push('a')
-        expect(field.val()).to.equal('a')
+        expect($("#a").attr("checked")).to.equal("checked")
+        expect($("#b").attr("checked")).to.equal(undefined)
+      })
+    })
+  })
+
+  describe('checkBoxGroupValue', function() {
+    var field
+    beforeEach(function() {
+      $('#bacon-dom').html('<label for="a">A</label><input type="checkbox" id="a" value="a"><br><label for="b">B</label><input type="checkbox" id="b" value="b" checked>')
+      field = $('#a,#b')
+    })
+
+    describe('with initVal', function() {
+      it('sets value to DOM', function() {
+        var binding = Bacon.$.checkBoxGroupValue(field, ['a'])
+        expect($("#a").attr("checked")).to.equal("checked")
+        expect($("#b").attr("checked")).to.equal(undefined)
+      })
+      it('sets the initVal as the initial value of the Binding', function() {
+        var binding = Bacon.$.checkBoxGroupValue(field, ['a'])
+        specifyValue(binding, ['a'])
+      })
+    })
+
+    describe('without initVal', function() {
+      it('leaves DOM unaffected', function() {
+        var binding = Bacon.$.checkBoxGroupValue(field)
+        expect($("#b").attr("checked")).to.equal("checked")
+        expect($("#a").attr("checked")).to.equal(undefined)
+      })
+      it('uses value from DOM as initial value of the Binding', function() {
+        var binding = Bacon.$.checkBoxGroupValue(field)
+        specifyValue(binding, ['b'])
+      })
+    })
+
+    describe('when pushing value to Binding', function() {
+      it('sets value to DOM', function() {
+        Bacon.$.checkBoxGroupValue(field).push(['a', 'b'])
+        expect($("#a").attr("checked")).to.equal("checked")
+        expect($("#b").attr("checked")).to.equal("checked")
       })
     })
   })

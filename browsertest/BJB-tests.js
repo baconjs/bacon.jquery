@@ -30,9 +30,9 @@ describe('bacon-jquery-bindings', function() {
       })
     })
 
-    describe('when pushing value to Binding', function() {
+    describe('when setting value of Binding', function() {
       it('sets value to DOM', function() {
-          Bacon.$.textFieldValue(field) .push('newVal')
+          Bacon.$.textFieldValue(field).set('newVal')
           expect(field.val()).to.equal('newVal')
       })
     })
@@ -67,9 +67,9 @@ describe('bacon-jquery-bindings', function() {
       })
     })
 
-    describe('when pushing value to Binding', function() {
+    describe('when setting value of Binding', function() {
       it('sets value to DOM', function() {
-          Bacon.$.checkBoxValue(field).push(true)
+          Bacon.$.checkBoxValue(field).set(true)
           expect(field.attr("checked")).to.equal("checked")
       })
     })
@@ -104,9 +104,9 @@ describe('bacon-jquery-bindings', function() {
       })
     })
 
-    describe('when pushing value to Binding', function() {
+    describe('when setting value of Binding', function() {
       it('sets value to DOM', function() {
-        Bacon.$.selectValue(field).push('a')
+        Bacon.$.selectValue(field).set('a')
         expect(field.val()).to.equal('a')
       })
     })
@@ -143,9 +143,9 @@ describe('bacon-jquery-bindings', function() {
       })
     })
 
-    describe('when pushing value to Binding', function() {
+    describe('when setting value of Binding', function() {
       it('sets value to DOM', function() {
-        Bacon.$.radioGroupValue(field).push('a')
+        Bacon.$.radioGroupValue(field).set('a')
         expect($("#a").attr("checked")).to.equal("checked")
         expect($("#b").attr("checked")).to.equal(undefined)
       })
@@ -183,9 +183,9 @@ describe('bacon-jquery-bindings', function() {
       })
     })
 
-    describe('when pushing value to Binding', function() {
+    describe('when setting value of Binding', function() {
       it('sets value to DOM', function() {
-        Bacon.$.checkBoxGroupValue(field).push(['a', 'b'])
+        Bacon.$.checkBoxGroupValue(field).set(['a', 'b'])
         expect($("#a").attr("checked")).to.equal("checked")
         expect($("#b").attr("checked")).to.equal("checked")
       })

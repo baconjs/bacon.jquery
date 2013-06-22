@@ -15,10 +15,10 @@ init = (Bacon, $) ->
         binding.bind = (other) ->
           this.addSource(other.toEventStream())
           other.addSource(this.toEventStream())
-        binding.push = (value) ->
+        binding.set = (value) ->
           valueBus.push(ValueChange(undefined, value))
         binding.onValue()
-        binding.push(initValue) if (initValue?)
+        binding.set(initValue) if (initValue?)
         binding
 
     ValueChange = (source, value) -> { source, value }

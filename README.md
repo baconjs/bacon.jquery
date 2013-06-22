@@ -7,7 +7,8 @@ A JQuery data binding library for [Bacon.js](https://github.com/raimohanska/baco
 Main difference to [Bacon.UI](https://github.com/raimohanska/Bacon.UI.js) 
 at this point is that instead of returning a 
 one-way Property, the methods in BJB return a `Binding` object that
-allows you to `push` a new value explicitly to the UI. You can also add
+allows you to `push` a new value explicitly to the UI using the `set`
+method. You can also add
 external value source using `addSource`. The `Binding` object extends
 `Property` so the one-way interface hasn't changed.
 
@@ -38,7 +39,7 @@ Example:
 
 In addition to the Bacon.js Property API, the `Binding` class has
 
-`binding.push(value)` forces a new value for the binding, pushing this
+`binding.set(value)` Sets a new value for the binding, also pushing this
 value to all two-way sources.
 
 `binding.addSource(stream)` add an input source for pushing values to

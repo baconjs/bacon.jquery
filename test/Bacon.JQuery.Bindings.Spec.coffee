@@ -10,11 +10,11 @@ if grep
     if desc.indexOf(grep) >= 0
       origDescribe(desc, f)
 
-describe "Binding.push", ->
-  it "pushes new value", ->
+describe "Binding.set", ->
+  it "sets new value", ->
     b = bjb.Binding()
     values = collect(b)
-    b.push("wat")
+    b.set("wat")
     expect(values).to.deep.equal(["wat"])
 
 describe "Binding.addSource", ->
@@ -27,7 +27,7 @@ describe "Binding.addSource", ->
     b = bjb.Binding()
     values = collect(b)
     otherValues = collect(b.addSource(Bacon.once("wat")))
-    b.push("lol")
+    b.set("lol")
     expect(values).to.deep.equal(["wat", "lol"])
     expect(otherValues).to.deep.equal(["lol"])
 
@@ -38,13 +38,13 @@ describe "Binding.bind", ->
     a.bind(b)
     v_a = collect(a)
     v_b = collect(b)
-    a.push("A")
-    b.push("B")
+    a.set("A")
+    b.set("B")
     expect(v_a).to.deep.equal(["A", "B"])
     expect(v_b).to.deep.equal(["A", "B"])
   it "syncs current value when bound", ->
     a = bjb.Binding()
-    a.push("X")
+    a.set("X")
     b = bjb.Binding()
     b.bind(a)
     v_a = collect(a)

@@ -50,7 +50,7 @@ than this.
 
 ## Use with AMD
 
-The [example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/example-app) uses RequireJS, like this:
+The [requirejs example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/examples/requirejs) uses RequireJS, like this:
 
 ```js
 require.config({
@@ -77,7 +77,7 @@ The BJQ methods are exposed through `Bacon.$`, so you can call them as in `Bacon
 
 The prebuilt javascript file can be found in the `dist` directory, or [here](https://raw.github.com/raimohanska/bacon-jquery-bindings/master/dist/Bacon.JQuery.Bindings.js).
 
-An example is provided at `example-app/without-require.html`.
+There's a [plain example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/examples/plain) that uses script tags only.
 
 ## Use with Node
 
@@ -86,28 +86,26 @@ Haven't published this to NPM yet, but will do. The idea is to keep this compati
 ## Use with Bower
 
 Registered to the Bower registry as `bacon-jquery-bindings`. See the
-Example Application for an example how to use BJB with Bower.
+Example Applications, for instance [requirejs example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/examples/requirejs).
+
+## Example Applications
+
+There are example applications in the [examples](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/examples) directory. Both use Bower to download dependencies (including BJB). Here's how to start one of them:
+
+    npm install -g bower
+    cd examples/requirejs
+    bower install
+    open index.html
+
+.. the last line being OSX specific. Anyway, you need to run `bower
+install` to download deps, and then open `index.html`.
 
 ## Building
 
-The module is build using Grunt. The easiest way to build is, however,
+The BJB module is build using Grunt. The easiest way to build is, however,
 to run the `build` script.
 
 Built javascript files are under the `dist` directory.
-
-## Example Application
-
-There will be an example application under the [example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/example-app) directory.
-
-Actually there's something already.
-
-    npm install -g bower
-    cd example-app
-    bower install
-    cd -
-    python -m SimpleHTTPServer
-
-Example app will appear to http://localhost:8000/example-app/
 
 ## Automatic tests
 

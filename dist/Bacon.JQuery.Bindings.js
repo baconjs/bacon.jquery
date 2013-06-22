@@ -83,7 +83,7 @@
         }
       });
     };
-    Bacon.$.optionValue = function(element, initValue) {
+    Bacon.$.selectValue = function(element, initValue) {
       return Bacon.$.domBinding({
         initValue: initValue,
         currentFromDom: function() {

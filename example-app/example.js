@@ -1,6 +1,6 @@
 require.config({
   paths: {
-    "bacon-jquery-bindings": "../dist/Bacon.JQuery.Bindings",
+    "bacon-jquery-bindings": "components/bacon-jquery-bindings/dist/Bacon.JQuery.Bindings",
     "bacon": "components/bacon/dist/Bacon",
     "jquery": "components/jquery/jquery"
   }})

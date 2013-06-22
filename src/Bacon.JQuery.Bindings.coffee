@@ -1,4 +1,6 @@
 init = (Bacon, $) ->
+  isChrome = navigator?.userAgent?.toLowerCase().indexOf("chrome") > -1
+
   count = 0
   if not Bacon.Binding
     Bacon.Binding = Bacon.$.Binding = (initValue) ->
@@ -21,12 +23,27 @@ init = (Bacon, $) ->
 
     ValueChange = (source, value) -> { source, value }
 
+
+
   $.fn.asEventStream = Bacon.$.asEventStream
   Bacon.$.textFieldValue = (element, initValue) ->
+    nonEmpty = (x) -> x.length > 0
+    currentFromDom = -> element.val()
+    autofillPoller = ->
+      if element.attr("type") is "password"
+        Bacon.interval 100
+      else if isChrome
+        Bacon.interval(100).take(20).map(currentFromDom).filter(nonEmpty).take 1
+      else
+        Bacon.never()
+    domEvents = element.asEventStream("keyup input")
+      .merge(element.asEventStream("cut paste").delay(1))
+      .merge(autofillPoller())
+
     Bacon.$.domBinding {
       initValue,
-      currentFromDom: -> element.val(),
-      domEvents: element.asEventStream("keyup"),
+      currentFromDom,
+      domEvents,
       setToDom: (value) -> element.val(value)
     }
   Bacon.$.checkBoxValue = (element, initValue) ->

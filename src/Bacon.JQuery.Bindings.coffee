@@ -54,7 +54,7 @@ init = (Bacon, $) ->
       setToDom: (value) -> element.attr "checked", value
     }
   
-  Bacon.$.optionValue = (element, initValue) ->
+  Bacon.$.selectValue = (element, initValue) ->
     Bacon.$.domBinding {
       initValue,
       currentFromDom: -> element.val(),

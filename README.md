@@ -83,7 +83,8 @@ Haven't published this to NPM yet, but will do. The idea is to keep this compati
 
 ## Use with Bower
 
-Will publish with Bower when the stuff is bit more mature.
+Registered to the Bower registry as `bacon-jquery-bindings`. See the
+Example Application for an example how to use BJB with Bower.
 
 ## Building
 

@@ -3,8 +3,8 @@ var expect = chai.expect
 describe('textFieldValue', function() {
   var field
   beforeEach(function() {
-    $('#bacon-dom').html('<input type="text" value="defaultVal">')
-    field = $('#bacon-dom input')
+    $('#bacon-dom').html('<input type="text" id="text" value="defaultVal">')
+    field = $('#bacon-dom #text')
   })
 
   describe('with initVal', function() {

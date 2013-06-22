@@ -7,12 +7,24 @@ A JQuery data binding library for [Bacon.js](https://github.com/raimohanska/baco
 Main difference to [Bacon.UI](https://github.com/raimohanska/Bacon.UI.js) 
 at this point is that instead of returning a 
 one-way Property, the methods in BJB return a `Model` object that
-allows you to `push` a new value explicitly to the UI using the `set`
+allows you to `set` a new value explicitly to the UI using the `set`
 method. You can also add
 external value source using `addSource`. The `Model` object extends
 `Property` so the one-way interface hasn't changed.
 
-## Example code
+## Example Applications
+
+There are example applications in the [examples](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/examples) directory. Both use Bower to download dependencies (including BJB). Here's how to start one of them:
+
+    npm install -g bower
+    cd examples/requirejs
+    bower install
+    open index.html
+
+.. the last line being OSX specific. Anyway, you need to run `bower
+install` to download deps, and then open `index.html`.
+
+Btw, code in the example applications is essentially just this:
 
 ```js
   // binding for "left" text field
@@ -20,6 +32,7 @@ external value source using `addSource`. The `Model` object extends
   // binding for "right" text field
   right = bjq.textFieldValue($("#right"))
   // make a two-way binding between these two
+  // values in the two fields will now stay in sync
   right.bind(left)
   // Make a one-way side effect: update label text on changes, uppercase
   right.map(".toUpperCase").changes().assign($("#output"), "text")
@@ -28,6 +41,9 @@ external value source using `addSource`. The `Model` object extends
 ```
 
 ## BJQ API
+
+The BJQ API consists of methods for creating a `Model` representing the
+state of a DOM element or a group of DOM elements.
 
 `bjq.textFieldValue(field [, initValue])` creates a `Model` for an
 `<input type="text">` element, given as a JQuery object. You can optionally supply an initial value.
@@ -39,12 +55,14 @@ external value source using `addSource`. The `Model` object extends
 `bjq.selectValue(field [,initValue])` creates a `Model` for a `<select>`
 element, given as a JQuery object. The value of the model corresponds to the `value` attribute of the selected `<option>` element.
 
-`bjq.radioGroupValue(fields, [,initValue])` creates a `Model` for a set
+`bjq.radioGroupValue(fields, [,initValue])` creates a `Model` for a
+group
 of `<input type="radio">` elements, given as a JQuery object. The value
 of the model corresponds to the `value` attribute of the selected radio
 input element.
 
-`bjq.checkBoxGroupValue(fields, [,initValue])` creates a `Model` for a set
+`bjq.checkBoxGroupValue(fields, [,initValue])` creates a `Model` for a
+group
 of `<input type="checkbox">` elements, given as a JQuery object. The value
 of the model is an array of the `value` attributes of the checked
 checkbox input elements. For instance, if you have checkboxes and 2 of
@@ -132,18 +150,6 @@ Haven't published this to NPM yet, but will do. The idea is to keep this compati
 
 Registered to the Bower registry as `bacon-jquery-bindings`. See the
 Example Applications, for instance [requirejs example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/examples/requirejs).
-
-## Example Applications
-
-There are example applications in the [examples](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/examples) directory. Both use Bower to download dependencies (including BJB). Here's how to start one of them:
-
-    npm install -g bower
-    cd examples/requirejs
-    bower install
-    open index.html
-
-.. the last line being OSX specific. Anyway, you need to run `bower
-install` to download deps, and then open `index.html`.
 
 ## Building
 

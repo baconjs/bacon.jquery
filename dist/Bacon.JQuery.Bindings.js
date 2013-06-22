@@ -2,7 +2,8 @@
   var $, Bacon, init;
 
   init = function(Bacon, $) {
-    var ValueChange, count;
+    var ValueChange, count, isChrome, _ref;
+    isChrome = (typeof navigator !== "undefined" && navigator !== null ? (_ref = navigator.userAgent) != null ? _ref.toLowerCase().indexOf("chrome") : void 0 : void 0) > -1;
     count = 0;
     if (!Bacon.Binding) {
       Bacon.Binding = Bacon.$.Binding = function(initValue) {
@@ -44,12 +45,27 @@
     }
     $.fn.asEventStream = Bacon.$.asEventStream;
     Bacon.$.textFieldValue = function(element, initValue) {
+      var autofillPoller, currentFromDom, domEvents, nonEmpty;
+      nonEmpty = function(x) {
+        return x.length > 0;
+      };
+      currentFromDom = function() {
+        return element.val();
+      };
+      autofillPoller = function() {
+        if (element.attr("type") === "password") {
+          return Bacon.interval(100);
+        } else if (isChrome) {
+          return Bacon.interval(100).take(20).map(currentFromDom).filter(nonEmpty).take(1);
+        } else {
+          return Bacon.never();
+        }
+      };
+      domEvents = element.asEventStream("keyup input").merge(element.asEventStream("cut paste").delay(1)).merge(autofillPoller());
       return Bacon.$.domBinding({
         initValue: initValue,
-        currentFromDom: function() {
-          return element.val();
-        },
-        domEvents: element.asEventStream("keyup"),
+        currentFromDom: currentFromDom,
+        domEvents: domEvents,
         setToDom: function(value) {
           return element.val(value);
         }

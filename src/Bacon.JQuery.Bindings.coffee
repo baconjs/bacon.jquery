@@ -62,6 +62,19 @@ init = (Bacon, $) ->
       setToDom: (value) -> element.val value
     }
 
+  Bacon.$.radioGroupValue = (radios, initValue) ->
+    Bacon.$.domBinding {
+      initValue,
+      currentFromDom: -> radios.filter(":checked").first().val(),
+      domEvents: radios.asEventStream("change"),
+      setToDom: (value) ->
+        radios.each (i, elem) ->
+          if elem.value is value
+            $(elem).attr "checked", true 
+          else
+            $(elem).removeAttr "checked"
+    }
+
   Bacon.$.domBinding = ({ initValue, currentFromDom, domEvents, setToDom}) ->
     inputs = domEvents.map(currentFromDom)
     if initValue?

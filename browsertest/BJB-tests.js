@@ -111,6 +111,45 @@ describe('selectValue', function() {
   })
 })
 
+describe('radioGroupValue', function() {
+  var field
+  beforeEach(function() {
+    $('#bacon-dom').html('<label for="a">A</label><input type="radio" id="a" value="a"><br><label for="b">B</label><input type="radio" id="b" value="b" checked>')
+    field = $('#a,#b')
+  })
+
+  describe('with initVal', function() {
+    it('sets value to DOM', function() {
+      var binding = Bacon.$.radioGroupValue(field, 'a')
+      expect($("#a").attr("checked")).to.equal("checked")
+      expect($("#b").attr("checked")).to.equal(undefined)
+    })
+    it('sets the initVal as the initial value of the Binding', function() {
+      var binding = Bacon.$.radioGroupValue(field, 'a')
+      specifyValue(binding, 'a')
+    })
+  })
+
+  describe('without initVal', function() {
+    it('leaves DOM unaffected', function() {
+      var binding = Bacon.$.radioGroupValue(field)
+      expect($("#b").attr("checked")).to.equal("checked")
+      expect($("#a").attr("checked")).to.equal(undefined)
+    })
+    it('uses value from DOM as initial value of the Binding', function() {
+      var binding = Bacon.$.radioGroupValue(field)
+      specifyValue(binding, 'b')
+    })
+  })
+
+  describe('when pushing value to Binding', function() {
+    it('sets value to DOM', function() {
+      Bacon.$.radioGroupValue(field).push('a')
+      expect(field.val()).to.equal('a')
+    })
+  })
+})
+
 function specifyValue(binding, value) {
   binding.onValue(function(value) {
     expect(value).to.equal(value)

@@ -83,6 +83,18 @@
         }
       });
     };
+    Bacon.$.optionValue = function(element, initValue) {
+      return Bacon.$.domBinding({
+        initValue: initValue,
+        currentFromDom: function() {
+          return element.val();
+        },
+        domEvents: element.asEventStream("change"),
+        setToDom: function(value) {
+          return element.val(value);
+        }
+      });
+    };
     Bacon.$.domBinding = function(_arg) {
       var binding, currentFromDom, domEvents, externalChanges, initValue, inputs, setToDom;
       initValue = _arg.initValue, currentFromDom = _arg.currentFromDom, domEvents = _arg.domEvents, setToDom = _arg.setToDom;

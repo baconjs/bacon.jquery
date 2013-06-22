@@ -5,4 +5,4 @@ npm-debug.log
 .idea/
 *.iml
 browsertest/bundle.js
-example-app/components
+examples/**/components

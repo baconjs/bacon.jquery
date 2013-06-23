@@ -18,6 +18,11 @@ describe "Model.set", ->
     b.set("wat")
     expect(values).to.deep.equal(["wat"])
 
+describe "Model initial value", ->
+  it "is sent", ->
+    cylinders = bjb.Model(12)
+    expect(collect(cylinders)).to.deep.equal([12])
+
 describe "Model.modify", ->
   it "modifies current value with given function", ->
     b = bjb.Model(1)
@@ -136,9 +141,13 @@ describe "Model.combine", ->
       engine: { type: "gas", cylinders: 12 },
       doors: 2
     }])
-    # TODO: currently goes to stack overflow because of ping-pong
-    # car.lens("engine").set({ cylinders: 8, type: "gas" })
-    #expect(collect(cylinders)).to.equal([8])
+    car.lens("engine").set({ cylinders: 8, type: "gas" })
+    expect(collect(car)).to.deep.equal([{
+      price: "expensive",
+      engine: { type: "gas", cylinders: 8 },
+      doors: 2
+    }])
+    expect(collect(cylinders)).to.deep.equal([8])
 
 collect = (binding) ->
   values = []

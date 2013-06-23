@@ -8,30 +8,52 @@ init = (Bacon, $) ->
     seed
   isModel = (obj) -> obj instanceof Bacon.Property
 
+  globalModCount = 0
+  idCounter = 1
+
   Model = Bacon.Model = Bacon.$.Model = (initValue) ->
     modificationBus = new Bacon.Bus()
+    syncBus = new Bacon.Bus()
     valueWithSource = modificationBus.scan(
-      {}
+      { initial: true }
       ({value}, {source, f}) -> {source, value: f(value)}
-    ).changes()
-    binding = valueWithSource.toProperty().map(".value").skipDuplicates()
+    ).changes().merge(syncBus).toProperty()
+    binding = valueWithSource.map(".value").skipDuplicates()
+    myModCount = 0
+    binding.id = idCounter++
+    binding.addSyncSource = (syncEvents) ->
+      syncBus.plug(syncEvents.filter((e) ->
+          if not e.modCount?
+            e.modCount = ++globalModCount
+          pass = e.modCount > myModCount
+          myModCount = e.modCount
+          pass
+      ))
     binding.apply = (source) -> 
       modificationBus.plug(source.map((f) -> {source, f}))
-      valueWithSource.filter((change) -> change.source != source).map((change) -> change.value)
+      valueWithSource.changes()
+        .filter((change) -> change.source != source)
+        .map((change) -> change.value)
     binding.addSource = (source) -> binding.apply(source.map((v) -> (->v)))
     binding.modify = (f) -> binding.apply(Bacon.once(f))
     binding.set = (value) -> binding.modify(-> value)
+    binding.syncEvents = -> valueWithSource.toEventStream()
     binding.bind = (other) ->
-      this.addSource(other.toEventStream())
-      other.addSource(this.toEventStream())
+      this.addSyncSource(other.syncEvents())
+      other.addSyncSource(this.syncEvents())
     binding.onValue()
     binding.set(initValue) if (initValue?)
     binding.lens = (lens) ->
       lens = Lens(lens)
       lensed = Model()
-      this.addSource(binding.sampledBy(lensed.toEventStream(), lens.set))
-      lensed.addSource(this.toEventStream().map(lens.get))
+      valueLens = Lens.objectLens("value")
+      this.addSyncSource(binding.sampledBy(lensed.syncEvents(), (full, lensedSync) ->
+        valueLens.set(lensedSync, lens.set(full, lensedSync.value))
+      ))
+      lensed.addSyncSource(this.syncEvents().map((e) -> 
+        valueLens.set(e, lens.get(e.value))))
       lensed
+    # todo: rename binding -> model
     binding
 
   Model.combine = (template) ->

@@ -1,15 +1,36 @@
 (function() {
-  var $, Bacon, init;
+  var $, Bacon, init,
+    __slice = [].slice;
 
   init = function(Bacon, $) {
-    var count, isChrome, _ref;
+    var Lens, Model, fold, globalModCount, id, idCounter, isChrome, isModel, nonEmpty, shallowCopy, _ref;
     isChrome = (typeof navigator !== "undefined" && navigator !== null ? (_ref = navigator.userAgent) != null ? _ref.toLowerCase().indexOf("chrome") : void 0 : void 0) > -1;
-    count = 0;
-    Bacon.Model = Bacon.$.Model = function(initValue) {
-      var binding, modificationBus, myCount, valueWithSource;
-      myCount = ++count;
+    id = function(x) {
+      return x;
+    };
+    nonEmpty = function(x) {
+      return x.length > 0;
+    };
+    fold = function(xs, seed, f) {
+      var x, _i, _len;
+      for (_i = 0, _len = xs.length; _i < _len; _i++) {
+        x = xs[_i];
+        seed = f(seed, x);
+      }
+      return seed;
+    };
+    isModel = function(obj) {
+      return obj instanceof Bacon.Property;
+    };
+    globalModCount = 0;
+    idCounter = 1;
+    Model = Bacon.Model = Bacon.$.Model = function(initValue) {
+      var binding, modificationBus, myModCount, syncBus, valueWithSource;
       modificationBus = new Bacon.Bus();
-      valueWithSource = modificationBus.scan({}, function(_arg, _arg1) {
+      syncBus = new Bacon.Bus();
+      valueWithSource = modificationBus.scan({
+        initial: true
+      }, function(_arg, _arg1) {
         var f, source, value;
         value = _arg.value;
         source = _arg1.source, f = _arg1.f;
@@ -17,18 +38,29 @@
           source: source,
           value: f(value)
         };
-      }).changes();
-      binding = valueWithSource.toProperty().map(".value").skipDuplicates();
+      }).changes().merge(syncBus).toProperty();
+      binding = valueWithSource.map(".value").skipDuplicates();
+      myModCount = 0;
+      binding.id = idCounter++;
+      binding.addSyncSource = function(syncEvents) {
+        return syncBus.plug(syncEvents.filter(function(e) {
+          var pass;
+          if (!(e.modCount != null)) {
+            e.modCount = ++globalModCount;
+          }
+          pass = e.modCount > myModCount;
+          myModCount = e.modCount;
+          return pass;
+        }));
+      };
       binding.apply = function(source) {
         modificationBus.plug(source.map(function(f) {
           return {
             source: source,
-            f: function(value) {
-              return f(value);
-            }
+            f: f
           };
         }));
-        return valueWithSource.filter(function(change) {
+        return valueWithSource.changes().filter(function(change) {
           return change.source !== source;
         }).map(function(change) {
           return change.value;
@@ -49,15 +81,49 @@
           return value;
         });
       };
+      binding.syncEvents = function() {
+        return valueWithSource.toEventStream();
+      };
       binding.bind = function(other) {
-        this.addSource(other.toEventStream());
-        return other.addSource(this.toEventStream());
+        this.addSyncSource(other.syncEvents());
+        return other.addSyncSource(this.syncEvents());
       };
       binding.onValue();
       if ((initValue != null)) {
         binding.set(initValue);
       }
+      binding.lens = function(lens) {
+        var lensed, valueLens;
+        lens = Lens(lens);
+        lensed = Model();
+        valueLens = Lens.objectLens("value");
+        this.addSyncSource(binding.sampledBy(lensed.syncEvents(), function(full, lensedSync) {
+          return valueLens.set(lensedSync, lens.set(full, lensedSync.value));
+        }));
+        lensed.addSyncSource(this.syncEvents().map(function(e) {
+          return valueLens.set(e, lens.get(e.value));
+        }));
+        return lensed;
+      };
       return binding;
+    };
+    Model.combine = function(template) {
+      var initValue, key, lens, lensedModel, model, value;
+      if (typeof template !== "object") {
+        return Model(template);
+      } else if (isModel(template)) {
+        return template;
+      } else {
+        initValue = template instanceof Array ? [] : {};
+        model = Model(initValue);
+        for (key in template) {
+          value = template[key];
+          lens = Lens.objectLens(key);
+          lensedModel = model.lens(lens);
+          lensedModel.bind(Model.combine(value));
+        }
+        return model;
+      }
     };
     Bacon.Binding = Bacon.$.Binding = function(_arg) {
       var binding, events, externalChanges, get, initValue, inputs, set;
@@ -73,9 +139,68 @@
       externalChanges.assign(set);
       return binding;
     };
+    Lens = Bacon.Lens = Bacon.$.Lens = function(lens) {
+      if (typeof lens === "object") {
+        return lens;
+      } else {
+        return Lens.objectLens(lens);
+      }
+    };
+    Lens.id = Lens({
+      get: function(x) {
+        return x;
+      },
+      set: function(context, value) {
+        return value;
+      }
+    });
+    Lens.objectLens = function(path) {
+      var keys, objectKeyLens;
+      objectKeyLens = function(key) {
+        return Lens({
+          get: function(x) {
+            return x[key];
+          },
+          set: function(context, value) {
+            context = shallowCopy(context);
+            context[key] = value;
+            return context;
+          }
+        });
+      };
+      keys = path.split(".").filter(nonEmpty);
+      return Lens.compose.apply(Lens, keys.map(objectKeyLens));
+    };
+    Lens.compose = function() {
+      var args, compose2;
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      compose2 = function(outer, inner) {
+        return Lens({
+          get: function(x) {
+            return inner.get(outer.get(x));
+          },
+          set: function(context, value) {
+            var innerContext, newInnerContext;
+            innerContext = outer.get(context);
+            newInnerContext = inner.set(innerContext, value);
+            return outer.set(context, newInnerContext);
+          }
+        });
+      };
+      return fold(args, Lens.id, compose2);
+    };
+    shallowCopy = function(x) {
+      var copy, key, value;
+      copy = x instanceof Array ? [] : {};
+      for (key in x) {
+        value = x[key];
+        copy[key] = value;
+      }
+      return copy;
+    };
     $.fn.asEventStream = Bacon.$.asEventStream;
     Bacon.$.textFieldValue = function(element, initValue) {
-      var autofillPoller, events, get, nonEmpty;
+      var autofillPoller, events, get;
       nonEmpty = function(x) {
         return x.length > 0;
       };

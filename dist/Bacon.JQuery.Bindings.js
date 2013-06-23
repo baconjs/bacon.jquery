@@ -124,7 +124,7 @@
       }
     };
     Bacon.Binding = Bacon.$.Binding = function(_arg) {
-      var binding, events, externalChanges, get, initValue, inputs, set;
+      var events, externalChanges, get, initValue, inputs, model, set;
       initValue = _arg.initValue, get = _arg.get, events = _arg.events, set = _arg.set;
       inputs = events.map(get);
       if (initValue != null) {
@@ -132,10 +132,10 @@
       } else {
         initValue = get();
       }
-      binding = Bacon.Model(initValue);
-      externalChanges = binding.addSource(inputs);
+      model = Bacon.Model(initValue);
+      externalChanges = model.addSource(inputs);
       externalChanges.assign(set);
-      return binding;
+      return model;
     };
     Lens = Bacon.Lens = Bacon.$.Lens = function(lens) {
       if (typeof lens === "object") {

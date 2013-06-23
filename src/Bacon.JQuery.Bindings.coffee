@@ -73,10 +73,10 @@ init = (Bacon, $) ->
       set(initValue)
     else
       initValue = get()
-    binding = Bacon.Model(initValue)
-    externalChanges = binding.addSource(inputs)
+    model = Bacon.Model(initValue)
+    externalChanges = model.addSource(inputs)
     externalChanges.assign(set)
-    binding
+    model
 
   Lens = Bacon.Lens = Bacon.$.Lens = (lens) ->
     if typeof lens == "object"

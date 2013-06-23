@@ -17,15 +17,13 @@ init = (Bacon, $) ->
     syncBus = new Bacon.Bus()
     valueWithSource = modificationBus.scan(
       { initial: true }
-      ({value}, {source, f}) -> {source, value: f(value)}
+      ({value}, {source, f}) -> {source, value: f(value), modCount: ++globalModCount}
     ).changes().merge(syncBus).toProperty()
     model = valueWithSource.map(".value").skipDuplicates()
     model.id = idCounter++
     model.addSyncSource = (syncEvents) ->
       syncBus.plug(syncEvents.filter((e) ->
-          if not e.modCount?
-            e.modCount = ++globalModCount
-          pass = e.modCount > myModCount
+          pass = e.modCount != myModCount
           myModCount = e.modCount
           pass
       ))

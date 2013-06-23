@@ -26,6 +26,7 @@
     idCounter = 1;
     Model = Bacon.Model = Bacon.$.Model = function(initValue) {
       var model, modificationBus, myModCount, syncBus, valueWithSource;
+      myModCount = 0;
       modificationBus = new Bacon.Bus();
       syncBus = new Bacon.Bus();
       valueWithSource = modificationBus.scan({
@@ -36,19 +37,16 @@
         source = _arg1.source, f = _arg1.f;
         return {
           source: source,
-          value: f(value)
+          value: f(value),
+          modCount: ++globalModCount
         };
       }).changes().merge(syncBus).toProperty();
       model = valueWithSource.map(".value").skipDuplicates();
-      myModCount = 0;
       model.id = idCounter++;
       model.addSyncSource = function(syncEvents) {
         return syncBus.plug(syncEvents.filter(function(e) {
           var pass;
-          if (!(e.modCount != null)) {
-            e.modCount = ++globalModCount;
-          }
-          pass = e.modCount > myModCount;
+          pass = e.modCount !== myModCount;
           myModCount = e.modCount;
           return pass;
         }));

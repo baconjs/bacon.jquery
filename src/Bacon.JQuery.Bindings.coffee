@@ -16,7 +16,7 @@ init = (Bacon, $) ->
     ).changes()
     binding = valueWithSource.toProperty().map(".value").skipDuplicates()
     binding.apply = (source) -> 
-      modificationBus.plug(source.map((f) -> {source, f: (value) -> f(value)}))
+      modificationBus.plug(source.map((f) -> {source, f}))
       valueWithSource.filter((change) -> change.source != source).map((change) -> change.value)
     binding.addSource = (source) -> binding.apply(source.map((v) -> (->v)))
     binding.modify = (f) -> binding.apply(Bacon.once(f))

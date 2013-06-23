@@ -122,6 +122,24 @@ describe "Model.lens", ->
     cylinders.set(12)
     expect(collect(car)).to.deep.equal([{ brand: "Ford", engine: {cylinders: 12}}])
 
+describe "Model.combine", ->
+  it "creates a new model using a template", ->
+    cylinders = bjb.Model(12)
+    doors = bjb.Model(2)
+    car = bjb.Model.combine {
+      price: "expensive",
+      engine: { type: "gas", cylinders},
+      doors
+    }
+    expect(collect(car)).to.deep.equal([{
+      price: "expensive",
+      engine: { type: "gas", cylinders: 12 },
+      doors: 2
+    }])
+    # TODO: currently goes to stack overflow because of ping-pong
+    # car.lens("engine").set({ cylinders: 8, type: "gas" })
+    #expect(collect(cylinders)).to.equal([8])
+
 collect = (binding) ->
   values = []
   binding.onValue (value) ->

@@ -6,8 +6,9 @@ init = (Bacon, $) ->
     for x in xs
       seed = f(seed, x)
     seed
+  isModel = (obj) -> obj instanceof Bacon.Property
 
-  Bacon.Model = Bacon.$.Model = (initValue) ->
+  Model = Bacon.Model = Bacon.$.Model = (initValue) ->
     modificationBus = new Bacon.Bus()
     valueWithSource = modificationBus.scan(
       {}
@@ -27,11 +28,25 @@ init = (Bacon, $) ->
     binding.set(initValue) if (initValue?)
     binding.lens = (lens) ->
       lens = Lens(lens)
-      lensed = Bacon.Model()
+      lensed = Model()
       this.addSource(binding.sampledBy(lensed.toEventStream(), lens.set))
       lensed.addSource(this.toEventStream().map(lens.get))
       lensed
     binding
+
+  Model.combine = (template) ->
+    if typeof template != "object"
+      Model(template)
+    else if isModel(template)
+      template
+    else
+      initValue = if template instanceof Array then [] else {}
+      model = Model(initValue)
+      for key, value of template
+        lens = Lens.objectLens(key)
+        lensedModel = model.lens(lens)
+        lensedModel.bind(Model.combine(value))
+      model
 
   Bacon.Binding = Bacon.$.Binding = ({ initValue, get, events, set}) ->
     inputs = events.map(get)

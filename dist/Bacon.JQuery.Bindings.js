@@ -25,7 +25,7 @@
     globalModCount = 0;
     idCounter = 1;
     Model = Bacon.Model = Bacon.$.Model = function(initValue) {
-      var binding, modificationBus, myModCount, syncBus, valueWithSource;
+      var model, modificationBus, myModCount, syncBus, valueWithSource;
       modificationBus = new Bacon.Bus();
       syncBus = new Bacon.Bus();
       valueWithSource = modificationBus.scan({
@@ -39,10 +39,10 @@
           value: f(value)
         };
       }).changes().merge(syncBus).toProperty();
-      binding = valueWithSource.map(".value").skipDuplicates();
+      model = valueWithSource.map(".value").skipDuplicates();
       myModCount = 0;
-      binding.id = idCounter++;
-      binding.addSyncSource = function(syncEvents) {
+      model.id = idCounter++;
+      model.addSyncSource = function(syncEvents) {
         return syncBus.plug(syncEvents.filter(function(e) {
           var pass;
           if (!(e.modCount != null)) {
@@ -53,7 +53,7 @@
           return pass;
         }));
       };
-      binding.apply = function(source) {
+      model.apply = function(source) {
         modificationBus.plug(source.map(function(f) {
           return {
             source: source,
@@ -66,38 +66,38 @@
           return change.value;
         });
       };
-      binding.addSource = function(source) {
-        return binding.apply(source.map(function(v) {
+      model.addSource = function(source) {
+        return model.apply(source.map(function(v) {
           return function() {
             return v;
           };
         }));
       };
-      binding.modify = function(f) {
-        return binding.apply(Bacon.once(f));
+      model.modify = function(f) {
+        return model.apply(Bacon.once(f));
       };
-      binding.set = function(value) {
-        return binding.modify(function() {
+      model.set = function(value) {
+        return model.modify(function() {
           return value;
         });
       };
-      binding.syncEvents = function() {
+      model.syncEvents = function() {
         return valueWithSource.toEventStream();
       };
-      binding.bind = function(other) {
+      model.bind = function(other) {
         this.addSyncSource(other.syncEvents());
         return other.addSyncSource(this.syncEvents());
       };
-      binding.onValue();
+      model.onValue();
       if ((initValue != null)) {
-        binding.set(initValue);
+        model.set(initValue);
       }
-      binding.lens = function(lens) {
+      model.lens = function(lens) {
         var lensed, valueLens;
         lens = Lens(lens);
         lensed = Model();
         valueLens = Lens.objectLens("value");
-        this.addSyncSource(binding.sampledBy(lensed.syncEvents(), function(full, lensedSync) {
+        this.addSyncSource(model.sampledBy(lensed.syncEvents(), function(full, lensedSync) {
           return valueLens.set(lensedSync, lens.set(full, lensedSync.value));
         }));
         lensed.addSyncSource(this.syncEvents().map(function(e) {
@@ -105,7 +105,7 @@
         }));
         return lensed;
       };
-      return binding;
+      return model;
     };
     Model.combine = function(template) {
       var initValue, key, lens, lensedModel, model, value;

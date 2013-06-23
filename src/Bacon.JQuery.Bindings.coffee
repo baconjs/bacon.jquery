@@ -12,6 +12,7 @@ init = (Bacon, $) ->
   idCounter = 1
 
   Model = Bacon.Model = Bacon.$.Model = (initValue) ->
+    myModCount = 0
     modificationBus = new Bacon.Bus()
     syncBus = new Bacon.Bus()
     valueWithSource = modificationBus.scan(
@@ -19,7 +20,6 @@ init = (Bacon, $) ->
       ({value}, {source, f}) -> {source, value: f(value)}
     ).changes().merge(syncBus).toProperty()
     model = valueWithSource.map(".value").skipDuplicates()
-    myModCount = 0
     model.id = idCounter++
     model.addSyncSource = (syncEvents) ->
       syncBus.plug(syncEvents.filter((e) ->

@@ -92,6 +92,35 @@ describe "Model.bind", ->
     expect(v_a).to.deep.equal(["X"])
     expect(v_b).to.deep.equal(["X"])
 
+describe "Model.lens", ->
+  engineLens = {
+    get: (car) -> 
+      car.engine
+    set: (car, engine) ->
+      car.engine = engine
+      car
+  }
+  it "creates a lensed model", ->
+    car = bjb.Model({ brand: "Ford", engine: "V8" })
+    engine = car.lens engineLens
+    expect(collect(engine)).to.deep.equal(["V8"])
+    engine.set("V12")
+    expect(collect(car)).to.deep.equal([{ brand: "Ford", engine: "V12"}])
+  it "ignores changes when parent doesn't have a value yet", ->
+    car = bjb.Model()
+    engine = car.lens engineLens
+    expect(collect(engine)).to.deep.equal([])
+    engine.set("V6")
+    expect(collect(car)).to.deep.equal([])
+    car.set({})
+    engine.set("V8")
+    expect(collect(car)).to.deep.equal([{ engine: "V8" }])
+  it "supports dot notation (like '.engine.cylinders')", ->
+    car = bjb.Model({ brand: "Ford", engine: { cylinders: 8} })
+    cylinders = car.lens ".engine.cylinders"
+    expect(collect(cylinders)).to.deep.equal([8])
+    cylinders.set(12)
+    expect(collect(car)).to.deep.equal([{ brand: "Ford", engine: {cylinders: 12}}])
 
 collect = (binding) ->
   values = []

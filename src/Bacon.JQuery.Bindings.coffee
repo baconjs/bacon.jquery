@@ -1,28 +1,37 @@
 init = (Bacon, $) ->
   isChrome = navigator?.userAgent?.toLowerCase().indexOf("chrome") > -1
-
-  count = 0
+  id = (x) -> x
+  nonEmpty = (x) -> x.length > 0
+  fold = (xs, seed, f) ->
+    for x in xs
+      seed = f(seed, x)
+    seed
 
   Bacon.Model = Bacon.$.Model = (initValue) ->
-        myCount = ++count
-        modificationBus = new Bacon.Bus()
-        valueWithSource = modificationBus.scan(
-          {}
-          ({value}, {source, f}) -> {source, value: f(value)}
-        ).changes()
-        binding = valueWithSource.toProperty().map(".value").skipDuplicates()
-        binding.apply = (source) -> 
-          modificationBus.plug(source.map((f) -> {source, f: (value) -> f(value)}))
-          valueWithSource.filter((change) -> change.source != source).map((change) -> change.value)
-        binding.addSource = (source) -> binding.apply(source.map((v) -> (->v)))
-        binding.modify = (f) -> binding.apply(Bacon.once(f))
-        binding.set = (value) -> binding.modify(-> value)
-        binding.bind = (other) ->
-          this.addSource(other.toEventStream())
-          other.addSource(this.toEventStream())
-        binding.onValue()
-        binding.set(initValue) if (initValue?)
-        binding
+    modificationBus = new Bacon.Bus()
+    valueWithSource = modificationBus.scan(
+      {}
+      ({value}, {source, f}) -> {source, value: f(value)}
+    ).changes()
+    binding = valueWithSource.toProperty().map(".value").skipDuplicates()
+    binding.apply = (source) -> 
+      modificationBus.plug(source.map((f) -> {source, f: (value) -> f(value)}))
+      valueWithSource.filter((change) -> change.source != source).map((change) -> change.value)
+    binding.addSource = (source) -> binding.apply(source.map((v) -> (->v)))
+    binding.modify = (f) -> binding.apply(Bacon.once(f))
+    binding.set = (value) -> binding.modify(-> value)
+    binding.bind = (other) ->
+      this.addSource(other.toEventStream())
+      other.addSource(this.toEventStream())
+    binding.onValue()
+    binding.set(initValue) if (initValue?)
+    binding.lens = (lens) ->
+      lens = Lens(lens)
+      lensed = Bacon.Model()
+      this.addSource(binding.sampledBy(lensed.toEventStream(), lens.set))
+      lensed.addSource(this.toEventStream().map(lens.get))
+      lensed
+    binding
 
   Bacon.Binding = Bacon.$.Binding = ({ initValue, get, events, set}) ->
     inputs = events.map(get)
@@ -35,6 +44,47 @@ init = (Bacon, $) ->
     externalChanges.assign(set)
     binding
 
+  Lens = Bacon.Lens = Bacon.$.Lens = (lens) ->
+    if typeof lens == "object"
+      lens
+    else
+      Lens.objectLens(lens)
+
+  Lens.id = Lens {
+    get: (x) -> x
+    set: (context, value) -> value
+  }
+
+  Lens.objectLens = (path) ->
+    objectKeyLens = (key) -> 
+      Lens {
+        get: (x) -> x[key],
+        set: (context, value) ->
+          context = shallowCopy(context)
+          context[key] = value
+          context
+      }
+    keys = path.split(".").filter(nonEmpty)
+    Lens.compose(keys.map(objectKeyLens)...)
+
+  Lens.compose = (args...) -> 
+    compose2 = (outer, inner) -> Lens {
+      get: (x) -> inner.get(outer.get(x)),
+      set: (context, value) ->
+        innerContext = outer.get(context)
+        newInnerContext = inner.set(innerContext, value)
+        outer.set(context, newInnerContext)
+    }
+    fold(args, Lens.id, compose2)
+
+  shallowCopy = (x) ->
+    copy = if x instanceof Array
+      []
+    else
+      {}
+    for key, value of x
+      copy[key] = value
+    copy
 
   $.fn.asEventStream = Bacon.$.asEventStream
   Bacon.$.textFieldValue = (element, initValue) ->

@@ -24,7 +24,7 @@
   },
   "scripts": {
     "test": "./run-tests",
-    "postinstall": "node_modules/grunt-cli/bin/grunt"
+    "prepublish": "node_modules/grunt-cli/bin/grunt"
   },
   "main": "dist/Bacon.JQuery.Bindings.js"
 }

@@ -29,6 +29,6 @@ git push origin master
 git push --tags origin master
 
 echo "Publish to npm -- SKIPPING FOR NOW"
-#npm publish
+npm publish
 
 echo "DONE!"

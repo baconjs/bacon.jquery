@@ -1,0 +1,16 @@
+{
+  "name": "example-app",
+  "version": "0.0.1",
+  "author": "Juha Paananen",
+  "licenses": [
+    "MIT"
+  ],
+  "dependencies": {
+    "baconjs": "~0.4",
+    "bacon-jquery-bindings": "~0",
+    "jquery": "~1.8"
+  },
+  "devDependencies": {
+    "browserify": "~2"
+  }
+}

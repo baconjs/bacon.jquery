@@ -12,7 +12,7 @@ Includes
 - AJAX helpers. Wrap a JQuery AJAX call into an EventStream using
   `Bacon.$.ajax("/get/stuff")`. Convert an `EventStream` of requests
 into an `EventStream` of responses like `requests.ajax()`.
-- Event helpers for easily getting JQuery events as an `EventStream`, as
+- FRP extensions to JQuery. Wrap JQuery events easily into an `EventStream`, as
   in `$("body").clickE()`
 
 This library is intended as a replacement for [Bacon.UI](https://github.com/raimohanska/Bacon.UI.js). It provides the same functionality, with the addition of two-way bound Models, model composition and lenses.
@@ -75,6 +75,62 @@ these are checked, having values `a` and `b`, the value of the Model is
 `["a", "b"]`.
 
 TODO: add HTML/JS examples
+
+## FRP extensions to JQuery Events
+
+BJQ adds methods to JQuery, for wrapping events into an `EventStream`.
+
+For example, to wrap click events on `<body>` into an `EventStream`, you
+can
+
+    var clicks = $("body").clickE()
+
+Supported methods include the following:
+
+- keydownE
+- keyupE
+- keypressE
+- clickE
+- dblclickE
+- mousedownE
+- mouseupE
+- mouseenterE
+- mouseleaveE
+- mousemoveE
+- mouseoutE
+- mouseoverE
+- resizeE
+- scrollE
+- selectE
+- changeE
+- submitE
+- blurE
+- focusE
+- focusinE
+- focusoutE
+- loadE
+- unloadE
+
+## FRP extensions to JQuery Effects
+
+BJQ adds methods to JQuery, for performing animations and wrapping the
+result `Promise` into an `EventStream`. For example
+
+    var fadeOut = $("#thing").fadeOutE("fast")
+
+Supported methods include the following:
+
+- animateE
+- showE
+- hideE
+- toggleE
+- fadeInE
+- fadeOutE
+- fadeToE
+- fadeToggleE
+- slideDownE
+- slideUpE
+- slideToggleE
 
 ## Model API
 

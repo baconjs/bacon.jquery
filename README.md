@@ -180,7 +180,7 @@ Creates a lens with a `{get, set}` pair such as `{ get: function(context) { .. 
 
 TODO: more
 
-## Use with AMD
+## Use with AMD / RequireJS
 
 The [requirejs example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/examples/requirejs) uses RequireJS, like this:
 
@@ -203,7 +203,9 @@ The prebuilt javascript file can be found in the `dist` directory, or [here](htt
 
 ## Use without AMD
 
-Works without AMD too, so feel free to use plain old `<script>` tags to include Bacon, JQuery and BJQ.
+The [plain example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/examples/plain) uses RequireJS, like this:
+
+So feel free to use plain old `<script>` tags to include Bacon, JQuery and BJQ.
 
 The BJQ methods are exposed through `Bacon.$`, so you can call them as in `Bacon.$.textFieldValue(..)`.
 
@@ -211,9 +213,11 @@ The prebuilt javascript file can be found in the `dist` directory, or [here](htt
 
 There's a [plain example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/examples/plain) that uses script tags only.
 
-## Use with Node
+## Use with Node / Browserify
 
-Haven't published this to NPM yet, but will do. The idea is to keep this compatible with the Node environment too. Not sure if it makes any sense though.
+BJQ is registered in the NPM repository as `bacon-jquery-bindings` and works fine with [node-browserify](https://github.com/substack/node-browserify).
+
+See the [browserify example-app](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/examples/browserify) for an example.
 
 ## Use with Bower
 
@@ -222,8 +226,9 @@ Example Applications, for instance [requirejs example-app](https://github.com/ra
 
 ## Building
 
-The BJB module is build using Grunt. The easiest way to build is, however,
-to run the `build` script.
+The `bacon-jquery-bindings` module is built using NPM and Grunt.
+
+To build, use `npm install`.
 
 Built javascript files are under the `dist` directory.
 
@@ -231,8 +236,7 @@ Built javascript files are under the `dist` directory.
 
 Use the `npm test` to run all tests.
 
-Tests include mocha tests under the `test` directory (currently just a
-placeholder test), and mocha browser tests under the `browsertest`
+Tests include mocha tests under the `test` directory, and mocha browser tests under the `browsertest`
 directory. The test script uses [mocha-phantomjs](http://metaskills.net/mocha-phantomjs/) to run the browser tests headless.
 
 The browser tests can also be run by opening the

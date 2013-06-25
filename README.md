@@ -14,17 +14,9 @@ external value source using `addSource`. The `Model` object extends
 
 ## Example Applications
 
-There are example applications in the [examples](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/examples) directory. Both use Bower to download dependencies (including BJB). Here's how to start one of them:
+There are example applications in the [examples](https://github.com/raimohanska/bacon-jquery-bindings/tree/master/examples) directory, each with a README.md describing how they are started.
 
-    npm install -g bower
-    cd examples/requirejs
-    bower install
-    open index.html
-
-.. the last line being OSX specific. Anyway, you need to run `bower
-install` to download deps, and then open `index.html`.
-
-Btw, code in the example applications is essentially just this:
+Each application does essentially the same thing and the code in the example applications is essentially just this:
 
 ```js
   // binding for "left" text field
@@ -75,6 +67,9 @@ TODO: add HTML/JS examples
 
 All the BJB methods, such as `textFieldValue` return a `Model` object, which is a Bacon.js `Property`, but extends that API by the following methods.
 
+`Bacon.Model(initValue)` creates a new model, with the given (optional)
+initial value.
+
 `model.set(value)` Sets a new value for the model, also pushing this
 value to all two-way sources.
 
@@ -92,8 +87,41 @@ than this.
 
 `model.bind(other)` makes a two-way binding between the two models.
 
-`Bacon.Model(initValue)` creates a new model, with the given (optional)
-initial value.
+`model.lens(lens)` creates a new lensed model based on this one. For
+example:
+
+```js
+    car = bjb.Model({ brand: "Ford", engine: "V8" })
+    engine = car.lens "engine"
+```
+
+Now the `engine` model will have the value "V8". Also, these two models
+are bound both ways meaning that changes in `engine` are reflected to
+`car` and vice versa.
+
+See Lenses section below for full definition of Lenses.
+
+`Bacon.Model.combine(template)` creates a composite model using a
+template. For example:
+
+```js
+    // Model for the number of cylinders
+    cylinders = bjb.Model(12)
+    // Model for the number of doors
+    doors = bjb.Model(2)
+    // Composite model for the whole car
+    car = bjb.Model.combine {
+      price: "expensive",
+      engine: { type: "gas", cylinders},
+      doors
+    }
+```
+
+The composite model has a bidirectional binding to its components. If
+the `cylinders` model is gets a change from a UI, the `car` model is
+updated accordingly. Also, if you set the value in the `car` model to,
+say `{price: "affordable", engine: { type: "electric", cylinders: 0 },
+doors: 4}`, the `cylinders` model will get a new value 0.
 
 ## Binding API
 
@@ -110,6 +138,16 @@ these events are ignored; they are only used to trigger the polling of
 the new value from the UI using the `get` function.
 
 `initValue (optional)` : initial value to be set for the model
+
+## Lenses
+
+A lens can be defined in two ways:
+
+- A path string, such as `"engine"` or `"engine.cylinders"`
+- A `get` / `set` pair such as `{ get: function() { .. }, set: function()
+  { .. }}`
+
+TODO: more
 
 ## Use with AMD
 

@@ -132,6 +132,39 @@ Supported methods include the following:
 - slideUpE
 - slideToggleE
 
+## AJAX
+
+BJQ provides helpers for JQuery AJAX. All the methods return an
+`EventStream` of AJAX results. AJAX errors are mapped into `Error`
+events in the stream.
+
+### stream.ajax(fn)
+
+Performs an AJAX request on each event of your stream, collating results in the result stream.
+
+The source stream is expected to provide the parameters for the AJAX call.
+
+    var usernameRequest = username.map(function(un) { return { type: "get", url: "/usernameavailable/" + un } })
+    var usernameAvailable = username.changes().ajax()
+
+### bjq.ajax(params)
+
+Performs an AJAX request and returns the results in an EventStream.
+
+    var results = Bacon.$.ajax("/get/results")
+
+or
+
+    var results = Bacon.$.ajax({ url: "/get/results"})
+
+### bjq.ajaxGet(url, data, dataType)
+
+### bjq.ajaxGetJSON(url, data)
+
+### bjq.ajaxPost(url, data, dataType)
+
+### bjq.ajaxGetScripts(url)
+
 ## Model API
 
 All the BJB methods, such as `textFieldValue` return a `Model` object, which is a Bacon.js `Property`, but extends that API by the following methods.

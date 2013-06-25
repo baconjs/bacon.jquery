@@ -1,16 +1,21 @@
 # Bacon.JQuery.Bindings (BJQ)
 
-*This library is in an experimental stage*
-
 A JQuery data binding library for [Bacon.js](https://github.com/raimohanska/bacon.js).
 
-Main difference to [Bacon.UI](https://github.com/raimohanska/Bacon.UI.js) 
-at this point is that instead of returning a 
-one-way Property, the methods in BJB return a `Model` object that
-allows you to `set` a new value explicitly to the UI using the `set`
-method. You can also add
-external value source using `addSource`. The `Model` object extends
-`Property` so the one-way interface hasn't changed.
+Includes
+
+- Binding the state of HTML input elements to `Model` objects that extend
+  the Bacon.js `Property` API by providing a bidirectional binding
+- Composing `Model` objects using `model.bind`, `Model.combine` and `model.lens`
+- Attaching additional input `EventStream` to any `Model` by using
+  `model.addSource`
+- AJAX helpers. Wrap a JQuery AJAX call into an EventStream using
+  `Bacon.$.ajax("/get/stuff")`. Convert an `EventStream` of requests
+into an `EventStream` of responses like `requests.ajax()`.
+- Event helpers for easily getting JQuery events as an `EventStream`, as
+  in `$("body").clickE()`
+
+This library is intended as a replacement for [Bacon.UI](https://github.com/raimohanska/Bacon.UI.js). It provides the same functionality, with the addition of two-way bound Models, model composition and lenses.
 
 ## Example Applications
 

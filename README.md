@@ -37,24 +37,32 @@ Each application does essentially the same thing and the code in the example app
 The BJQ API consists of methods for creating a `Model` representing the
 state of a DOM element or a group of DOM elements.
 
-`bjq.textFieldValue(field [, initValue])` creates a `Model` for an
+###bjq.textFieldValue(field [, initValue])
+
+Creates a `Model` for an
 `<input type="text">` element, given as a JQuery object. You can optionally supply an initial value.
 
-`bjq.checkBoxValue(field [, initValue])` creates a `Model` for a
+###bjq.checkBoxValue(field [, initValue])
+
+Creates a `Model` for a
 `<input type="checkbox">` element, given as a JQuery object. The value is `true` if the checkbox is checked and
 `false` otherwise.
 
-`bjq.selectValue(field [,initValue])` creates a `Model` for a `<select>`
+###bjq.selectValue(field [,initValue])
+
+Creates a `Model` for a `<select>`
 element, given as a JQuery object. The value of the model corresponds to the `value` attribute of the selected `<option>` element.
 
-`bjq.radioGroupValue(fields, [,initValue])` creates a `Model` for a
-group
-of `<input type="radio">` elements, given as a JQuery object. The value
+###bjq.radioGroupValue(fields, [,initValue])
+
+Creates a `Model` for a
+group of `<input type="radio">` elements, given as a JQuery object. The value
 of the model corresponds to the `value` attribute of the selected radio
 input element.
 
-`bjq.checkBoxGroupValue(fields, [,initValue])` creates a `Model` for a
-group
+###bjq.checkBoxGroupValue(fields, [,initValue])
+
+Creates a `Model` for a group
 of `<input type="checkbox">` elements, given as a JQuery object. The value
 of the model is an array of the `value` attributes of the checked
 checkbox input elements. For instance, if you have checkboxes and 2 of
@@ -67,28 +75,40 @@ TODO: add HTML/JS examples
 
 All the BJB methods, such as `textFieldValue` return a `Model` object, which is a Bacon.js `Property`, but extends that API by the following methods.
 
-`Bacon.Model(initValue)` creates a new model, with the given (optional)
-initial value.
+###Bacon.Model(initValue)
 
-`model.set(value)` Sets a new value for the model, also pushing this
+Creates a new model, with the given (optional) initial value.
+
+###model.set(value)
+
+Sets a new value for the model, also pushing this
 value to all two-way sources.
 
-`model.modify(f)` Modifies the value of the model by applying the
+###model.modify(f)
+
+Modifies the value of the model by applying the
 given function to the current value. For instance, if the current value
 was `1` and you applied a `multiplyBy2` function, the value would be set
 to `2`.
 
-`model.addSource(stream)` add an input source for pushing values to
+###model.addSource(stream)
+
+Adds an input source for pushing values to
 the model. The source may be an EventStream or a Property. The method
 returns an EventStream that contains all changes from *other sources*
 than this.
 
-`model.apply(stream)` add an input source for modifications to the model. The source may be an EventStream or a Property, and is supposed to contain functions as values. Each of these functions are applied as modifications to the value of the model (as with using the `modify` method). The method returns an EventStream that contains all changes from *other sources* than this.
+###model.apply(stream)
 
-`model.bind(other)` makes a two-way binding between the two models.
+Adds an input source of *modification functions* to the model. The source may be an EventStream or a Property, and is supposed to contain functions as values. Each of these functions are applied as modifications to the value of the model (as with using the `modify` method). The method returns an EventStream that contains all changes from *other sources* than this.
 
-`model.lens(lens)` creates a new lensed model based on this one. For
-example:
+###model.bind(other)
+
+Makes a two-way binding between the two models.
+
+###model.lens(lens)
+
+Creates a new lensed model based on this one. For example:
 
 ```js
     car = bjb.Model({ brand: "Ford", engine: "V8" })
@@ -101,8 +121,9 @@ are bound both ways meaning that changes in `engine` are reflected to
 
 See Lenses section below for full definition of Lenses.
 
-`Bacon.Model.combine(template)` creates a composite model using a
-template. For example:
+###Bacon.Model.combine(template)
+
+Creates a composite model using a template. For example:
 
 ```js
     // Model for the number of cylinders
@@ -126,8 +147,11 @@ doors: 4}`, the `cylinders` model will get a new value 0.
 ## Binding API
 
 BJB uses a simple `Binding` API for creating `Model` objects bound to
-DOM elements. `Bacon.Binding(options)` creates a new bound `Model`. The options
-is an object containing the following fields:
+DOM elements. 
+
+###Bacon.Binding(options)
+
+Creates a new bound `Model`. The `options` argument is an object containing the following fields:
 
 `get` : zero-arg function that returns the current value from the UI
 
@@ -139,12 +163,19 @@ the new value from the UI using the `get` function.
 
 `initValue (optional)` : initial value to be set for the model
 
-## Lenses
+## Lenses 
+
+TODO: reference to functional lenses
 
 A lens can be defined in two ways:
 
-- A path string, such as `"engine"` or `"engine.cylinders"`
-- A `get` / `set` pair such as `{ get: function() { .. }, set: function()
+### Bacon.Lens(path)
+
+Creates a lens with a p path string, such as `"engine"` or `"engine.cylinders"`
+
+### Bacon.Lens({get, set})
+
+Creates a lens with a `{get, set}` pair such as `{ get: function(context) { .. }, set: function(context, value)
   { .. }}`
 
 TODO: more

@@ -121,6 +121,8 @@ init = (Bacon, $) ->
     copy
 
   $.fn.asEventStream = Bacon.$.asEventStream
+
+  # Input element bindings
   Bacon.$.textFieldValue = (element, initValue) ->
     nonEmpty = (x) -> x.length > 0
     get = -> element.val()
@@ -148,7 +150,7 @@ init = (Bacon, $) ->
       events: element.asEventStream("change"),
       set: (value) -> element.attr "checked", value
     }
-  
+
   Bacon.$.selectValue = (element, initValue) ->
     Bacon.Binding {
       initValue,
@@ -180,6 +182,62 @@ init = (Bacon, $) ->
         checkBoxes.each (i, elem) ->
           $(elem).attr "checked", value.indexOf($(elem).val()) >= 0
     }
+
+  # AJAX
+  Bacon.$.ajax = (params, abort) -> Bacon.fromPromise $.ajax(params), abort
+  Bacon.$.ajaxGet = (url, data, dataType, abort) -> Bacon.$.ajax({url, dataType, data}, abort)       
+  Bacon.$.ajaxGetJSON = (url, data, abort) -> Bacon.$.ajax({url, dataType: "json", data}, abort)         
+  Bacon.$.ajaxPost = (url, data, dataType, abort) -> Bacon.$.ajax({url, dataType, data, type: "POST"}, abort)
+  Bacon.$.ajaxGetScript = (url, abort) -> Bacon.$.ajax({url, dataType: "script"}, abort)
+  Bacon.EventStream::ajax = -> @flatMapLatest Bacon.UI.ajax
+
+  # jQuery DOM Events
+  $.fn.extend
+    keydownE: (args...) -> @asEventStream "keydown", args...
+    keyupE: (args...) -> @asEventStream "keyup", args...
+    keypressE: (args...) -> @asEventStream "keypress", args...
+
+    clickE: (args...) -> @asEventStream "click", args... 
+    dblclickE: (args...) -> @asEventStream "dblclick", args... 
+    mousedownE: (args...) -> @asEventStream "mousedown", args... 
+    mouseupE: (args...) -> @asEventStream "mouseup", args...
+
+    mouseenterE: (args...) -> @asEventStream "mouseenter", args...
+    mouseleaveE: (args...) -> @asEventStream "mouseleave", args...
+    mousemoveE: (args...) -> @asEventStream "mousemove", args...
+    mouseoutE: (args...) -> @asEventStream "mouseout", args...
+    mouseoverE: (args...) -> @asEventStream "mouseover", args...
+
+    resizeE: (args...) -> @asEventStream "resize", args...
+    scrollE: (args...) -> @asEventStream "scroll", args...
+    selectE: (args...) -> @asEventStream "select", args...
+    changeE: (args...) -> @asEventStream "change", args...
+
+    submitE: (args...) -> @asEventStream "submit", args...
+
+    blurE: (args...) -> @asEventStream "blur", args...
+    focusE: (args...) -> @asEventStream "focus", args...
+    focusinE: (args...) -> @asEventStream "focusin", args...
+    focusoutE: (args...) -> @asEventStream "focusout", args...
+
+    loadE: (args...) -> @asEventStream "load", args...
+    unloadE: (args...) -> @asEventStream "unload", args...
+
+  # jQuery Effects
+  $.fn.extend
+    animateE: (args...) -> Bacon.fromPromise @animate(args...).promise()
+    showE: (args...) -> Bacon.fromPromise @show(args...).promise()
+    hideE: (args...)-> Bacon.fromPromise @hide(args...).promise()
+    toggleE: (args...) -> Bacon.fromPromise @toggle(args...).promise()
+
+    fadeInE: (args...) -> Bacon.fromPromise @fadeIn(args...).promise()
+    fadeOutE: (args...) -> Bacon.fromPromise @fadeOut(args...).promise()
+    fadeToE: (args...) -> Bacon.fromPromise @fadeTo(args...).promise()
+    fadeToggleE: (args...) -> Bacon.fromPromise @fadeToggle(args...).promise()
+
+    slideDownE: (args...) -> Bacon.fromPromise @slideDown(args...).promise()
+    slideUpE: (args...) -> Bacon.fromPromise @slideUp(args...).promise()
+    slideToggleE: (args...) -> Bacon.fromPromise @slideToggle(args...).promise()
 
   Bacon.$
 

@@ -10,27 +10,27 @@ describe('bacon-jquery-bindings', function() {
 
     describe('with initVal', function() {
       it('sets value to DOM', function() {
-          var binding = Bacon.$.textFieldValue(field, 'initVal')
+          var model = Bacon.$.textFieldValue(field, 'initVal')
           expect(field.val()).to.equal('initVal')
       })
-      it('sets the initVal as the initial value of the Binding', function() {
-        var binding = Bacon.$.textFieldValue(field, 'initVal')
-        specifyValue(binding, 'initVal')
+      it('sets the initVal as the initial value of the model', function() {
+        var model = Bacon.$.textFieldValue(field, 'initVal')
+        specifyValue(model, 'initVal')
       })
     })
 
     describe('without initVal', function() {
       it('leaves DOM unaffected', function() {
-          var binding = Bacon.$.textFieldValue(field)
+          var model = Bacon.$.textFieldValue(field)
           expect(field.val()).to.equal('defaultVal')
       })
-      it('uses value from DOM as initial value of the Binding', function() {
-        var binding = Bacon.$.textFieldValue(field)
-        specifyValue(binding, 'defaultVal')
+      it('uses value from DOM as initial value of the model', function() {
+        var model = Bacon.$.textFieldValue(field)
+        specifyValue(model, 'defaultVal')
       })
     })
 
-    describe('when setting value of Binding', function() {
+    describe('when setting value of model', function() {
       it('sets value to DOM', function() {
           Bacon.$.textFieldValue(field).set('newVal')
           expect(field.val()).to.equal('newVal')
@@ -38,11 +38,11 @@ describe('bacon-jquery-bindings', function() {
     })
 
     describe('when DOM value changes', function() {
-      it('updates value of binding', function() {
-        var binding = Bacon.$.textFieldValue(field)
+      it('updates value of model', function() {
+        var model = Bacon.$.textFieldValue(field)
         field.val("newVal")
         field.trigger("keyup")
-        specifyValue(binding, "newVal")
+        specifyValue(model, "newVal")
       })
     })
   })
@@ -56,27 +56,27 @@ describe('bacon-jquery-bindings', function() {
 
     describe('with initVal', function() {
       it('sets value to DOM', function() {
-          var binding = Bacon.$.checkBoxValue(field, true)
+          var model = Bacon.$.checkBoxValue(field, true)
           expect(field.attr("checked")).to.equal("checked")
       })
-      it('sets the initVal as the initial value of the Binding', function() {
-        var binding = Bacon.$.checkBoxValue(field, true)
-        specifyValue(binding, true)
+      it('sets the initVal as the initial value of the model', function() {
+        var model = Bacon.$.checkBoxValue(field, true)
+        specifyValue(model, true)
       })
     })
 
     describe('without initVal', function() {
       it('leaves DOM unaffected', function() {
-          var binding = Bacon.$.checkBoxValue(field)
+          var model = Bacon.$.checkBoxValue(field)
           expect(field.attr("checked")).to.equal(undefined)
       })
-      it('uses value from DOM as initial value of the Binding', function() {
-        var binding = Bacon.$.checkBoxValue(field)
-        specifyValue(binding, false)
+      it('uses value from DOM as initial value of the model', function() {
+        var model = Bacon.$.checkBoxValue(field)
+        specifyValue(model, false)
       })
     })
 
-    describe('when setting value of Binding', function() {
+    describe('when setting value of model', function() {
       it('sets value to DOM', function() {
           Bacon.$.checkBoxValue(field).set(true)
           expect(field.attr("checked")).to.equal("checked")
@@ -93,27 +93,27 @@ describe('bacon-jquery-bindings', function() {
 
     describe('with initVal', function() {
       it('sets value to DOM', function() {
-        var binding = Bacon.$.selectValue(field, 'a')
+        var model = Bacon.$.selectValue(field, 'a')
         expect(field.val()).to.equal('a')
       })
-      it('sets the initVal as the initial value of the Binding', function() {
-        var binding = Bacon.$.selectValue(field, 'a')
-        specifyValue(binding, 'a')
+      it('sets the initVal as the initial value of the model', function() {
+        var model = Bacon.$.selectValue(field, 'a')
+        specifyValue(model, 'a')
       })
     })
 
     describe('without initVal', function() {
       it('leaves DOM unaffected', function() {
-        var binding = Bacon.$.selectValue(field)
+        var model = Bacon.$.selectValue(field)
         expect(field.val()).to.equal('b')
       })
-      it('uses value from DOM as initial value of the Binding', function() {
-        var binding = Bacon.$.selectValue(field)
-        specifyValue(binding, 'b')
+      it('uses value from DOM as initial value of the model', function() {
+        var model = Bacon.$.selectValue(field)
+        specifyValue(model, 'b')
       })
     })
 
-    describe('when setting value of Binding', function() {
+    describe('when setting value of model', function() {
       it('sets value to DOM', function() {
         Bacon.$.selectValue(field).set('a')
         expect(field.val()).to.equal('a')
@@ -130,29 +130,29 @@ describe('bacon-jquery-bindings', function() {
 
     describe('with initVal', function() {
       it('sets value to DOM', function() {
-        var binding = Bacon.$.radioGroupValue(field, 'a')
+        var model = Bacon.$.radioGroupValue(field, 'a')
         expect($("#a").attr("checked")).to.equal("checked")
         expect($("#b").attr("checked")).to.equal(undefined)
       })
-      it('sets the initVal as the initial value of the Binding', function() {
-        var binding = Bacon.$.radioGroupValue(field, 'a')
-        specifyValue(binding, 'a')
+      it('sets the initVal as the initial value of the model', function() {
+        var model = Bacon.$.radioGroupValue(field, 'a')
+        specifyValue(model, 'a')
       })
     })
 
     describe('without initVal', function() {
       it('leaves DOM unaffected', function() {
-        var binding = Bacon.$.radioGroupValue(field)
+        var model = Bacon.$.radioGroupValue(field)
         expect($("#b").attr("checked")).to.equal("checked")
         expect($("#a").attr("checked")).to.equal(undefined)
       })
-      it('uses value from DOM as initial value of the Binding', function() {
-        var binding = Bacon.$.radioGroupValue(field)
-        specifyValue(binding, 'b')
+      it('uses value from DOM as initial value of the model', function() {
+        var model = Bacon.$.radioGroupValue(field)
+        specifyValue(model, 'b')
       })
     })
 
-    describe('when setting value of Binding', function() {
+    describe('when setting value of model', function() {
       it('sets value to DOM', function() {
         Bacon.$.radioGroupValue(field).set('a')
         expect($("#a").attr("checked")).to.equal("checked")
@@ -170,29 +170,29 @@ describe('bacon-jquery-bindings', function() {
 
     describe('with initVal', function() {
       it('sets value to DOM', function() {
-        var binding = Bacon.$.checkBoxGroupValue(field, ['a'])
+        var model = Bacon.$.checkBoxGroupValue(field, ['a'])
         expect($("#a").attr("checked")).to.equal("checked")
         expect($("#b").attr("checked")).to.equal(undefined)
       })
-      it('sets the initVal as the initial value of the Binding', function() {
-        var binding = Bacon.$.checkBoxGroupValue(field, ['a'])
-        specifyValue(binding, ['a'])
+      it('sets the initVal as the initial value of the model', function() {
+        var model = Bacon.$.checkBoxGroupValue(field, ['a'])
+        specifyValue(model, ['a'])
       })
     })
 
     describe('without initVal', function() {
       it('leaves DOM unaffected', function() {
-        var binding = Bacon.$.checkBoxGroupValue(field)
+        var model = Bacon.$.checkBoxGroupValue(field)
         expect($("#b").attr("checked")).to.equal("checked")
         expect($("#a").attr("checked")).to.equal(undefined)
       })
-      it('uses value from DOM as initial value of the Binding', function() {
-        var binding = Bacon.$.checkBoxGroupValue(field)
-        specifyValue(binding, ['b'])
+      it('uses value from DOM as initial value of the model', function() {
+        var model = Bacon.$.checkBoxGroupValue(field)
+        specifyValue(model, ['b'])
       })
     })
 
-    describe('when setting value of Binding', function() {
+    describe('when setting value of model', function() {
       it('sets value to DOM', function() {
         Bacon.$.checkBoxGroupValue(field).set(['a', 'b'])
         expect($("#a").attr("checked")).to.equal("checked")
@@ -222,10 +222,12 @@ function testEventHelper(eventName) {
   })
 }
 
-function specifyValue(obs, value) {
-  obs.onValue(function(value) {
-    expect(value).to.equal(value)
+function specifyValue(obs, expected) {
+  var value
+  obs.onValue(function(v) {
+    value = v
   })
+  expect(value).to.deep.equal(expected)
 }
 
 function collectEvents(observable) {

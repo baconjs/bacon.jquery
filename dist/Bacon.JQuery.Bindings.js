@@ -317,7 +317,7 @@
       }, abort);
     };
     Bacon.EventStream.prototype.ajax = function() {
-      return this.flatMapLatest(Bacon.UI.ajax);
+      return this.flatMapLatest(Bacon.$.ajax);
     };
     $.fn.extend({
       keydownE: function() {

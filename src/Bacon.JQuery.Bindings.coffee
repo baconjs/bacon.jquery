@@ -189,7 +189,7 @@ init = (Bacon, $) ->
   Bacon.$.ajaxGetJSON = (url, data, abort) -> Bacon.$.ajax({url, dataType: "json", data}, abort)         
   Bacon.$.ajaxPost = (url, data, dataType, abort) -> Bacon.$.ajax({url, dataType, data, type: "POST"}, abort)
   Bacon.$.ajaxGetScript = (url, abort) -> Bacon.$.ajax({url, dataType: "script"}, abort)
-  Bacon.EventStream::ajax = -> @flatMapLatest Bacon.UI.ajax
+  Bacon.EventStream::ajax = -> @flatMapLatest Bacon.$.ajax
 
   # jQuery DOM Events
   $.fn.extend

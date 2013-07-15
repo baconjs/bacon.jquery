@@ -36,6 +36,15 @@ describe('bacon-jquery-bindings', function() {
           expect(field.val()).to.equal('newVal')
       })
     })
+
+    describe('when DOM value changes', function() {
+      it('updates value of binding', function() {
+        var binding = Bacon.$.textFieldValue(field)
+        field.val("newVal")
+        field.trigger("keyup")
+        specifyValue(binding, "newVal")
+      })
+    })
   })
 
   describe('checkBoxValue', function() {
@@ -191,10 +200,38 @@ describe('bacon-jquery-bindings', function() {
       })
     })
   })
+
+  testEventHelper('click')
+  testEventHelper('keyup')
+  testEventHelper('keydown')
+  testEventHelper('mouseup')
+
 })
 
-function specifyValue(binding, value) {
-  binding.onValue(function(value) {
+function testEventHelper(eventName) {
+  var methodName = eventName + "E"
+  describe(methodName, function() {
+    it("captures DOM events as EventStream", function() {
+      $('#bacon-dom').html('<input type="text" id="text">')
+      var el = $('#bacon-dom #text')
+      var stream = el.asEventStream("click")
+      var values = collectEvents(stream)
+      el.click()
+      expect(values.length).to.equal(1)
+    })
+  })
+}
+
+function specifyValue(obs, value) {
+  obs.onValue(function(value) {
     expect(value).to.equal(value)
   })
+}
+
+function collectEvents(observable) {
+  var values = [];
+  observable.onValue(function(value) {
+    return values.push(value);
+  });
+  return values;
 }

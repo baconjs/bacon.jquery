@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "coffee-script": "1.4.0",
-    "mocha": "1.10.0",
+    "mocha": "~1.12",
     "chai": "1.6.0",
     "grunt": "0.4.1",
     "grunt-cli": "0.1.5",
@@ -19,7 +19,7 @@
     "grunt-contrib-copy": "~0.4.0",
     "grunt-contrib-uglify": "~0.2.2",
     "phantomjs": "~1",
-    "mocha-phantomjs": "~3",
+    "mocha-phantomjs": "~3.0",
     "jquery": "~1.8"
   },
   "scripts": {

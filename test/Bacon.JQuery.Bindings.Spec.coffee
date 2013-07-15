@@ -149,8 +149,8 @@ describe "Model.combine", ->
     }])
     expect(collect(cylinders)).to.deep.equal([8])
 
-collect = (binding) ->
+collect = (observable) ->
   values = []
-  binding.onValue (value) ->
+  observable.onValue (value) ->
     values.push(value)
   values

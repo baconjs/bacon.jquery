@@ -191,7 +191,6 @@ describe('bacon-jquery-bindings', function() {
       })
     })
   })
-
 })
 
 function specifyValue(binding, value) {

@@ -6,7 +6,7 @@
     "MIT"
   ],
   "dependencies": {
-    "baconjs": "~0.4"
+    "baconjs": "~0.6"
   },
   "devDependencies": {
     "coffee-script": "1.4.0",

@@ -111,6 +111,13 @@ describe "Model.lens", ->
     expect(collect(engine)).to.deep.equal(["V8"])
     engine.set("V12")
     expect(collect(car)).to.deep.equal([{ brand: "Ford", engine: "V12"}])
+  it "supports `modify`", ->
+    model = bjb.Model({left:"left"})
+    l = model.lens "left"
+    expect(collect(l)).to.deep.equal(["left"])
+    l.modify (e) -> e + "2"
+    expect(collect(l)).to.deep.equal(["left2"])
+    expect(collect(model)).to.deep.equal([{left:"left2"}])
   it "ignores changes when parent doesn't have a value yet", ->
     car = bjb.Model()
     engine = car.lens engineLens

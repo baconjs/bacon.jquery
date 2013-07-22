@@ -15,10 +15,12 @@ init = (Bacon, $) ->
     myModCount = 0
     modificationBus = new Bacon.Bus()
     syncBus = new Bacon.Bus()
-    valueWithSource = modificationBus.scan(
-      { initial: true }
-      ({value}, {source, f}) -> {source, value: f(value), modCount: ++globalModCount}
-    ).changes().merge(syncBus).toProperty()
+    valueWithSource = Bacon.update(
+      { initial: true },
+      [modificationBus], (({value}, {source, f}) -> 
+        {source, value: f(value), modCount: ++globalModCount}),
+      [syncBus], ((_, syncEvent) -> syncEvent)
+    ).changes().toProperty()
     model = valueWithSource.map(".value").skipDuplicates()
     model.id = idCounter++
     model.addSyncSource = (syncEvents) ->

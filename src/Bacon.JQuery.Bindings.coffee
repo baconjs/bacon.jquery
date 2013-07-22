@@ -177,9 +177,9 @@ init = (Bacon, $) ->
   Bacon.$.checkBoxGroupValue = (checkBoxes, initValue) ->
     Bacon.Binding {
       initValue,
-      get: -> selectedValues = ->
+      get: ->
         checkBoxes.filter(":checked").map((i, elem) -> $(elem).val()).toArray()
-      events: checkBoxes.asEventStream("click,change"),
+      events: checkBoxes.asEventStream("click"),
       set: (value) ->
         checkBoxes.each (i, elem) ->
           $(elem).attr "checked", value.indexOf($(elem).val()) >= 0

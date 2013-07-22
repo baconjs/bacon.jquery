@@ -82,6 +82,14 @@ describe('bacon-jquery-bindings', function() {
           expect(field.attr("checked")).to.equal("checked")
       })
     })
+    describe('when DOM value changes', function() {
+      it('updates value of model', function() {
+        var model = Bacon.$.checkBoxValue(field)
+        field.attr("checked", "checked")
+        field.trigger("click")
+        specifyValue(model, true)
+      })
+    })
   })
 
   describe('selectValue', function() {
@@ -117,6 +125,14 @@ describe('bacon-jquery-bindings', function() {
       it('sets value to DOM', function() {
         Bacon.$.selectValue(field).set('a')
         expect(field.val()).to.equal('a')
+      })
+    })
+    describe('when DOM value changes', function() {
+      it('updates value of model', function() {
+        var model = Bacon.$.selectValue(field)
+        field.val("a")
+        field.trigger("change")
+        specifyValue(model, "a")
       })
     })
   })
@@ -159,6 +175,15 @@ describe('bacon-jquery-bindings', function() {
         expect($("#b").attr("checked")).to.equal(undefined)
       })
     })
+
+    describe('when DOM value changes', function() {
+      it('updates value of model', function() {
+        var model = Bacon.$.radioGroupValue(field)
+        $("#b").removeAttr("checked").trigger("change")
+        $("#a").attr("checked", "checked").trigger("change")
+        specifyValue(model, "a")
+      })
+    })
   })
 
   describe('checkBoxGroupValue', function() {
@@ -197,6 +222,18 @@ describe('bacon-jquery-bindings', function() {
         Bacon.$.checkBoxGroupValue(field).set(['a', 'b'])
         expect($("#a").attr("checked")).to.equal("checked")
         expect($("#b").attr("checked")).to.equal("checked")
+      })
+    })
+
+    describe('when DOM value changes', function() {
+      it('updates value of model', function() {
+        var model = Bacon.$.checkBoxGroupValue(field)
+        $("#a").trigger("click")
+        specifyValue(model, ["a", "b"])
+        $("#b").trigger("click")
+        specifyValue(model, ["a"])
+        $("#a").trigger("click")
+        specifyValue(model, [])
       })
     })
   })

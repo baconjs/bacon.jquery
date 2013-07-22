@@ -29,9 +29,9 @@
       myModCount = 0;
       modificationBus = new Bacon.Bus();
       syncBus = new Bacon.Bus();
-      valueWithSource = modificationBus.scan({
+      valueWithSource = Bacon.update({
         initial: true
-      }, function(_arg, _arg1) {
+      }, [modificationBus], (function(_arg, _arg1) {
         var f, source, value;
         value = _arg.value;
         source = _arg1.source, f = _arg1.f;
@@ -40,7 +40,9 @@
           value: f(value),
           modCount: ++globalModCount
         };
-      }).changes().merge(syncBus).toProperty();
+      }), [syncBus], (function(_, syncEvent) {
+        return syncEvent;
+      })).changes().toProperty();
       model = valueWithSource.map(".value").skipDuplicates();
       model.id = idCounter++;
       model.addSyncSource = function(syncEvents) {
@@ -270,14 +272,11 @@
       return Bacon.Binding({
         initValue: initValue,
         get: function() {
-          var selectedValues;
-          return selectedValues = function() {
-            return checkBoxes.filter(":checked").map(function(i, elem) {
-              return $(elem).val();
-            }).toArray();
-          };
+          return checkBoxes.filter(":checked").map(function(i, elem) {
+            return $(elem).val();
+          }).toArray();
         },
-        events: checkBoxes.asEventStream("click,change"),
+        events: checkBoxes.asEventStream("click"),
         set: function(value) {
           return checkBoxes.each(function(i, elem) {
             return $(elem).attr("checked", value.indexOf($(elem).val()) >= 0);

@@ -6,4 +6,5 @@ npm-debug.log
 *.iml
 browsertest/bundle.js
 examples/**/components
+examples/**/bower_components
 scratchpad.coffee

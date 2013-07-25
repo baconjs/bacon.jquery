@@ -276,7 +276,7 @@
             return $(elem).val();
           }).toArray();
         },
-        events: checkBoxes.asEventStream("click"),
+        events: checkBoxes.asEventStream("change"),
         set: function(value) {
           return checkBoxes.each(function(i, elem) {
             return $(elem).attr("checked", value.indexOf($(elem).val()) >= 0);

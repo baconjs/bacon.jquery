@@ -179,7 +179,7 @@ init = (Bacon, $) ->
       initValue,
       get: ->
         checkBoxes.filter(":checked").map((i, elem) -> $(elem).val()).toArray()
-      events: checkBoxes.asEventStream("click"),
+      events: checkBoxes.asEventStream("change"),
       set: (value) ->
         checkBoxes.each (i, elem) ->
           $(elem).attr "checked", value.indexOf($(elem).val()) >= 0

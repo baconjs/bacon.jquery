@@ -1,8 +1,8 @@
 require.config({
   paths: {
-    "bacon-jquery-bindings": "components/bacon-jquery-bindings/dist/Bacon.JQuery.Bindings",
-    "bacon": "components/bacon/dist/Bacon",
-    "jquery": "components/jquery/jquery"
+    "bacon-jquery-bindings": "bower_components/bacon-jquery-bindings/dist/Bacon.JQuery.Bindings",
+    "bacon": "bower_components/bacon/dist/Bacon",
+    "jquery": "bower_components/jquery/jquery"
   }})
 require(["bacon-jquery-bindings", "jquery"], function(bjq, $) {
   // binding for "left" text field

@@ -315,6 +315,9 @@
         dataType: "script"
       }, abort);
     };
+    Bacon.$.lazyAjax = function(params) {
+      return Bacon.once(params).flatMap(Bacon.$.ajax);
+    };
     Bacon.EventStream.prototype.ajax = function() {
       return this.flatMapLatest(Bacon.$.ajax);
     };
@@ -500,8 +503,8 @@
     $ = require("jquery");
     module.exports = init(Bacon, $);
   } else {
-    if (typeof require === 'function') {
-      define('bacon-jquery-bindings', ["bacon", "jquery"], init);
+    if (typeof define === "function" && define.amd) {
+      define(["bacon", "jquery"], init);
     } else {
       init(this.Bacon, this.$);
     }

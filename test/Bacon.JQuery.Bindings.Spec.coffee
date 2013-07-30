@@ -1,5 +1,5 @@
 expect = require("chai").expect
-Bacon = require "baconjs"
+Bacon = require "bacon"
 bjb = require "../src/Bacon.JQuery.Bindings"
 twice = (x) -> x * 2
 

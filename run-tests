@@ -4,6 +4,9 @@ npm install
 
 export grep=$1
 
+# Use bacon from bower instead of node.js
+export NODE_PATH="$NODE_PATH:./components"
+
 ./node_modules/mocha/bin/mocha --compilers coffee:coffee-script test/**
 
 if [ ! $grep ]; then

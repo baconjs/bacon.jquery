@@ -20,7 +20,8 @@
     "grunt-contrib-uglify": "~0.2.2",
     "phantomjs": "~1",
     "mocha-phantomjs": "~3.0",
-    "jquery": "~1.8"
+    "bower": "~0.9.2",
+    "jquery": "~1.8.3"
   },
   "scripts": {
     "test": "./run-tests",

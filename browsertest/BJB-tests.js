@@ -243,7 +243,35 @@ describe('bacon-jquery-bindings', function() {
   testEventHelper('keydown')
   testEventHelper('mouseup')
 
+  describe("AJAX", function() {
+    $.mockjax({
+      url: "/test",
+      responseTime: 0,
+      responseText: "good"
+    })
+    describe("Converts EventStream of requests into EventStream of responses", function() {
+      expectStreamValues(Bacon.once({url:"/test"}).ajax(), ["good"])
+    })
+    describe("Converts Property of requests into EventStream of responses", function() {
+      expectStreamValues(Bacon.once({url:"/test"}).toProperty().ajax(), ["good"])
+    })
+  })
+
 })
+
+function expectStreamValues(stream, expectedValues) {
+  var values = []
+  before(function(done) {
+    stream.onValue(function(value) { values.push(value) })
+    stream.onEnd(done)
+  })
+  it("is an EventStream", function() {
+    expect(stream instanceof Bacon.EventStream).to.be.ok()
+  })
+  it("contains expected values", function() {
+    expect(values).to.deep.equal(expectedValues)
+  })
+}
 
 function testEventHelper(eventName) {
   var methodName = eventName + "E"

@@ -137,6 +137,14 @@ describe('bacon-jquery-bindings', function() {
     })
   })
 
+  describe('selectValue without any options', function() {
+    it('sets `null` as initial value of the model', function() {
+      $('#bacon-dom').html('<select id="select"></select>')
+      var model = Bacon.$.selectValue($('#bacon-dom #select'))
+      specifyValue(model, null)
+    })
+  })
+
   describe('radioGroupValue', function() {
     var field
     beforeEach(function() {
@@ -288,10 +296,13 @@ function testEventHelper(eventName) {
 }
 
 function specifyValue(obs, expected) {
+  var gotIt = false
   var value
   obs.onValue(function(v) {
+    gotIt = true
     value = v
   })
+  expect(gotIt).to.equal(true)
   expect(value).to.deep.equal(expected)
 }
 

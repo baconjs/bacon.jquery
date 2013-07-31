@@ -42,7 +42,7 @@ init = (Bacon, $) ->
       this.addSyncSource(other.syncEvents())
       other.addSyncSource(this.syncEvents())
     model.onValue()
-    model.set(initValue) if (initValue?)
+    model.set(initValue) if (arguments.length >= 1)
     model.lens = (lens) ->
       lens = Lens(lens)
       lensed = Model()

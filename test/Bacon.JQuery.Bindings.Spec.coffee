@@ -22,6 +22,9 @@ describe "Model initial value", ->
   it "is sent", ->
     cylinders = bjb.Model(12)
     expect(collect(cylinders)).to.deep.equal([12])
+  it "can be omitted", ->
+    cylinders = bjb.Model()
+    expect(collect(cylinders)).to.deep.equal([])
 
 describe "Model.modify", ->
   it "modifies current value with given function", ->

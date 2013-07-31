@@ -318,7 +318,7 @@
     Bacon.$.lazyAjax = function(params) {
       return Bacon.once(params).flatMap(Bacon.$.ajax);
     };
-    Bacon.EventStream.prototype.ajax = function() {
+    Bacon.Observable.prototype.ajax = function() {
       return this.flatMapLatest(Bacon.$.ajax);
     };
     $.fn.extend({

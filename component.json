@@ -1,5 +1,5 @@
 {
   "name": "bacon-jquery-bindings",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "main": "./dist/Bacon.JQuery.Bindings.js"
 }

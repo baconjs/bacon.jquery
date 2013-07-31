@@ -89,7 +89,7 @@
         return other.addSyncSource(this.syncEvents());
       };
       model.onValue();
-      if ((initValue != null)) {
+      if (arguments.length >= 1) {
         model.set(initValue);
       }
       model.lens = function(lens) {

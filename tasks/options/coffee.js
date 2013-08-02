@@ -10,9 +10,9 @@ module.exports = {
   src: {
     files: [{
       expand: true,
-      cwd: 'src/',
+      cwd: 'src',
       src: ['**/*.coffee'],
-      dest: 'tmp/javascript',
+      dest: 'tmp/compiled',
       rename: renameFileWithDots
     }]
   },

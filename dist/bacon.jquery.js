@@ -1,15 +1,26 @@
-(function() {
-  var $, Bacon, init,
-    __slice = [].slice;
+(function(exports, Bacon, $) {
+  "use strict";
+  (function() {
 
+
+    var Lens, Model, fold, globalModCount, id, idCounter, isChrome, isModel, nonEmpty, shallowCopy, _ref,
+      __slice = [].slice;
+
+<<<<<<< HEAD
   init = function(Bacon, $) {
     var Lens, Model, fold, globalModCount, id, idCounter, isModel, nonEmpty, shallowCopy;
+=======
+    isChrome = (typeof navigator !== "undefined" && navigator !== null ? (_ref = navigator.userAgent) != null ? _ref.toLowerCase().indexOf("chrome") : void 0 : void 0) > -1;
+
+>>>>>>> Implement es6 modules with 'globals' configuration
     id = function(x) {
       return x;
     };
+
     nonEmpty = function(x) {
       return x.length > 0;
     };
+
     fold = function(xs, seed, f) {
       var x, _i, _len;
       for (_i = 0, _len = xs.length; _i < _len; _i++) {
@@ -18,11 +29,15 @@
       }
       return seed;
     };
+
     isModel = function(obj) {
       return obj instanceof Bacon.Property;
     };
+
     globalModCount = 0;
+
     idCounter = 1;
+
     Model = Bacon.Model = Bacon.$.Model = function(initValue) {
       var model, modificationBus, myModCount, syncBus, valueWithSource;
       myModCount = 0;
@@ -106,6 +121,7 @@
       };
       return model;
     };
+
     Model.combine = function(template) {
       var initValue, key, lens, lensedModel, model, value;
       if (typeof template !== "object") {
@@ -124,6 +140,7 @@
         return model;
       }
     };
+
     Bacon.Binding = Bacon.$.Binding = function(_arg) {
       var events, externalChanges, get, initValue, inputs, model, set;
       initValue = _arg.initValue, get = _arg.get, events = _arg.events, set = _arg.set;
@@ -138,6 +155,7 @@
       externalChanges.assign(set);
       return model;
     };
+
     Lens = Bacon.Lens = Bacon.$.Lens = function(lens) {
       if (typeof lens === "object") {
         return lens;
@@ -145,6 +163,7 @@
         return Lens.objectLens(lens);
       }
     };
+
     Lens.id = Lens({
       get: function(x) {
         return x;
@@ -153,6 +172,7 @@
         return value;
       }
     });
+
     Lens.objectLens = function(path) {
       var keys, objectKeyLens;
       objectKeyLens = function(key) {
@@ -170,6 +190,7 @@
       keys = path.split(".").filter(nonEmpty);
       return Lens.compose.apply(Lens, keys.map(objectKeyLens));
     };
+
     Lens.compose = function() {
       var args, compose2;
       args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -188,6 +209,7 @@
       };
       return fold(args, Lens.id, compose2);
     };
+
     shallowCopy = function(x) {
       var copy, key, value;
       copy = x instanceof Array ? [] : {};
@@ -197,7 +219,9 @@
       }
       return copy;
     };
+
     $.fn.asEventStream = Bacon.$.asEventStream;
+
     Bacon.$.textFieldValue = function(element, initValue) {
       var autofillPoller, events, get;
       nonEmpty = function(x) {
@@ -219,6 +243,7 @@
         }
       });
     };
+
     Bacon.$.checkBoxValue = function(element, initValue) {
       return Bacon.Binding({
         initValue: initValue,
@@ -231,6 +256,7 @@
         }
       });
     };
+
     Bacon.$.selectValue = function(element, initValue) {
       return Bacon.Binding({
         initValue: initValue,
@@ -243,6 +269,7 @@
         }
       });
     };
+
     Bacon.$.radioGroupValue = function(radios, initValue) {
       return Bacon.Binding({
         initValue: initValue,
@@ -261,6 +288,7 @@
         }
       });
     };
+
     Bacon.$.checkBoxGroupValue = function(checkBoxes, initValue) {
       return Bacon.Binding({
         initValue: initValue,
@@ -277,9 +305,11 @@
         }
       });
     };
+
     Bacon.$.ajax = function(params, abort) {
       return Bacon.fromPromise($.ajax(params), abort);
     };
+
     Bacon.$.ajaxGet = function(url, data, dataType, abort) {
       return Bacon.$.ajax({
         url: url,
@@ -287,6 +317,7 @@
         data: data
       }, abort);
     };
+
     Bacon.$.ajaxGetJSON = function(url, data, abort) {
       return Bacon.$.ajax({
         url: url,
@@ -294,6 +325,7 @@
         data: data
       }, abort);
     };
+
     Bacon.$.ajaxPost = function(url, data, dataType, abort) {
       return Bacon.$.ajax({
         url: url,
@@ -302,18 +334,22 @@
         type: "POST"
       }, abort);
     };
+
     Bacon.$.ajaxGetScript = function(url, abort) {
       return Bacon.$.ajax({
         url: url,
         dataType: "script"
       }, abort);
     };
+
     Bacon.$.lazyAjax = function(params) {
       return Bacon.once(params).flatMap(Bacon.$.ajax);
     };
+
     Bacon.Observable.prototype.ajax = function() {
       return this.flatMapLatest(Bacon.$.ajax);
     };
+
     $.fn.extend({
       keydownE: function() {
         var args;
@@ -431,6 +467,7 @@
         return this.asEventStream.apply(this, ["unload"].concat(__slice.call(args)));
       }
     });
+
     $.fn.extend({
       animateE: function() {
         var args;
@@ -488,19 +525,10 @@
         return Bacon.fromPromise(this.slideToggle.apply(this, args).promise());
       }
     });
-    return Bacon.$;
-  };
 
-  if (typeof module !== "undefined" && module !== null) {
-    Bacon = require("baconjs");
-    $ = require("jquery");
-    module.exports = init(Bacon, $);
-  } else {
-    if (typeof define === "function" && define.amd) {
-      define(["bacon", "jquery"], init);
-    } else {
-      init(this.Bacon, this.$);
-    }
-  }
 
-}).call(this);
+
+  }).call(this);
+
+  exports.Bacon.$ = Bacon.$;
+})(window, window.Bacon, window.$);

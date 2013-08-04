@@ -14,7 +14,10 @@ module.exports = {
       src: ['**/*.coffee'],
       dest: 'tmp/compiled',
       rename: renameFileWithDots
-    }]
+    }],
+    options: {
+      bare: true
+    }
   },
   test: {
     files: [{

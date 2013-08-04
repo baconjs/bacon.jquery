@@ -1,6 +1,6 @@
 module.exports = {
   app: {
-    type: 'globals',
+    type: 'umd',
     imports: { jquery: "$", bacon: "Bacon" },
     files: [{
       expand: true,

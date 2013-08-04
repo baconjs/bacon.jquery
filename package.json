@@ -22,12 +22,10 @@
     "mocha-phantomjs": "~3.0",
     "bower": "~1.0.0",
     "jquery": "~1.8.3",
-    "grunt-es6-module-transpiler": "~0.4.1",
+    "grunt-es6-module-transpiler": "git://github.com/joefiorini/grunt-es6-module-transpiler.git#umd-compiler-support",
     "jshint": "~2.1.8"
   },
   "scripts": {
-    "test": "./run-tests",
-    "prepublish": "node_modules/grunt-cli/bin/grunt"
   },
   "main": "dist/bacon.jquery.js"
 }

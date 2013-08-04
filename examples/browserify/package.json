@@ -6,8 +6,7 @@
     "MIT"
   ],
   "dependencies": {
-    "baconjs": "~0.4",
-    "bacon-jquery-bindings": "~0"
+    "baconjs": "~0.4"
   },
   "devDependencies": {
     "browserify": "~2",

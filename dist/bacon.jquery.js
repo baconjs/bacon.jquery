@@ -1,6 +1,6 @@
 (function(factory) {
   if (typeof define === 'function' && define.amd) {
-    define("/Bacon.JQuery.Bindings",
+    define("bacon.jquery",
       [],
       function() {
         return factory();

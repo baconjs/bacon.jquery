@@ -14,3 +14,16 @@ module.exports =
       src: ["**/*.js"]
       dest: "tmp/transpiled"
     ]
+  test:
+    type: "cjs"
+    files: [
+      expand: true
+      cwd: "tmp/test/compiled"
+      src: ["**/*.js"]
+      dest: "tmp/test/transpiled"
+    ,
+      expand: true
+      cwd: "tmp/compiled"
+      src: ["**/*.js"]
+      dest: "tmp/test/transpiled"
+    ]

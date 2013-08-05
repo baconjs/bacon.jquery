@@ -22,6 +22,6 @@ module.exports =
       expand: true
       cwd: "test/"
       src: ["**/*.coffee"]
-      dest: "tmp/javascript/tests"
+      dest: "tmp/test/compiled"
       rename: renameFileWithDots
     ]

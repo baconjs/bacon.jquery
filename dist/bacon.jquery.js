@@ -1,17 +1,19 @@
 (function(factory) {
   if (typeof define === 'function' && define.amd) {
     define("bacon.jquery",
-      [],
-      function() {
-        return factory();
+      ["baconjs","jquery"],
+      function(Bacon, $) {
+        return factory(Bacon,$);
       });
   } else if (typeof exports === 'object') {
-    module.exports = factory();
+    module.exports = factory(require("baconjs"),require("jquery"));
   } else {
-    factory();
+    factory(Bacon,$);
   }
-}(function() {
+}(function(Bacon, $) {
   "use strict";
+
+
   var Lens, Model, fold, globalModCount, id, idCounter, isModel, nonEmpty, shallowCopy,
     __slice = [].slice;
 

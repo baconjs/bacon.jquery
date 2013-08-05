@@ -1,3 +1,6 @@
+`import Bacon from "baconjs"`
+`import $ from "jquery"`
+
 id = (x) -> x
 nonEmpty = (x) -> x.length > 0
 fold = (xs, seed, f) ->

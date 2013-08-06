@@ -19,6 +19,8 @@ module.exports = (grunt) ->
   grunt.registerTask "build:dist", ["clean:dist", "build", "copy:dist", "uglify"]
   grunt.registerTask "test", ["test:unit", "test:browser"]
   grunt.registerTask "test:unit", ["build:test", "simplemocha:unit"]
-  grunt.registerTask "test:browser", ["build:browserTest", "karma:dev"]
+  grunt.registerTask "test:browser:local", ["build:browserTest", "karma:dev"]
+  grunt.registerTask "test:browser:integration", ["build:browserTest", "karma:integration"]
+  grunt.registerTask "test:browser", ["test:browser:local"]
 
   grunt.registerTask "default", ["build"]

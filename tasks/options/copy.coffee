@@ -8,3 +8,11 @@ module.exports =
     expand: false
     src: "tmp/transpiled/bacon.jquery.js"
     dest: "tmp/finalized/bacon.jquery.js"
+
+  testRun:
+    files: [
+      expand: true
+      cwd: "tmp/test/transpiled"
+      src: "**/*.js"
+      dest: "tmp/test/run"
+    ]

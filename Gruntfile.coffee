@@ -9,12 +9,16 @@ module.exports = (grunt) ->
     copy: config("copy")
     uglify: config("uglify")
     simplemocha: config("simplemocha")
+    karma: config("karma")
 
   require("matchdep").filterDev("grunt-*").forEach grunt.loadNpmTasks
   grunt.registerTask "build", ["clean:tmp", "coffee", "transpile", "copy:finalize"]
-  grunt.registerTask "build:test", ["clean:tmp", "coffee:src", "coffee:test", "transpile:test"]
+  grunt.registerTask "build:test", ["clean:tmp", "coffee:src", "coffee:test", "transpile:test", "copy:testRun"]
+  grunt.registerTask "build:browserTest", ["clean:tmp", "coffee:src", "transpile:browserTest", "copy:testRun"]
   grunt.registerTask "build:debug", "build"
   grunt.registerTask "build:dist", ["clean:dist", "build", "copy:dist", "uglify"]
-  grunt.registerTask "test", ["test:unit"]
+  grunt.registerTask "test", ["test:unit", "test:browser"]
   grunt.registerTask "test:unit", ["build:test", "simplemocha:unit"]
+  grunt.registerTask "test:browser", ["build:browserTest", "karma:dev"]
+
   grunt.registerTask "default", ["build"]

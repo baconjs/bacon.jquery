@@ -27,3 +27,23 @@ module.exports =
       src: ["**/*.js"]
       dest: "tmp/test/transpiled"
     ]
+
+  browserTest:
+    type: "umd"
+    imports:
+      jquery: "$"
+      bacon: "Bacon"
+      chai: "chai"
+      "bacon-jquery-bindings": "bjq"
+
+    files: [
+      expand: true
+      cwd: "tmp/compiled"
+      src: ["**/*.js"]
+      dest: "tmp/test/transpiled"
+    ,
+      expand: true
+      cwd: "test"
+      src: ["**/*.js"]
+      dest: "tmp/test/transpiled"
+    ]

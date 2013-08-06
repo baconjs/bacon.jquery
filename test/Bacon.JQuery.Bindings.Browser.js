@@ -1,6 +1,13 @@
-var expect = chai.expect
+import chai from "chai";
+import Bacon from "bacon";
+var expect = chai.expect;
 
 describe('bacon-jquery-bindings', function() {
+
+  before(function(){
+    insertBaconDomFixture();
+  });
+
   describe('textFieldValue', function() {
     var field
     beforeEach(function() {
@@ -287,7 +294,7 @@ function expectStreamValues(stream, expectedValues) {
     stream.onEnd(done)
   })
   it("is an EventStream", function() {
-    expect(stream instanceof Bacon.EventStream).to.be.ok()
+    expect(stream instanceof Bacon.EventStream).to.be.ok
   })
   it("contains expected values", function() {
     expect(values).to.deep.equal(expectedValues)
@@ -325,4 +332,8 @@ function collectEvents(observable) {
     return values.push(value);
   });
   return values;
+}
+
+function insertBaconDomFixture(){
+  $("<div>").attr("id", "bacon-dom").appendTo("body");
 }

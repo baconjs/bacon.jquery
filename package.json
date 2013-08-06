@@ -26,7 +26,8 @@
     "grunt-es6-module-transpiler": "git://github.com/joefiorini/grunt-es6-module-transpiler.git#umd-compiler-support",
     "jshint": "~2.1.8",
     "grunt-simple-mocha": "~0.4.0",
-    "matchdep": "~0.1.2"
+    "matchdep": "~0.1.2",
+    "grunt-karma": "~0.4.5"
   },
   "main": "dist/bacon.jquery.js"
 }

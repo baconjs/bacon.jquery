@@ -2,7 +2,7 @@
 
 A JQuery data binding library for [Bacon.js](https://github.com/baconjs/bacon.js).
 
-Adds stuff to `Bacon.$`.
+Adds stuff to `Bacon.$`. Is also called BJQ.
 
 Includes
 
@@ -39,35 +39,37 @@ Each application does essentially the same thing and the code in the example app
   left.addSource($("#reset").asEventStream("click").map(""))
 ```
 
-## BJQ API
+## API
 
-The BJQ API consists of methods for creating a `Model` representing the
-state of a DOM element or a group of DOM elements.
+The `bacon.jquery` API consists of methods for creating a `Model` representing the
+state of a DOM element or a group of DOM elements. This API is published
+as `Bacon.$`, and the same object is returned when using AMD or
+CommonJS.
 
-###bjq.textFieldValue(field [, initValue])
+###Bacon.$.textFieldValue(field [, initValue])
 
 Creates a `Model` for an
 `<input type="text">` element, given as a JQuery object. You can optionally supply an initial value.
 
-###bjq.checkBoxValue(field [, initValue])
+###Bacon.$.checkBoxValue(field [, initValue])
 
 Creates a `Model` for a
 `<input type="checkbox">` element, given as a JQuery object. The value is `true` if the checkbox is checked and
 `false` otherwise.
 
-###bjq.selectValue(field [,initValue])
+###Bacon.$.selectValue(field [,initValue])
 
 Creates a `Model` for a `<select>`
 element, given as a JQuery object. The value of the model corresponds to the `value` attribute of the selected `<option>` element.
 
-###bjq.radioGroupValue(fields, [,initValue])
+###Bacon.$.radioGroupValue(fields, [,initValue])
 
 Creates a `Model` for a
 group of `<input type="radio">` elements, given as a JQuery object. The value
 of the model corresponds to the `value` attribute of the selected radio
 input element.
 
-###bjq.checkBoxGroupValue(fields, [,initValue])
+###Bacon.$.checkBoxGroupValue(fields, [,initValue])
 
 Creates a `Model` for a group
 of `<input type="checkbox">` elements, given as a JQuery object. The value
@@ -149,7 +151,7 @@ The source stream is expected to provide the parameters for the AJAX call.
     var usernameRequest = username.map(function(un) { return { type: "get", url: "/usernameavailable/" + un } })
     var usernameAvailable = username.changes().ajax()
 
-### bjq.ajax(params)
+### Bacon.$.ajax(params)
 
 Performs an AJAX request and returns the results in an EventStream.
 
@@ -159,13 +161,13 @@ or
 
     var results = Bacon.$.ajax({ url: "/get/results"})
 
-### bjq.ajaxGet(url, data, dataType)
+### Bacon.$.ajaxGet(url, data, dataType)
 
-### bjq.ajaxGetJSON(url, data)
+### Bacon.$.ajaxGetJSON(url, data)
 
-### bjq.ajaxPost(url, data, dataType)
+### Bacon.$.ajaxPost(url, data, dataType)
 
-### bjq.ajaxGetScripts(url)
+### Bacon.$.ajaxGetScripts(url)
 
 ## Model API
 
@@ -296,6 +298,8 @@ require(["bacon.jquery", "jquery"], function(bjq, $) {
 ```
 
 The prebuilt javascript file can be found in the `dist` directory, or [here](https://raw.github.com/baconjs/bacon.jquery/master/dist/Bacon.JQuery.Bindings.js).
+
+The API can be accessed using `Bacon.$` or like in the above example.
 
 ## Use without AMD
 

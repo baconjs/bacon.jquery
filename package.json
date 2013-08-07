@@ -1,5 +1,5 @@
 {
-  "name": "bacon-jquery-bindings",
+  "name": "bacon.jquery",
   "version": "0.2.8",
   "author": "Juha Paananen",
   "licenses": [
@@ -26,5 +26,5 @@
     "test": "./run-tests",
     "prepublish": "node_modules/grunt-cli/bin/grunt"
   },
-  "main": "dist/Bacon.JQuery.Bindings.js"
+  "main": "dist/bacon.jquery.js"
 }

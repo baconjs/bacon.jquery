@@ -1,6 +1,6 @@
 # bacon.jquery
 
-A JQuery data binding library for [Bacon.js](https://github.com/raimohanska/bacon.js).
+A JQuery data binding library for [Bacon.js](https://github.com/baconjs/bacon.js).
 
 Adds stuff to `Bacon.$`.
 
@@ -21,7 +21,7 @@ This library is intended as a replacement for [Bacon.UI](https://github.com/raim
 
 ## Example Applications
 
-There are example applications in the [examples](https://github.com/raimohanska/bacon.jquery/tree/master/examples) directory, each with a README.md describing how they are started.
+There are example applications in the [examples](https://github.com/baconjs/bacon.jquery/tree/master/examples) directory, each with a README.md describing how they are started.
 
 Each application does essentially the same thing and the code in the example applications is essentially just this:
 
@@ -278,7 +278,7 @@ TODO: more
 
 ## Use with AMD / RequireJS
 
-The [requirejs example-app](https://github.com/raimohanska/bacon.jquery/tree/master/examples/requirejs) uses RequireJS, like this:
+The [requirejs example-app](https://github.com/baconjs/bacon.jquery/tree/master/examples/requirejs) uses RequireJS, like this:
 
 ```js
 require.config({
@@ -295,30 +295,30 @@ require(["bacon.jquery", "jquery"], function(bjq, $) {
 })
 ```
 
-The prebuilt javascript file can be found in the `dist` directory, or [here](https://raw.github.com/raimohanska/bacon.jquery/master/dist/Bacon.JQuery.Bindings.js).
+The prebuilt javascript file can be found in the `dist` directory, or [here](https://raw.github.com/baconjs/bacon.jquery/master/dist/Bacon.JQuery.Bindings.js).
 
 ## Use without AMD
 
-The [plain example-app](https://github.com/raimohanska/bacon.jquery/tree/master/examples/plain) uses RequireJS, like this:
+The [plain example-app](https://github.com/baconjs/bacon.jquery/tree/master/examples/plain) uses RequireJS, like this:
 
 So feel free to use plain old `<script>` tags to include Bacon, JQuery and BJQ.
 
 The BJQ methods are exposed through `Bacon.$`, so you can call them as in `Bacon.$.textFieldValue(..)`.
 
-The prebuilt javascript file can be found in the `dist` directory, or [here](https://raw.github.com/raimohanska/bacon.jquery/master/dist/Bacon.JQuery.Bindings.js).
+The prebuilt javascript file can be found in the `dist` directory, or [here](https://raw.github.com/baconjs/bacon.jquery/master/dist/Bacon.JQuery.Bindings.js).
 
-There's a [plain example-app](https://github.com/raimohanska/bacon.jquery/tree/master/examples/plain) that uses script tags only.
+There's a [plain example-app](https://github.com/baconjs/bacon.jquery/tree/master/examples/plain) that uses script tags only.
 
 ## Use with Node / Browserify
 
 BJQ is registered in the NPM repository as `bacon.jquery` and works fine with [node-browserify](https://github.com/substack/node-browserify).
 
-See the [browserify example-app](https://github.com/raimohanska/bacon.jquery/tree/master/examples/browserify) for an example.
+See the [browserify example-app](https://github.com/baconjs/bacon.jquery/tree/master/examples/browserify) for an example.
 
 ## Use with Bower
 
 Registered to the Bower registry as `bacon.jquery`. See the
-Example Applications, for instance [requirejs example-app](https://github.com/raimohanska/bacon.jquery/tree/master/examples/requirejs).
+Example Applications, for instance [requirejs example-app](https://github.com/baconjs/bacon.jquery/tree/master/examples/requirejs).
 
 ## Building
 
@@ -340,11 +340,11 @@ The browser tests can also be run by opening the
 
 The tests are also run automatically on [Travis CI](https://travis-ci.org/). See build status below.
 
-[![Build Status](https://travis-ci.org/raimohanska/bacon.jquery.png)](https://travis-ci.org/raimohanska/bacon.jquery)
+[![Build Status](https://travis-ci.org/baconjs/bacon.jquery.png)](https://travis-ci.org/baconjs/bacon.jquery)
 
 ## What next?
 
-See [Issues](https://github.com/raimohanska/bacon.jquery/issues).
+See [Issues](https://github.com/baconjs/bacon.jquery/issues).
 
 If this seems like a good idea, please tell me so! If you'd like to
 contribute, please do! Pull Requests, Issues etc appreciated. Star this project to let me know that you care.

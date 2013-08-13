@@ -1,5 +1,4 @@
 init = (Bacon, $) ->
-  isChrome = navigator?.userAgent?.toLowerCase().indexOf("chrome") > -1
   id = (x) -> x
   nonEmpty = (x) -> x.length > 0
   fold = (xs, seed, f) ->
@@ -129,12 +128,7 @@ init = (Bacon, $) ->
     nonEmpty = (x) -> x.length > 0
     get = -> element.val()
     autofillPoller = ->
-      if element.attr("type") is "password"
-        Bacon.interval 100
-      else if isChrome
-        Bacon.interval(100).take(20).map(get).filter(nonEmpty).take 1
-      else
-        Bacon.never()
+      Bacon.interval(50).take(10).map(get).filter(nonEmpty).take 1
     events = element.asEventStream("keyup input")
       .merge(element.asEventStream("cut paste").delay(1))
       .merge(autofillPoller())

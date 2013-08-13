@@ -28,6 +28,19 @@ describe('bacon-jquery-bindings', function() {
         var model = Bacon.$.textFieldValue(field)
         specifyValue(model, 'defaultVal')
       })
+      describe('with empty default value', function() {
+        it('waits for browser to autofill textfield', function(done) {
+          field.val('')
+          var model = Bacon.$.textFieldValue(field)
+          model.filter(function (v) {
+              return v
+          }).onValue(function() {
+            specifyValue(model, 'newVal')
+            done()
+          })
+          field.val("newVal")
+        })
+      })
     })
 
     describe('when setting value of model', function() {

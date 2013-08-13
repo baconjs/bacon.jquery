@@ -3,8 +3,7 @@
     __slice = [].slice;
 
   init = function(Bacon, $) {
-    var Lens, Model, fold, globalModCount, id, idCounter, isChrome, isModel, nonEmpty, shallowCopy, _ref;
-    isChrome = (typeof navigator !== "undefined" && navigator !== null ? (_ref = navigator.userAgent) != null ? _ref.toLowerCase().indexOf("chrome") : void 0 : void 0) > -1;
+    var Lens, Model, fold, globalModCount, id, idCounter, isModel, nonEmpty, shallowCopy;
     id = function(x) {
       return x;
     };
@@ -208,13 +207,7 @@
         return element.val();
       };
       autofillPoller = function() {
-        if (element.attr("type") === "password") {
-          return Bacon.interval(100);
-        } else if (isChrome) {
-          return Bacon.interval(100).take(20).map(get).filter(nonEmpty).take(1);
-        } else {
-          return Bacon.never();
-        }
+        return Bacon.interval(50).take(10).map(get).filter(nonEmpty).take(1);
       };
       events = element.asEventStream("keyup input").merge(element.asEventStream("cut paste").delay(1)).merge(autofillPoller());
       return Bacon.Binding({

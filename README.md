@@ -171,7 +171,7 @@ or
 
 ## Model API
 
-All the BJB methods, such as `textFieldValue` return a `Model` object, which is a Bacon.js `Property`, but extends that API by the following methods.
+All the BJQ methods, such as `textFieldValue` return a `Model` object, which is a Bacon.js `Property`, but extends that API by the following methods.
 
 ###Bacon.Model(initValue)
 
@@ -209,7 +209,7 @@ Makes a two-way binding between the two models.
 Creates a new lensed model based on this one. For example:
 
 ```js
-    car = bjb.Model({ brand: "Ford", engine: "V8" })
+    car = bjq.Model({ brand: "Ford", engine: "V8" })
     engine = car.lens "engine"
 ```
 
@@ -225,11 +225,11 @@ Creates a composite model using a template. For example:
 
 ```js
     // Model for the number of cylinders
-    cylinders = bjb.Model(12)
+    cylinders = bjq.Model(12)
     // Model for the number of doors
-    doors = bjb.Model(2)
+    doors = bjq.Model(2)
     // Composite model for the whole car
-    car = bjb.Model.combine {
+    car = bjq.Model.combine {
       price: "expensive",
       engine: { type: "gas", cylinders},
       doors
@@ -244,7 +244,7 @@ doors: 4}`, the `cylinders` model will get a new value 0.
 
 ## Binding API
 
-BJB uses a simple `Binding` API for creating `Model` objects bound to
+BJQ uses a simple `Binding` API for creating `Model` objects bound to
 DOM elements. 
 
 ###Bacon.Binding(options)

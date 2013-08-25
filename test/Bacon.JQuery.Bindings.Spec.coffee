@@ -54,6 +54,11 @@ describe "Model.addSource", ->
     b.set("lol")
     expect(values).to.deep.equal(["wat", "lol"])
     expect(otherValues).to.deep.equal(["lol"])
+  it "accepts initial value from a Property", ->
+    b = bjb.Model()
+    b.addSource(Bacon.constant("wat"))
+    values = collect(b)
+    expect(values).to.deep.equal(["wat"])
 
 describe "Model.bind", ->
   it "binds two bindings 2 ways", ->

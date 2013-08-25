@@ -29,7 +29,7 @@ init = (Bacon, $) ->
           pass
       ))
     model.apply = (source) -> 
-      modificationBus.plug(source.map((f) -> {source, f}))
+      modificationBus.plug(source.toEventStream().map((f) -> {source, f}))
       valueWithSource.changes()
         .filter((change) -> change.source != source)
         .map((change) -> change.value)

@@ -149,7 +149,7 @@ Performs an AJAX request on each event of your stream, collating results in the 
 The source stream is expected to provide the parameters for the AJAX call.
 
     var usernameRequest = username.map(function(un) { return { type: "get", url: "/usernameavailable/" + un } })
-    var usernameAvailable = username.changes().ajax()
+    var usernameAvailable = usernameRequest.changes().ajax()
 
 ### Bacon.$.ajax(params)
 

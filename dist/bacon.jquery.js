@@ -53,7 +53,7 @@
         }));
       };
       model.apply = function(source) {
-        modificationBus.plug(source.map(function(f) {
+        modificationBus.plug(source.toEventStream().map(function(f) {
           return {
             source: source,
             f: f

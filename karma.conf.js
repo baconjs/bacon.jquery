@@ -11,7 +11,7 @@ files = [
   MOCHA_ADAPTER,
   'node_modules/chai/chai.js',
   'bower_components/jquery/jquery.js',
-  'bower_components/bacon/dist/bacon.js',
+  'bower_components/bacon/dist/Bacon.js',
   'bower_components/jquery-mockjax/jquery.mockjax.js',
   'tmp/test/run/bacon.jquery.js',
   'tmp/test/run/*.js'

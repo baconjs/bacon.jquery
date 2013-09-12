@@ -1,6 +1,6 @@
 {
   "name": "bacon.jquery",
-  "version": "0.3.3",
+  "version": "0.3.6",
   "main": "dist/bacon.jquery.js",
   "ignore": ["browsertest", "examples", "src", "test", "./*.*", "build", "release", "run-tests", "version"]
 }

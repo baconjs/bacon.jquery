@@ -326,7 +326,7 @@ Example Applications, for instance [requirejs example-app](https://github.com/ba
 
 ## Building
 
-The `bacon.jquery` module is built using NPM and Grunt.
+The `bacon.jquery` module is built using NPM and Grunt. To use Grunt install the `grunt-cli` module globally with `npm install -g grunt-cli`.
 
 To build, use `npm install`.
 
@@ -334,17 +334,19 @@ Built javascript files are under the `dist` directory.
 
 ## Automatic tests
 
-Use the `npm test` to run all tests.
+Use the `npm test` to run all tests. Running browser tests requires bower, so install it globally with `npm install -g bower` and install dependencies with `bower install`.
 
-Tests include mocha tests under the `test` directory, and mocha browser tests under the `browsertest`
-directory. The test script uses [mocha-phantomjs](http://metaskills.net/mocha-phantomjs/) to run the browser tests headless.
+Tests include unit and browser tests under the `test` directory. The test script uses [karma](http://karma-runner.github.io) to run the browser tests headless.
 
-The browser tests can also be run by opening the
-`browsertest/runner.html` in the browser.
+The browser tests can also be run via the `grunt test:browser` task.
 
 The tests are also run automatically on [Travis CI](https://travis-ci.org/). See build status below.
 
 [![Build Status](https://travis-ci.org/baconjs/bacon.jquery.png)](https://travis-ci.org/baconjs/bacon.jquery)
+
+## Releasing
+
+Releases are tagged on Github and pushed to NPM. The release workflow is managed via the [`grunt release`](https://github.com/geddski/grunt-release) task. This will handle bumping the version number, committing, tagging and pushing to both NPM and Github. Note that you must have push access to both NPM and Github to be able to release.
 
 ## What next?
 

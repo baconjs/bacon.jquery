@@ -1,4 +1,4 @@
-var Bacon = require("baconjs")
+var Bacon = require("bacon")
 var $ = require("jquery")
 var bjq = require("bacon-jquery-bindings")
 

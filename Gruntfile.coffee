@@ -1,20 +1,27 @@
+config = (name) ->
+  require "./tasks/options/" + name
+path = require("path")
 module.exports = (grunt) ->
   grunt.initConfig
-    clean:
-      dist: ["dist/"]
-      coffee: ["dist/*.coffee"]
+    clean: config("clean")
+    transpile: config("transpile")
+    coffee: config("coffee")
+    copy: config("copy")
+    uglify: config("uglify")
+    simplemocha: config("simplemocha")
+    karma: config("karma")
+    release: config("release")
 
-    coffee:
-      compile:
-        files: ["dist/bacon.jquery.js": "src/Bacon.JQuery.Bindings.coffee"]
+  require("matchdep").filterDev("grunt-*").forEach grunt.loadNpmTasks
+  grunt.registerTask "build", ["clean:tmp", "coffee", "transpile", "copy:finalize"]
+  grunt.registerTask "build:test", ["clean:tmp", "coffee:src", "coffee:test", "transpile:test", "copy:testRun"]
+  grunt.registerTask "build:browserTest", ["clean:tmp", "coffee:src", "transpile:browserTest", "copy:testRun"]
+  grunt.registerTask "build:debug", "build"
+  grunt.registerTask "build:dist", ["clean:dist", "build", "copy:dist", "uglify"]
+  grunt.registerTask "test", ["test:unit", "test:browser"]
+  grunt.registerTask "test:unit", ["build:test", "simplemocha:unit"]
+  grunt.registerTask "test:browser", ["test:browser:local"]
+  grunt.registerTask "test:browser:local", ["build:browserTest", "karma:dev"]
+  grunt.registerTask "test:browser:integration", ["build:browserTest", "karma:integration"]
 
-    uglify:
-      dist:
-        src: "dist/bacon.jquery.js"
-        dest: "dist/bacon.jquery.min.js"
-
-  grunt.loadNpmTasks "grunt-contrib-coffee"
-  grunt.loadNpmTasks "grunt-contrib-clean"
-  grunt.loadNpmTasks "grunt-contrib-uglify"
-  grunt.registerTask "build", ["clean:dist", "coffee", "uglify", "clean:coffee"]
   grunt.registerTask "default", ["build"]

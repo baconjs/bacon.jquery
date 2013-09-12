@@ -8,8 +8,16 @@ var browserify = require('browserify')
 
 shim(browserify(), {
   // jQuery attaches itself to the window as '$' so we assign the exports accordingly
-  jquery: { path: './jquery.js', exports: '$' }
-})
+  jquery: {
+    path: './jquery.js',
+    exports: '$'
+  },
+  bacon: {
+    path: '../../components/bacon',
+    exports: 'Bacon'
+  }
+}).
+require(require.resolve('../../dist/Bacon.JQuery.Bindings.js'), { expose: 'bacon-jquery-bindings' })
 .require(require.resolve('./example.js'), { entry: true })
 .bundle(function (err, src) {
   if (err) return console.error(err);

@@ -8,3 +8,6 @@ browsertest/bundle.js
 examples/**/components
 examples/**/bower_components
 scratchpad.coffee
+tmp/
+components
+bower_components

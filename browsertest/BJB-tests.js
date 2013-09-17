@@ -98,7 +98,6 @@ describe('bacon.jquery', function() {
     describe('when DOM value changes', function() {
       it('updates value of model', function() {
         var model = Bacon.$.checkBoxValue(field)
-        field.attr("checked", "checked")
         field.trigger("click")
         specifyValue(model, true)
       })
@@ -200,8 +199,8 @@ describe('bacon.jquery', function() {
     describe('when DOM value changes', function() {
       it('updates value of model', function() {
         var model = Bacon.$.radioGroupValue(field)
-        $("#b").removeAttr("checked").trigger("change")
-        $("#a").attr("checked", "checked").trigger("change")
+        $("#b").click()
+        $("#a").click()
         specifyValue(model, "a")
       })
     })

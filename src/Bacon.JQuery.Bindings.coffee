@@ -142,7 +142,7 @@ init = (Bacon, $) ->
   Bacon.$.checkBoxValue = (element, initValue) ->
     Bacon.Binding {
       initValue,
-      get: -> !!element.attr("checked"),
+      get: -> element.is(":checked"),
       events: element.asEventStream("change"),
       set: (value) -> element.attr "checked", value
     }

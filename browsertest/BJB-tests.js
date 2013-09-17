@@ -1,6 +1,6 @@
 var expect = chai.expect
 
-describe('bacon-jquery-bindings', function() {
+describe('bacon.jquery', function() {
   describe('textFieldValue', function() {
     var field
     beforeEach(function() {

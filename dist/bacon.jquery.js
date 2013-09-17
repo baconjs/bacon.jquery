@@ -223,7 +223,7 @@
       return Bacon.Binding({
         initValue: initValue,
         get: function() {
-          return !!element.attr("checked");
+          return element.is(":checked");
         },
         events: element.asEventStream("change"),
         set: function(value) {

@@ -16,7 +16,8 @@ describe "Model.set", ->
     b = bjb.Model()
     values = collect(b)
     b.set("wat")
-    expect(values).to.deep.equal(["wat"])
+    b.set("asdf")
+    expect(values).to.deep.equal(["wat", "asdf"])
 
 describe "Model initial value", ->
   it "is sent", ->

@@ -18,11 +18,20 @@ describe "Model.set", ->
     b.set("wat")
     b.set("asdf")
     expect(values).to.deep.equal(["wat", "asdf"])
+  it "handles undefined like any other value", ->
+    b = bjb.Model()
+    values = collect(b)
+    b.set("wat")
+    b.set(undefined)
+    expect(values).to.deep.equal(["wat", undefined])
 
 describe "Model initial value", ->
   it "is sent", ->
     cylinders = bjb.Model(12)
     expect(collect(cylinders)).to.deep.equal([12])
+  it "handles undefined like any other value", ->
+    cylinders = bjb.Model(undefined)
+    expect(collect(cylinders)).to.deep.equal([undefined])
   it "can be omitted", ->
     cylinders = bjb.Model()
     expect(collect(cylinders)).to.deep.equal([])

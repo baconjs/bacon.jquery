@@ -57,6 +57,17 @@ describe('bacon.jquery', function() {
         field.trigger("keyup")
         specifyValue(model, "newVal")
       })
+
+      it('ignores duplicates', function() {
+        var model = Bacon.$.textFieldValue(field)
+        field.val("newVal")
+        field.trigger("keyup")
+        specifyValue(model, "newVal")
+        var values = collectValues(model)
+        field.trigger("keyup")
+        field.trigger("keyup")
+        expect(values).to.deep.equal(["newVal"])
+      })
     })
   })
 
@@ -300,7 +311,7 @@ function testEventHelper(eventName) {
       $('#bacon-dom').html('<input type="text" id="text">')
       var el = $('#bacon-dom #text')
       var stream = el.asEventStream("click")
-      var values = collectEvents(stream)
+      var values = collectValues(stream)
       el.click()
       expect(values.length).to.equal(1)
     })
@@ -318,7 +329,7 @@ function specifyValue(obs, expected) {
   expect(value).to.deep.equal(expected)
 }
 
-function collectEvents(observable) {
+function collectValues(observable) {
   var values = [];
   observable.onValue(function(value) {
     return values.push(value);

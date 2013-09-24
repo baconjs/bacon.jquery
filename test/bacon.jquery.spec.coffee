@@ -75,6 +75,16 @@ describe "Model.addSource", ->
     b.addSource(Bacon.constant("wat"))
     values = collect(b)
     expect(values).to.deep.equal(["wat"])
+  it "ignores duplicates from input", ->
+    b = bjb.Model()
+    values = collect(b)
+    b.addSource(Bacon.fromArray(["wat", "wat"]))
+    expect(values).to.deep.equal(["wat"])
+  it "ignores duplicates from input with init value", ->
+    b = bjb.Model("wat")
+    values = collect(b)
+    b.addSource(Bacon.fromArray(["wat", "wat"]))
+    expect(values).to.deep.equal(["wat"])
 
 describe "Model.bind", ->
   it "binds two bindings 2 ways", ->

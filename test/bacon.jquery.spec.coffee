@@ -1,6 +1,6 @@
 expect = require("chai").expect
 Bacon = require "baconjs"
-bjb = require "../src/Bacon.JQuery.Bindings"
+bjb = require "../src/bacon.jquery"
 twice = (x) -> x * 2
 
 grep = process.env.grep

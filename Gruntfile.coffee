@@ -6,7 +6,7 @@ module.exports = (grunt) ->
 
     coffee:
       compile:
-        files: ["dist/bacon.jquery.js": "src/Bacon.JQuery.Bindings.coffee"]
+        files: ["dist/bacon.jquery.js": "src/bacon.jquery.coffee"]
 
     uglify:
       dist:

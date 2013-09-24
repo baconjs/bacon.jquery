@@ -24,6 +24,12 @@ describe "Model.set", ->
     b.set("wat")
     b.set(undefined)
     expect(values).to.deep.equal(["wat", undefined])
+  it "skips duplicate values", ->
+    b = bjb.Model()
+    values = collect(b)
+    b.set("wat")
+    b.set("wat")
+    expect(values).to.deep.equal(["wat"])
 
 describe "Model initial value", ->
   it "is sent", ->

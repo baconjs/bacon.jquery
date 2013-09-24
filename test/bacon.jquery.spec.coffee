@@ -189,6 +189,25 @@ describe "Model.combine", ->
       doors: 2
     }])
     expect(collect(cylinders)).to.deep.equal([8])
+  it "supports deep nesting", ->
+    cylinders = bjb.Model(12)
+    seats = bjb.Model(4)
+    car = bjb.Model.combine {
+      engine: { cylinders},
+      interior: {
+        seats: { count: seats }
+      }
+    }
+    seats.set(5)
+    expect(collect(cylinders)).to.deep.equal([12])
+    expect(collect(car)).to.deep.equal([{
+      engine: { cylinders: 12 }
+      interior: {
+        seats: {
+          count: 5
+        }
+      }
+    }])
   it "skips duplicates correctly", ->
     a = bjb.Model("a")
     b = bjb.Model("b")

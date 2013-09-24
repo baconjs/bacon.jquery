@@ -130,6 +130,28 @@ describe "Model.bind", ->
     v_b = collect(b)
     expect(v_a).to.deep.equal(["X"])
     expect(v_b).to.deep.equal(["X"])
+  it "skips duplicates correctly", ->
+    a = bjb.Model("a")
+    b = bjb.Model("b")
+    c = bjb.Model.combine { a, b }
+    values = collect(c)
+    a.set("a2")
+    a.set("a2")
+    expect(values).to.deep.equal([
+      { a: "a", b: "b" },
+      { a: "a2", b: "b" }])
+  it "skips duplicates correctly with external source", ->
+    a = bjb.Model("a")
+    b = bjb.Model("b")
+    c = bjb.Model.combine { a, b }
+    values = collect(c)
+    bus = new Bacon.Bus()
+    a.addSource(bus)
+    bus.push("a2")
+    bus.push("a2")
+    expect(values).to.deep.equal([
+      { a: "a", b: "b" },
+      { a: "a2", b: "b" }])
 
 describe "Model.lens", ->
   engineLens = {

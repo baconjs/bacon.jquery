@@ -17,7 +17,9 @@ init = (Bacon, $) ->
     valueWithSource = Bacon.update(
       { initial: true },
       [modificationBus], (({value}, {source, f}) -> 
-        {source, value: f(value), modCount: ++globalModCount}),
+        newValue = f(value)
+        modCount = if newValue != value then ++globalModCount else globalModCount
+        {source, value: newValue, modCount}),
       [syncBus], ((_, syncEvent) -> syncEvent)
     ).changes().toProperty()
     model = valueWithSource.map(".value").skipDuplicates()

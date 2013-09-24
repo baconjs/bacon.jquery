@@ -31,13 +31,15 @@
       valueWithSource = Bacon.update({
         initial: true
       }, [modificationBus], (function(_arg, _arg1) {
-        var f, source, value;
+        var f, modCount, newValue, source, value;
         value = _arg.value;
         source = _arg1.source, f = _arg1.f;
+        newValue = f(value);
+        modCount = newValue !== value ? ++globalModCount : globalModCount;
         return {
           source: source,
-          value: f(value),
-          modCount: ++globalModCount
+          value: newValue,
+          modCount: modCount
         };
       }), [syncBus], (function(_, syncEvent) {
         return syncEvent;

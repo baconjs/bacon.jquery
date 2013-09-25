@@ -10,7 +10,11 @@ init = (Bacon, $) ->
   globalModCount = 0
   idCounter = 1
 
+  defaultEquals = (a, b) -> a == b
+  sameValue = (eq) -> (a, b) -> !a.initial && eq(a, b)
+
   Model = Bacon.Model = Bacon.$.Model = (initValue) ->
+    eq = defaultEquals
     myModCount = 0
     modificationBus = new Bacon.Bus()
     syncBus = new Bacon.Bus()
@@ -21,8 +25,8 @@ init = (Bacon, $) ->
         modCount = if newValue != value then ++globalModCount else globalModCount
         {source, value: newValue, modCount}),
       [syncBus], ((_, syncEvent) -> syncEvent)
-    ).changes().toProperty()
-    model = valueWithSource.map(".value").skipDuplicates()
+    ).skipDuplicates(sameValue(eq)).changes().toProperty()
+    model = valueWithSource.map(".value").skipDuplicates(eq)
     model.id = idCounter++
     model.addSyncSource = (syncEvents) ->
       syncBus.plug(syncEvents.filter((e) ->

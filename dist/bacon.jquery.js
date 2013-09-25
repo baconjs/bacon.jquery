@@ -3,7 +3,7 @@
     __slice = [].slice;
 
   init = function(Bacon, $) {
-    var Lens, Model, fold, globalModCount, id, idCounter, isModel, nonEmpty, shallowCopy;
+    var Lens, Model, defaultEquals, fold, globalModCount, id, idCounter, isModel, nonEmpty, sameValue, shallowCopy;
     id = function(x) {
       return x;
     };
@@ -23,8 +23,17 @@
     };
     globalModCount = 0;
     idCounter = 1;
+    defaultEquals = function(a, b) {
+      return a === b;
+    };
+    sameValue = function(eq) {
+      return function(a, b) {
+        return !a.initial && eq(a, b);
+      };
+    };
     Model = Bacon.Model = Bacon.$.Model = function(initValue) {
-      var model, modificationBus, myModCount, syncBus, valueWithSource;
+      var eq, model, modificationBus, myModCount, syncBus, valueWithSource;
+      eq = defaultEquals;
       myModCount = 0;
       modificationBus = new Bacon.Bus();
       syncBus = new Bacon.Bus();
@@ -43,8 +52,8 @@
         };
       }), [syncBus], (function(_, syncEvent) {
         return syncEvent;
-      })).changes().toProperty();
-      model = valueWithSource.map(".value").skipDuplicates();
+      })).skipDuplicates(sameValue(eq)).changes().toProperty();
+      model = valueWithSource.map(".value").skipDuplicates(eq);
       model.id = idCounter++;
       model.addSyncSource = function(syncEvents) {
         return syncBus.plug(syncEvents.filter(function(e) {

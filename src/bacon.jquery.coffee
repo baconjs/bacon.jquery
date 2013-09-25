@@ -11,7 +11,7 @@ init = (Bacon, $) ->
   idCounter = 1
 
   defaultEquals = (a, b) -> a == b
-  sameValue = (eq) -> (a, b) -> !a.initial && eq(a, b)
+  sameValue = (eq) -> (a, b) -> !a.initial && eq(a.value, b.value)
 
   Model = Bacon.Model = Bacon.$.Model = (initValue) ->
     eq = defaultEquals

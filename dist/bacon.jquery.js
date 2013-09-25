@@ -28,7 +28,7 @@
     };
     sameValue = function(eq) {
       return function(a, b) {
-        return !a.initial && eq(a, b);
+        return !a.initial && eq(a.value, b.value);
       };
     };
     Model = Bacon.Model = Bacon.$.Model = function(initValue) {

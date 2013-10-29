@@ -242,6 +242,19 @@ updated accordingly. Also, if you set the value in the `car` model to,
 say `{price: "affordable", engine: { type: "electric", cylinders: 0 },
 doors: 4}`, the `cylinders` model will get a new value 0.
 
+###model.syncConverter
+
+The model has a `syncConverter` function that it uses to map the
+incoming data values from its synchronization sources, i.e. the sources
+that have been added using `bind`, `addSource`, or explicitly using
+`Model.combine`. You can override this method to process the incoming
+values. For instance, you may convert `undefined` values to empty
+strings like this:
+
+```js
+   model.syncConverter = function(x) { return x || "" }
+```
+
 ## Binding API
 
 BJQ uses a simple `Binding` API for creating `Model` objects bound to

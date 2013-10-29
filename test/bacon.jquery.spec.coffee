@@ -130,6 +130,14 @@ describe "Model.bind", ->
     v_b = collect(b)
     expect(v_a).to.deep.equal(["X"])
     expect(v_b).to.deep.equal(["X"])
+  it "supports syncConverter", ->
+    a = bjb.Model()
+    a.syncConverter = (x) -> x * 2
+    b = bjb.Model(1)
+    a.bind(b)
+    b.set(1)
+    v_a = collect(a)
+    expect(v_a).to.deep.equal([2])
 
 describe "Model.lens", ->
   engineLens = {
@@ -167,6 +175,18 @@ describe "Model.lens", ->
     expect(collect(cylinders)).to.deep.equal([8])
     cylinders.set(12)
     expect(collect(car)).to.deep.equal([{ brand: "Ford", engine: {cylinders: 12}}])
+  it "Works in a more complex setup", ->
+    nonNullLens = {
+      get: (x) -> x||""
+      set: (context, x) -> x||""
+    }
+    car = bjb.Model({ brand: "Ford"})
+    brand = bjb.Model()
+    brand.bind car.lens ".brand"
+    nonNullBrand = brand.lens nonNullLens
+    brandValues = collect(nonNullBrand)
+    car.set {}
+    expect(brandValues).to.deep.equal ["Ford", ""]
 
 describe "Model.combine", ->
   it "creates a new model using a template", ->

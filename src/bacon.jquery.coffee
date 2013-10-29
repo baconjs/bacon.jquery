@@ -29,11 +29,12 @@ init = (Bacon, $) ->
     model = valueWithSource.map(".value").skipDuplicates(eq)
     model.id = idCounter++
     model.addSyncSource = (syncEvents) ->
-      syncBus.plug(syncEvents.filter((e) ->
+      syncBus.plug syncEvents
+        .filter((e) ->
           pass = e.modCount != myModCount
           myModCount = e.modCount
-          pass
-      ))
+          pass)
+        .map((e) -> valueLens.set(e, model.syncConverter(valueLens.get(e))))
     model.apply = (source) -> 
       modificationBus.plug(source.toEventStream().map((f) -> {source, f}))
       valueWithSource.changes()
@@ -51,13 +52,13 @@ init = (Bacon, $) ->
     model.lens = (lens) ->
       lens = Lens(lens)
       lensed = Model()
-      valueLens = Lens.objectLens("value")
       this.addSyncSource(model.sampledBy(lensed.syncEvents(), (full, lensedSync) ->
         valueLens.set(lensedSync, lens.set(full, lensedSync.value))
       ))
       lensed.addSyncSource(this.syncEvents().map((e) -> 
         valueLens.set(e, lens.get(e.value))))
       lensed
+    model.syncConverter = id
     model
 
   Model.combine = (template) ->
@@ -117,6 +118,8 @@ init = (Bacon, $) ->
         outer.set(context, newInnerContext)
     }
     fold(args, Lens.id, compose2)
+  
+  valueLens = Lens.objectLens("value")
 
   shallowCopy = (x) ->
     copy = if x instanceof Array

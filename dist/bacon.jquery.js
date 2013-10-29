@@ -3,7 +3,7 @@
     __slice = [].slice;
 
   init = function(Bacon, $) {
-    var Lens, Model, defaultEquals, fold, globalModCount, id, idCounter, isModel, nonEmpty, sameValue, shallowCopy;
+    var Lens, Model, defaultEquals, fold, globalModCount, id, idCounter, isModel, nonEmpty, sameValue, shallowCopy, valueLens;
     id = function(x) {
       return x;
     };
@@ -61,6 +61,8 @@
           pass = e.modCount !== myModCount;
           myModCount = e.modCount;
           return pass;
+        }).map(function(e) {
+          return valueLens.set(e, model.syncConverter(valueLens.get(e)));
         }));
       };
       model.apply = function(source) {
@@ -103,10 +105,9 @@
         model.set(initValue);
       }
       model.lens = function(lens) {
-        var lensed, valueLens;
+        var lensed;
         lens = Lens(lens);
         lensed = Model();
-        valueLens = Lens.objectLens("value");
         this.addSyncSource(model.sampledBy(lensed.syncEvents(), function(full, lensedSync) {
           return valueLens.set(lensedSync, lens.set(full, lensedSync.value));
         }));
@@ -115,6 +116,7 @@
         }));
         return lensed;
       };
+      model.syncConverter = id;
       return model;
     };
     Model.combine = function(template) {
@@ -199,6 +201,7 @@
       };
       return fold(args, Lens.id, compose2);
     };
+    valueLens = Lens.objectLens("value");
     shallowCopy = function(x) {
       var copy, key, value;
       copy = x instanceof Array ? [] : {};

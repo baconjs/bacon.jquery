@@ -187,14 +187,17 @@ describe "Model.lens", ->
     brandValues = collect(nonNullBrand)
     car.set {}
     expect(brandValues).to.deep.equal ["Ford", ""]
-  it.only "another setup", ->
-    a = Bacon.Model()
-    f = a.lens("first").log("first")
-    l = a.lens("last").log("last")
-    stuff = Bacon.Model.combine({f, l}).log("stuff")
+  it "works in diamond-shaped setup", ->
+    root = Bacon.Model()
+    first = root.lens("first")
+    last = root.lens("last")
+    stuff = Bacon.Model.combine({first, last})
     values = collect(stuff)
-    a.set({first:"f", last:"l"})
-    expect(values).to.deep.equal([{}, {first: "f", last: "l"}])
+    root.set({first:"f", last:"l"})
+    expect(values).to.deep.equal([
+      {}, 
+      {first: "f"},
+      {first: "f", last: "l"}])
 
 describe "Model.combine", ->
   it "creates a new model using a template", ->

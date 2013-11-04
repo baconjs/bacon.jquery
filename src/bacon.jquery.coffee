@@ -14,6 +14,7 @@ init = (Bacon, $) ->
   sameValue = (eq) -> (a, b) -> !a.initial && eq(a.value, b.value)
 
   Model = Bacon.Model = Bacon.$.Model = (initValue) ->
+    myId = idCounter++
     eq = defaultEquals
     myModCount = 0
     modificationBus = new Bacon.Bus()
@@ -22,18 +23,16 @@ init = (Bacon, $) ->
       { initial: true },
       [modificationBus], (({value}, {source, f}) -> 
         newValue = f(value)
-        modCount = if newValue != value then ++globalModCount else globalModCount
-        {source, value: newValue, modCount}),
+        modStack = [myId]
+        {source, value: newValue, modStack}),
       [syncBus], ((_, syncEvent) -> syncEvent)
     ).skipDuplicates(sameValue(eq)).changes().toProperty()
     model = valueWithSource.map(".value").skipDuplicates(eq)
-    model.id = idCounter++
+    model.id = myId
     model.addSyncSource = (syncEvents) ->
       syncBus.plug syncEvents
-        .filter((e) ->
-          pass = e.modCount != myModCount
-          myModCount = e.modCount
-          pass)
+        .filter((e) -> !Bacon._.contains(e.modStack, myId))
+        .map((e) -> shallowCopy e, "modStack", e.modStack.concat([myId]))
         .map((e) -> valueLens.set(e, model.syncConverter(valueLens.get(e))))
     model.apply = (source) -> 
       modificationBus.plug(source.toEventStream().map((f) -> {source, f}))
@@ -101,10 +100,7 @@ init = (Bacon, $) ->
     objectKeyLens = (key) -> 
       Lens {
         get: (x) -> x[key],
-        set: (context, value) ->
-          context = shallowCopy(context)
-          context[key] = value
-          context
+        set: (context, value) -> shallowCopy context, key, value
       }
     keys = path.split(".").filter(nonEmpty)
     Lens.compose(keys.map(objectKeyLens)...)
@@ -121,12 +117,14 @@ init = (Bacon, $) ->
   
   valueLens = Lens.objectLens("value")
 
-  shallowCopy = (x) ->
+  shallowCopy = (x, key, value) ->
     copy = if x instanceof Array
       []
     else
       {}
-    for key, value of x
+    for k, v of x
+      copy[k] = v
+    if key?
       copy[key] = value
     copy
 

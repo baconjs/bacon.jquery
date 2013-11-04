@@ -32,7 +32,8 @@
       };
     };
     Model = Bacon.Model = Bacon.$.Model = function(initValue) {
-      var eq, model, modificationBus, myModCount, syncBus, valueWithSource;
+      var eq, model, modificationBus, myId, myModCount, syncBus, valueWithSource;
+      myId = idCounter++;
       eq = defaultEquals;
       myModCount = 0;
       modificationBus = new Bacon.Bus();
@@ -40,27 +41,26 @@
       valueWithSource = Bacon.update({
         initial: true
       }, [modificationBus], (function(_arg, _arg1) {
-        var f, modCount, newValue, source, value;
+        var f, modStack, newValue, source, value;
         value = _arg.value;
         source = _arg1.source, f = _arg1.f;
         newValue = f(value);
-        modCount = newValue !== value ? ++globalModCount : globalModCount;
+        modStack = [myId];
         return {
           source: source,
           value: newValue,
-          modCount: modCount
+          modStack: modStack
         };
       }), [syncBus], (function(_, syncEvent) {
         return syncEvent;
       })).skipDuplicates(sameValue(eq)).changes().toProperty();
       model = valueWithSource.map(".value").skipDuplicates(eq);
-      model.id = idCounter++;
+      model.id = myId;
       model.addSyncSource = function(syncEvents) {
         return syncBus.plug(syncEvents.filter(function(e) {
-          var pass;
-          pass = e.modCount !== myModCount;
-          myModCount = e.modCount;
-          return pass;
+          return !Bacon._.contains(e.modStack, myId);
+        }).map(function(e) {
+          return shallowCopy(e, "modStack", e.modStack.concat([myId]));
         }).map(function(e) {
           return valueLens.set(e, model.syncConverter(valueLens.get(e)));
         }));
@@ -174,9 +174,7 @@
             return x[key];
           },
           set: function(context, value) {
-            context = shallowCopy(context);
-            context[key] = value;
-            return context;
+            return shallowCopy(context, key, value);
           }
         });
       };
@@ -202,11 +200,14 @@
       return fold(args, Lens.id, compose2);
     };
     valueLens = Lens.objectLens("value");
-    shallowCopy = function(x) {
-      var copy, key, value;
+    shallowCopy = function(x, key, value) {
+      var copy, k, v;
       copy = x instanceof Array ? [] : {};
-      for (key in x) {
-        value = x[key];
+      for (k in x) {
+        v = x[k];
+        copy[k] = v;
+      }
+      if (key != null) {
         copy[key] = value;
       }
       return copy;

@@ -132,7 +132,6 @@ init = (Bacon, $) ->
 
   # Input element bindings
   Bacon.$.textFieldValue = (element, initValue) ->
-    nonEmpty = (x) -> x.length > 0
     get = -> element.val()
     autofillPoller = ->
       Bacon.interval(50).take(10).map(get).filter(nonEmpty).take 1

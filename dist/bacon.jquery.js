@@ -32,33 +32,41 @@
       };
     };
     Model = Bacon.Model = Bacon.$.Model = function(initValue) {
-      var eq, model, modificationBus, myId, myModCount, syncBus, valueWithSource;
+      var currentValue, eq, model, modificationBus, myId, myModCount, syncBus, valueWithSource;
       myId = idCounter++;
       eq = defaultEquals;
       myModCount = 0;
       modificationBus = new Bacon.Bus();
       syncBus = new Bacon.Bus();
+      currentValue = void 0;
       valueWithSource = Bacon.update({
         initial: true
       }, [modificationBus], (function(_arg, _arg1) {
-        var f, modStack, newValue, source, value;
+        var changed, f, modStack, newValue, source, value;
         value = _arg.value;
         source = _arg1.source, f = _arg1.f;
         newValue = f(value);
         modStack = [myId];
+        changed = newValue !== value;
         return {
           source: source,
           value: newValue,
-          modStack: modStack
+          modStack: modStack,
+          changed: changed
         };
       }), [syncBus], (function(_, syncEvent) {
         return syncEvent;
       })).skipDuplicates(sameValue(eq)).changes().toProperty();
       model = valueWithSource.map(".value").skipDuplicates(eq);
+      model.onValue(function(x) {
+        return currentValue = x;
+      });
       model.id = myId;
       model.addSyncSource = function(syncEvents) {
         return syncBus.plug(syncEvents.filter(function(e) {
-          return !Bacon._.contains(e.modStack, myId);
+          return e.changed && !Bacon._.contains(e.modStack, myId);
+        }).doAction(function() {
+          return Bacon.Model.syncCount++;
         }).map(function(e) {
           return shallowCopy(e, "modStack", e.modStack.concat([myId]));
         }).map(function(e) {
@@ -93,6 +101,9 @@
           return value;
         });
       };
+      model.get = function() {
+        return currentValue;
+      };
       model.syncEvents = function() {
         return valueWithSource.toEventStream();
       };
@@ -119,6 +130,7 @@
       model.syncConverter = id;
       return model;
     };
+    Bacon.Model.syncCount = 0;
     Model.combine = function(template) {
       var initValue, key, lens, lensedModel, model, value;
       if (typeof template !== "object") {
@@ -215,9 +227,6 @@
     $.fn.asEventStream = Bacon.$.asEventStream;
     Bacon.$.textFieldValue = function(element, initValue) {
       var autofillPoller, events, get;
-      nonEmpty = function(x) {
-        return x.length > 0;
-      };
       get = function() {
         return element.val();
       };

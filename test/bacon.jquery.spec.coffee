@@ -31,6 +31,16 @@ describe "Model.set", ->
     b.set("wat")
     expect(values).to.deep.equal(["wat"])
 
+describe "Model.get", ->
+  it "returns current value", ->
+    b = bjb.Model("hello")
+    expect(b.get()).to.equal("hello")
+    b.set("hallo")
+    expect(b.get()).to.equal("hallo")
+  it "defaults to undefined", ->
+    b = bjb.Model()
+    expect(b.get()).to.equal(undefined)
+
 describe "Model initial value", ->
   it "is sent", ->
     cylinders = bjb.Model(12)

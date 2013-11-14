@@ -12,26 +12,32 @@ init = (Bacon, $) ->
 
   defaultEquals = (a, b) -> a == b
   sameValue = (eq) -> (a, b) -> !a.initial && eq(a.value, b.value)
-
+  
   Model = Bacon.Model = Bacon.$.Model = (initValue) ->
     myId = idCounter++
     eq = defaultEquals
     myModCount = 0
     modificationBus = new Bacon.Bus()
     syncBus = new Bacon.Bus()
+    currentValue = undefined
     valueWithSource = Bacon.update(
       { initial: true },
       [modificationBus], (({value}, {source, f}) -> 
         newValue = f(value)
         modStack = [myId]
-        {source, value: newValue, modStack}),
+        changed = newValue != value
+        {source, value: newValue, modStack, changed}),
       [syncBus], ((_, syncEvent) -> syncEvent)
     ).skipDuplicates(sameValue(eq)).changes().toProperty()
     model = valueWithSource.map(".value").skipDuplicates(eq)
+    model.onValue((x) -> currentValue = x)
     model.id = myId
     model.addSyncSource = (syncEvents) ->
       syncBus.plug syncEvents
-        .filter((e) -> !Bacon._.contains(e.modStack, myId))
+        .filter((e) -> 
+          e.changed && !Bacon._.contains(e.modStack, myId)
+        )
+        .doAction(-> Bacon.Model.syncCount++)
         .map((e) -> shallowCopy e, "modStack", e.modStack.concat([myId]))
         .map((e) -> valueLens.set(e, model.syncConverter(valueLens.get(e))))
     model.apply = (source) -> 
@@ -42,6 +48,7 @@ init = (Bacon, $) ->
     model.addSource = (source) -> model.apply(source.map((v) -> (->v)))
     model.modify = (f) -> model.apply(Bacon.once(f))
     model.set = (value) -> model.modify(-> value)
+    model.get = -> currentValue
     model.syncEvents = -> valueWithSource.toEventStream()
     model.bind = (other) ->
       this.addSyncSource(other.syncEvents())
@@ -59,6 +66,8 @@ init = (Bacon, $) ->
       lensed
     model.syncConverter = id
     model
+  
+  Bacon.Model.syncCount = 0
 
   Model.combine = (template) ->
     if typeof template != "object"

@@ -182,6 +182,11 @@ Creates a new model, with the given (optional) initial value.
 Sets a new value for the model, also pushing this
 value to all two-way sources.
 
+###model.get()
+
+Returns the current value of the model. If there's no current value,
+returns `undefined`.
+
 ###model.modify(f)
 
 Modifies the value of the model by applying the

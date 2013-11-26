@@ -1,5 +1,6 @@
 expect = require("chai").expect
 Bacon = require "baconjs"
+BaconModel = require "bacon.model"
 bjb = require "../src/bacon.jquery"
 twice = (x) -> x * 2
 

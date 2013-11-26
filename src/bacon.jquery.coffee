@@ -1,6 +1,8 @@
 init = (Bacon, BaconModel, $) ->
   nonEmpty = (x) -> x.length > 0
   
+  Bacon.$.Model = Bacon.Model
+
   $.fn.asEventStream = Bacon.$.asEventStream
 
   # Input element bindings

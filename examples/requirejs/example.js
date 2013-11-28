@@ -1,5 +1,6 @@
 require.config({
   paths: {
+    "bacon.model": "bower_components/bacon.model/dist/bacon.model",
     "bacon.jquery": "bower_components/bacon.jquery/dist/bacon.jquery",
     "bacon": "bower_components/bacon/dist/Bacon",
     "jquery": "bower_components/jquery/jquery"

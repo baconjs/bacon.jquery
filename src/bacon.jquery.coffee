@@ -1,6 +1,15 @@
 init = (Bacon, BaconModel, $) ->
   nonEmpty = (x) -> x.length > 0
-  
+  _ = {
+  indexOf: if Array::indexOf
+    (xs, x) -> xs.indexOf(x)
+  else
+    (xs, x) ->
+      for y, i in xs
+        return i if x == y
+      -1
+  }
+
   Bacon.$.Model = Bacon.Model
 
   $.fn.asEventStream = Bacon.$.asEventStream
@@ -57,7 +66,7 @@ init = (Bacon, BaconModel, $) ->
       events: checkBoxes.asEventStream("change"),
       set: (value) ->
         checkBoxes.each (i, elem) ->
-          $(elem).attr "checked", value.indexOf($(elem).val()) >= 0
+          $(elem).attr "checked", _.indexOf(value, $(elem).val()) >= 0
     }
 
   # AJAX

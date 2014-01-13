@@ -3,9 +3,23 @@
     __slice = [].slice;
 
   init = function(Bacon, BaconModel, $) {
-    var nonEmpty;
+    var nonEmpty, _;
     nonEmpty = function(x) {
       return x.length > 0;
+    };
+    _ = {
+      indexOf: Array.prototype.indexOf ? function(xs, x) {
+        return xs.indexOf(x);
+      } : function(xs, x) {
+        var i, y, _i, _len;
+        for (i = _i = 0, _len = xs.length; _i < _len; i = ++_i) {
+          y = xs[i];
+          if (x === y) {
+            return i;
+          }
+        }
+        return -1;
+      }
     };
     Bacon.$.Model = Bacon.Model;
     $.fn.asEventStream = Bacon.$.asEventStream;
@@ -80,7 +94,7 @@
         events: checkBoxes.asEventStream("change"),
         set: function(value) {
           return checkBoxes.each(function(i, elem) {
-            return $(elem).attr("checked", value.indexOf($(elem).val()) >= 0);
+            return $(elem).attr("checked", _.indexOf(value, $(elem).val()) >= 0);
           });
         }
       });

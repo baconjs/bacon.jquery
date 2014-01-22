@@ -6,11 +6,8 @@ Adds stuff to `Bacon.$`. Is also called BJQ.
 
 Includes
 
-- Binding the state of HTML input elements to `Model` objects that extend
+- Binding the state of HTML input elements to [`Bacon.Model`](https://github.com/baconjs/bacon.model) objects that extend
   the Bacon.js `Property` API by providing a bidirectional binding
-- Composing `Model` objects using `model.bind`, `Model.combine` and `model.lens`
-- Attaching additional input `EventStream` to any `Model` by using
-  `model.addSource`
 - AJAX helpers. Wrap a JQuery AJAX call into an EventStream using
   `Bacon.$.ajax("/get/stuff")`. Convert an `EventStream` of requests
 into an `EventStream` of responses like `requests.ajax()`.

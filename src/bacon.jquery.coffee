@@ -52,7 +52,7 @@ init = (Bacon, BaconModel, $) ->
       events: radios.asEventStream("change"),
       set: (value) ->
         radios.each (i, elem) ->
-          $(elem).prop("checked", elem.value is value)
+          $(elem).prop "checked", elem.value is value
     }
 
   Bacon.$.checkBoxGroupValue = (checkBoxes, initValue) ->

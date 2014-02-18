@@ -45,11 +45,11 @@
       return Bacon.Binding({
         initValue: initValue,
         get: function() {
-          return element.is(":checked");
+          return element.prop("checked");
         },
         events: element.asEventStream("change"),
         set: function(value) {
-          return element.attr("checked", value);
+          return element.prop("checked", value);
         }
       });
     };
@@ -74,11 +74,7 @@
         events: radios.asEventStream("change"),
         set: function(value) {
           return radios.each(function(i, elem) {
-            if (elem.value === value) {
-              return $(elem).attr("checked", true);
-            } else {
-              return $(elem).removeAttr("checked");
-            }
+            return $(elem).prop("checked", elem.value === value);
           });
         }
       });
@@ -94,7 +90,7 @@
         events: checkBoxes.asEventStream("change"),
         set: function(value) {
           return checkBoxes.each(function(i, elem) {
-            return $(elem).attr("checked", _.indexOf(value, $(elem).val()) >= 0);
+            return $(elem).prop("checked", _.indexOf(value, $(elem).val()) >= 0);
           });
         }
       });

@@ -95,6 +95,8 @@ init = (Bacon, BaconModel, $) ->
 
   $.fn.extend events
 
+  # jQuery Effects
+
   effectNames = [
     "animate", "show", "hide", "toggle",
     "fadeIn", "fadeOut", "fadeTo", "fadeToggle",
@@ -104,7 +106,6 @@ init = (Bacon, BaconModel, $) ->
   for e in effectNames
     effects[e + 'E'] = (args...) -> Bacon.fromPromise @[e](args...).promise()
 
-  # jQuery Effects
   $.fn.extend effects
 
   Bacon.$

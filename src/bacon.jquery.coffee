@@ -53,7 +53,7 @@ init = (Bacon, BaconModel, $) ->
       set: (value) ->
         radios.each (i, elem) ->
           if elem.value is value
-            $(elem).attr "checked", true 
+            $(elem).attr "checked", true
           else
             $(elem).removeAttr "checked"
     }
@@ -71,60 +71,41 @@ init = (Bacon, BaconModel, $) ->
 
   # AJAX
   Bacon.$.ajax = (params, abort) -> Bacon.fromPromise $.ajax(params), abort
-  Bacon.$.ajaxGet = (url, data, dataType, abort) -> Bacon.$.ajax({url, dataType, data}, abort)       
-  Bacon.$.ajaxGetJSON = (url, data, abort) -> Bacon.$.ajax({url, dataType: "json", data}, abort)         
+  Bacon.$.ajaxGet = (url, data, dataType, abort) -> Bacon.$.ajax({url, dataType, data}, abort)
+  Bacon.$.ajaxGetJSON = (url, data, abort) -> Bacon.$.ajax({url, dataType: "json", data}, abort)
   Bacon.$.ajaxPost = (url, data, dataType, abort) -> Bacon.$.ajax({url, dataType, data, type: "POST"}, abort)
   Bacon.$.ajaxGetScript = (url, abort) -> Bacon.$.ajax({url, dataType: "script"}, abort)
   Bacon.$.lazyAjax = (params) -> Bacon.once(params).flatMap(Bacon.$.ajax)
   Bacon.Observable::ajax = -> @flatMapLatest Bacon.$.ajax
 
   # jQuery DOM Events
-  $.fn.extend
-    keydownE: (args...) -> @asEventStream "keydown", args...
-    keyupE: (args...) -> @asEventStream "keyup", args...
-    keypressE: (args...) -> @asEventStream "keypress", args...
 
-    clickE: (args...) -> @asEventStream "click", args... 
-    dblclickE: (args...) -> @asEventStream "dblclick", args... 
-    mousedownE: (args...) -> @asEventStream "mousedown", args... 
-    mouseupE: (args...) -> @asEventStream "mouseup", args...
+  eventNames = [
+    "keydown", "keyup", "keypress",
+    "click", "dblclick", "mousedown", "mouseup",
+    "mouseenter", "mouseleave", "mousemove", "mouseout", "mouseover",
+    "resize", "scroll", "select", "change",
+    "submit",
+    "blur", "focus", "focusin", "focusout",
+    "load", "unload" ]
+  events = {}
 
-    mouseenterE: (args...) -> @asEventStream "mouseenter", args...
-    mouseleaveE: (args...) -> @asEventStream "mouseleave", args...
-    mousemoveE: (args...) -> @asEventStream "mousemove", args...
-    mouseoutE: (args...) -> @asEventStream "mouseout", args...
-    mouseoverE: (args...) -> @asEventStream "mouseover", args...
+  for e in eventNames
+    events[e + 'E'] = (args...) -> @asEventStream e, args...
 
-    resizeE: (args...) -> @asEventStream "resize", args...
-    scrollE: (args...) -> @asEventStream "scroll", args...
-    selectE: (args...) -> @asEventStream "select", args...
-    changeE: (args...) -> @asEventStream "change", args...
+  $.fn.extend events
 
-    submitE: (args...) -> @asEventStream "submit", args...
+  effectNames = [
+    "animate", "show", "hide", "toggle",
+    "fadeIn", "fadeOut", "fadeTo", "fadeToggle",
+    "slideDown", "slideUp", "slideToggle" ]
+  effects = {}
 
-    blurE: (args...) -> @asEventStream "blur", args...
-    focusE: (args...) -> @asEventStream "focus", args...
-    focusinE: (args...) -> @asEventStream "focusin", args...
-    focusoutE: (args...) -> @asEventStream "focusout", args...
-
-    loadE: (args...) -> @asEventStream "load", args...
-    unloadE: (args...) -> @asEventStream "unload", args...
+  for e in effectNames
+    effects[e + 'E'] = (args...) -> Bacon.fromPromise @[e](args...).promise()
 
   # jQuery Effects
-  $.fn.extend
-    animateE: (args...) -> Bacon.fromPromise @animate(args...).promise()
-    showE: (args...) -> Bacon.fromPromise @show(args...).promise()
-    hideE: (args...)-> Bacon.fromPromise @hide(args...).promise()
-    toggleE: (args...) -> Bacon.fromPromise @toggle(args...).promise()
-
-    fadeInE: (args...) -> Bacon.fromPromise @fadeIn(args...).promise()
-    fadeOutE: (args...) -> Bacon.fromPromise @fadeOut(args...).promise()
-    fadeToE: (args...) -> Bacon.fromPromise @fadeTo(args...).promise()
-    fadeToggleE: (args...) -> Bacon.fromPromise @fadeToggle(args...).promise()
-
-    slideDownE: (args...) -> Bacon.fromPromise @slideDown(args...).promise()
-    slideUpE: (args...) -> Bacon.fromPromise @slideUp(args...).promise()
-    slideToggleE: (args...) -> Bacon.fromPromise @slideToggle(args...).promise()
+  $.fn.extend effects
 
   Bacon.$
 

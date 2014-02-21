@@ -32,9 +32,9 @@ init = (Bacon, BaconModel, $) ->
   Bacon.$.checkBoxValue = (element, initValue) ->
     Bacon.Binding {
       initValue,
-      get: -> element.is(":checked"),
+      get: -> element.prop "checked",
       events: element.asEventStream("change"),
-      set: (value) -> element.attr "checked", value
+      set: (value) -> element.prop "checked", value
     }
 
   Bacon.$.selectValue = (element, initValue) ->
@@ -52,10 +52,7 @@ init = (Bacon, BaconModel, $) ->
       events: radios.asEventStream("change"),
       set: (value) ->
         radios.each (i, elem) ->
-          if elem.value is value
-            $(elem).attr "checked", true
-          else
-            $(elem).removeAttr "checked"
+          $(elem).prop "checked", elem.value is value
     }
 
   Bacon.$.checkBoxGroupValue = (checkBoxes, initValue) ->
@@ -66,7 +63,7 @@ init = (Bacon, BaconModel, $) ->
       events: checkBoxes.asEventStream("change"),
       set: (value) ->
         checkBoxes.each (i, elem) ->
-          $(elem).attr "checked", _.indexOf(value, $(elem).val()) >= 0
+          $(elem).prop "checked", _.indexOf(value, $(elem).val()) >= 0
     }
 
   # AJAX

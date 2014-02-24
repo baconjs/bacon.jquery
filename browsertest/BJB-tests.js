@@ -324,9 +324,9 @@ function testEventHelper(eventName) {
     it("captures DOM events as EventStream", function() {
       $('#bacon-dom').html('<input type="text" id="text">')
       var el = $('#bacon-dom #text')
-      var stream = el.asEventStream("click")
+      var stream = el[methodName]()
       var values = collectValues(stream)
-      el.click()
+      el[eventName]()
       expect(values.length).to.equal(1)
     })
   })

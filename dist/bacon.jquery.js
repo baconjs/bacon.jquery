@@ -3,7 +3,7 @@
     __slice = [].slice;
 
   init = function(Bacon, BaconModel, $) {
-    var e, effectNames, effects, eventNames, events, nonEmpty, _, _i, _j, _len, _len1;
+    var e, effectNames, effects, eventNames, events, nonEmpty, _, _fn, _fn1, _i, _j, _len, _len1;
     nonEmpty = function(x) {
       return x.length > 0;
     };
@@ -134,24 +134,30 @@
     };
     eventNames = ["keydown", "keyup", "keypress", "click", "dblclick", "mousedown", "mouseup", "mouseenter", "mouseleave", "mousemove", "mouseout", "mouseover", "resize", "scroll", "select", "change", "submit", "blur", "focus", "focusin", "focusout", "load", "unload"];
     events = {};
-    for (_i = 0, _len = eventNames.length; _i < _len; _i++) {
-      e = eventNames[_i];
-      events[e + 'E'] = function() {
+    _fn = function(e) {
+      return events[e + 'E'] = function() {
         var args;
         args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
         return this.asEventStream.apply(this, [e].concat(__slice.call(args)));
       };
+    };
+    for (_i = 0, _len = eventNames.length; _i < _len; _i++) {
+      e = eventNames[_i];
+      _fn(e);
     }
     $.fn.extend(events);
     effectNames = ["animate", "show", "hide", "toggle", "fadeIn", "fadeOut", "fadeTo", "fadeToggle", "slideDown", "slideUp", "slideToggle"];
     effects = {};
-    for (_j = 0, _len1 = effectNames.length; _j < _len1; _j++) {
-      e = effectNames[_j];
-      effects[e + 'E'] = function() {
+    _fn1 = function(e) {
+      return effects[e + 'E'] = function() {
         var args;
         args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
         return Bacon.fromPromise(this[e].apply(this, args).promise());
       };
+    };
+    for (_j = 0, _len1 = effectNames.length; _j < _len1; _j++) {
+      e = effectNames[_j];
+      _fn1(e);
     }
     $.fn.extend(effects);
     return Bacon.$;

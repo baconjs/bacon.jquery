@@ -87,8 +87,9 @@ init = (Bacon, BaconModel, $) ->
     "load", "unload" ]
   events = {}
 
-  for e in eventNames
-    events[e + 'E'] = (args...) -> @asEventStream e, args...
+  for e in eventNames 
+    do (e) ->
+      events[e + 'E'] = (args...) -> @asEventStream e, args...
 
   $.fn.extend events
 
@@ -100,8 +101,9 @@ init = (Bacon, BaconModel, $) ->
     "slideDown", "slideUp", "slideToggle" ]
   effects = {}
 
-  for e in effectNames
-    effects[e + 'E'] = (args...) -> Bacon.fromPromise @[e](args...).promise()
+  for e in effectNames 
+    do (e) ->
+      effects[e + 'E'] = (args...) -> Bacon.fromPromise @[e](args...).promise()
 
   $.fn.extend effects
 

@@ -6,22 +6,22 @@
     "MIT"
   ],
   "dependencies": {
-    "baconjs": "~0.6"
+    "baconjs": "~0.7.5-alpha-1"
   },
   "devDependencies": {
     "coffee-script": "1.4.0",
-    "mocha": "~1.12",
-    "chai": "1.6.0",
+    "mocha": "~1.17",
+    "chai": "1.9.0",
     "grunt": "0.4.1",
-    "grunt-cli": "0.1.5",
-    "grunt-contrib-coffee": "~0.4.0",
+    "grunt-cli": "0.1.13",
+    "grunt-contrib-coffee": "~0.10.0",
     "grunt-contrib-clean": "~0.4.1",
     "grunt-contrib-copy": "~0.4.0",
     "grunt-contrib-uglify": "~0.2.2",
     "phantomjs": "~1",
-    "mocha-phantomjs": "~3.0",
-    "jquery": "~1.8",
-    "bacon.model": "~0.1.0"
+    "mocha-phantomjs": "~3.3",
+    "jquery": "~1.8.3",
+    "bacon.model": "~0.1.5-alpha-1"
   },
   "scripts": {
     "test": "./run-tests",

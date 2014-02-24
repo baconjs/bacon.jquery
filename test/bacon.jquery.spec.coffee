@@ -1,9 +1,10 @@
 expect = require("chai").expect
 
-bjb = require "../src/bacon.jquery"
+require "../src/bacon.jquery"
+
 twice = (x) -> x * 2
 Bacon = require "baconjs"
-model = (require "bacon.model").Model
+model = Bacon.Model
 
 grep = process.env.grep
 if grep

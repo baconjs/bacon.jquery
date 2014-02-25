@@ -3,9 +3,29 @@
     __slice = [].slice;
 
   init = function(Bacon, BaconModel, $) {
-    var e, effectNames, effects, eventNames, events, nonEmpty, _, _fn, _fn1, _i, _j, _len, _len1;
+    var asJQueryObject, assertArrayOrJQueryObject, e, effectNames, effects, eventNames, events, nonEmpty, _, _fn, _fn1, _i, _j, _len, _len1;
     nonEmpty = function(x) {
       return x.length > 0;
+    };
+    assertArrayOrJQueryObject = function(x) {
+      if (!(x instanceof jQuery || x instanceof Array)) {
+        throw new Error('Value must be either a jQuery object or an Array of jQuery objects');
+      }
+    };
+    asJQueryObject = function(x) {
+      var element, obj, _i, _len;
+      if (x instanceof jQuery) {
+        return x;
+      } else {
+        obj = $();
+        for (_i = 0, _len = x.length; _i < _len; _i++) {
+          element = x[_i];
+          if (element instanceof jQuery) {
+            obj = obj.add(element);
+          }
+        }
+        return obj;
+      }
     };
     _ = {
       indexOf: Array.prototype.indexOf ? function(xs, x) {
@@ -66,6 +86,8 @@
       });
     };
     Bacon.$.radioGroupValue = function(radios, initValue) {
+      assertArrayOrJQueryObject(radios);
+      radios = asJQueryObject(radios);
       return Bacon.Binding({
         initValue: initValue,
         get: function() {
@@ -80,6 +102,8 @@
       });
     };
     Bacon.$.checkBoxGroupValue = function(checkBoxes, initValue) {
+      assertArrayOrJQueryObject(checkBoxes);
+      checkBoxes = asJQueryObject(checkBoxes);
       return Bacon.Binding({
         initValue: initValue,
         get: function() {

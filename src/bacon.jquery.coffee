@@ -1,5 +1,14 @@
 init = (Bacon, BaconModel, $) ->
   nonEmpty = (x) -> x.length > 0
+  assertArrayOrJQueryObject = (x) ->
+    unless x instanceof jQuery or x instanceof Array
+      throw new Error('Value must be either a jQuery object or an Array of jQuery objects')
+  asJQueryObject = (x) ->
+    if x instanceof jQuery then x
+    else
+      obj = $()
+      obj = obj.add(element) for element in x when element instanceof jQuery
+      obj
   _ = {
   indexOf: if Array::indexOf
     (xs, x) -> xs.indexOf(x)
@@ -46,6 +55,8 @@ init = (Bacon, BaconModel, $) ->
     }
 
   Bacon.$.radioGroupValue = (radios, initValue) ->
+    assertArrayOrJQueryObject(radios)
+    radios = asJQueryObject(radios)
     Bacon.Binding {
       initValue,
       get: -> radios.filter(":checked").first().val(),
@@ -56,6 +67,8 @@ init = (Bacon, BaconModel, $) ->
     }
 
   Bacon.$.checkBoxGroupValue = (checkBoxes, initValue) ->
+    assertArrayOrJQueryObject(checkBoxes)
+    checkBoxes = asJQueryObject(checkBoxes)
     Bacon.Binding {
       initValue,
       get: ->

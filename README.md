@@ -62,17 +62,17 @@ element, given as a JQuery object. The value of the model corresponds to the `va
 ###Bacon.$.radioGroupValue(fields, [,initValue])
 
 Creates a `Model` for a
-group of `<input type="radio">` elements, given as a JQuery object. The value
-of the model corresponds to the `value` attribute of the selected radio
-input element.
+group of `<input type="radio">` elements, given as a JQuery object or an Array
+of jQuery objects. The value of the model corresponds to the `value` attribute
+of the selected radio input element.
 
 ###Bacon.$.checkBoxGroupValue(fields, [,initValue])
 
 Creates a `Model` for a group
-of `<input type="checkbox">` elements, given as a JQuery object. The value
-of the model is an array of the `value` attributes of the checked
-checkbox input elements. For instance, if you have checkboxes and 2 of
-these are checked, having values `a` and `b`, the value of the Model is
+of `<input type="checkbox">` elements, given as a JQuery object or an Array of
+jQuery objects. The value of the model is an array of the `value` attributes of
+the checked checkbox input elements. For instance, if you have checkboxes and 2
+of these are checked, having values `a` and `b`, the value of the Model is
 `["a", "b"]`.
 
 TODO: add HTML/JS examples

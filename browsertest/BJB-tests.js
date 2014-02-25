@@ -8,13 +8,6 @@ describe('bacon.jquery', function() {
       field = $('#bacon-dom #text')
     })
 
-    describe('when textField is not found', function() {
-      it('returns empty string as value', function() {
-        var model = Bacon.$.textFieldValue($('bacon-dom').find('.asdfqwer'))
-        specifyValue(model, '')
-      })
-    })
-
     describe('with initVal', function() {
       it('sets value to DOM', function() {
           var model = Bacon.$.textFieldValue(field, 'initVal')
@@ -74,6 +67,13 @@ describe('bacon.jquery', function() {
         field.trigger("keyup")
         field.trigger("keyup")
         expect(values).to.deep.equal(["newVal"])
+      })
+    })
+
+    describe('when element is not found', function() {
+      it('returns empty string as value', function() {
+        var model = Bacon.$.textFieldValue($('bacon-dom').find('.asdfqwer'))
+        specifyValue(model, '')
       })
     })
   })

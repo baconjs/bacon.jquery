@@ -173,113 +173,131 @@ describe('bacon.jquery', function() {
   })
 
   describe('radioGroupValue', function() {
-    var field
-    beforeEach(function() {
+    var fields
+
+    doTest = function(f) { return function() {
       $('#bacon-dom').html('<label for="a">A</label><input type="radio" id="a" value="a"><br><label for="b">B</label><input type="radio" id="b" value="b" checked>')
-      field = $('#a,#b')
-    })
+      fields = $('#a,#b')
+      f()
+      fields = [
+        $('<input>').attr({'type': 'radio', 'value': 'a', 'id': 'a'}),
+        $('<input>').attr({'type': 'radio', 'value': 'b', 'id': 'b', 'checked': 'checked'})
+      ]
+      $('#bacon-dom').empty().append(fields)
+      f()
+      $('#bacon-dom').empty()
+    }}
 
     describe('with initVal', function() {
-      it('sets value to DOM', function() {
-        var model = Bacon.$.radioGroupValue(field, 'a')
+      it('sets value to DOM', doTest(function() {
+        var model = Bacon.$.radioGroupValue(fields, 'a')
         expect($("#a").prop("checked")).to.equal(true)
         expect($("#b").prop("checked")).to.equal(false)
-      })
-      it('sets the initVal as the initial value of the model', function() {
-        var model = Bacon.$.radioGroupValue(field, 'a')
+      }))
+      it('sets the initVal as the initial value of the model', doTest(function() {
+        var model = Bacon.$.radioGroupValue(fields, 'a')
         specifyValue(model, 'a')
-      })
+      }))
     })
 
     describe('without initVal', function() {
-      it('leaves DOM unaffected', function() {
-        var model = Bacon.$.radioGroupValue(field)
+      it('leaves DOM unaffected', doTest(function() {
+        var model = Bacon.$.radioGroupValue(fields)
         expect($("#b").prop("checked")).to.equal(true)
         expect($("#a").prop("checked")).to.equal(false)
-      })
-      it('uses value from DOM as initial value of the model', function() {
-        var model = Bacon.$.radioGroupValue(field)
+      }))
+      it('uses value from DOM as initial value of the model', doTest(function() {
+        var model = Bacon.$.radioGroupValue(fields)
         specifyValue(model, 'b')
-      })
+      }))
     })
 
     describe('when setting value of model', function() {
-      it('sets value to DOM', function() {
-        Bacon.$.radioGroupValue(field).set('a')
+      it('sets value to DOM', doTest(function() {
+        Bacon.$.radioGroupValue(fields).set('a')
         expect($("#a").prop("checked")).to.equal(true)
         expect($("#b").prop("checked")).to.equal(false)
-      })
-      it('leaves defaultChecked property as is', function() {
-        Bacon.$.radioGroupValue(field).set('a')
+      }))
+      it('leaves defaultChecked property as is', doTest(function() {
+        Bacon.$.radioGroupValue(fields).set('a')
         expect($("#a").prop("defaultChecked")).to.equal(false)
         expect($("#b").prop("defaultChecked")).to.equal(true)
-      })
+      }))
     })
 
     describe('when DOM value changes', function() {
-      it('updates value of model', function() {
-        var model = Bacon.$.radioGroupValue(field)
+      it('updates value of model', doTest(function() {
+        var model = Bacon.$.radioGroupValue(fields)
         $("#b").click()
         $("#a").click()
         specifyValue(model, "a")
-      })
+      }))
     })
   })
 
   describe('checkBoxGroupValue', function() {
-    var field
-    beforeEach(function() {
+    var fields
+
+    doTest = function(f) { return function() {
       $('#bacon-dom').html('<label for="a">A</label><input type="checkbox" id="a" value="a"><br><label for="b">B</label><input type="checkbox" id="b" value="b" checked>')
-      field = $('#a,#b')
-    })
+      fields = $('#a,#b')
+      f()
+      fields = [
+        $('<input>').attr({'type': 'checkbox', 'value': 'a', 'id': 'a'}),
+        $('<input>').attr({'type': 'checkbox', 'value': 'b', 'id': 'b', 'checked': 'checked'})
+      ]
+      $('#bacon-dom').empty().append(fields)
+      f()
+      $('#bacon-dom').empty()
+    }}
 
     describe('with initVal', function() {
-      it('sets value to DOM', function() {
-        var model = Bacon.$.checkBoxGroupValue(field, ['a'])
+      it('sets value to DOM', doTest(function() {
+        var model = Bacon.$.checkBoxGroupValue(fields, ['a'])
         expect($("#a").prop("checked")).to.equal(true)
         expect($("#b").prop("checked")).to.equal(false)
-      })
-      it('sets the initVal as the initial value of the model', function() {
-        var model = Bacon.$.checkBoxGroupValue(field, ['a'])
+      }))
+      it('sets the initVal as the initial value of the model', doTest(function() {
+        var model = Bacon.$.checkBoxGroupValue(fields, ['a'])
         specifyValue(model, ['a'])
-      })
+      }))
     })
 
     describe('without initVal', function() {
-      it('leaves DOM unaffected', function() {
-        var model = Bacon.$.checkBoxGroupValue(field)
+      it('leaves DOM unaffected', doTest(function() {
+        var model = Bacon.$.checkBoxGroupValue(fields)
         expect($("#b").prop("checked")).to.equal(true)
         expect($("#a").prop("checked")).to.equal(false)
-      })
-      it('uses value from DOM as initial value of the model', function() {
-        var model = Bacon.$.checkBoxGroupValue(field)
+      }))
+      it('uses value from DOM as initial value of the model', doTest(function() {
+        var model = Bacon.$.checkBoxGroupValue(fields)
         specifyValue(model, ['b'])
-      })
+      }))
     })
 
     describe('when setting value of model', function() {
-      it('sets value to DOM', function() {
-        Bacon.$.checkBoxGroupValue(field).set(['a', 'b'])
+      it('sets value to DOM', doTest(function() {
+        Bacon.$.checkBoxGroupValue(fields).set(['a', 'b'])
         expect($("#a").prop("checked")).to.equal(true)
         expect($("#b").prop("checked")).to.equal(true)
-      })
-      it('leaves defaultChecked property as is', function() {
-        Bacon.$.checkBoxGroupValue(field).set(['a', 'b'])
+      }))
+      it('leaves defaultChecked property as is', doTest(function() {
+        Bacon.$.checkBoxGroupValue(fields).set(['a', 'b'])
         expect($("#a").prop("defaultChecked")).to.equal(false)
         expect($("#b").prop("defaultChecked")).to.equal(true)
-      })
+      }))
     })
 
     describe('when DOM value changes', function() {
-      it('updates value of model', function() {
-        var model = Bacon.$.checkBoxGroupValue(field)
+      it('updates value of model', doTest(function() {
+        var model = Bacon.$.checkBoxGroupValue(fields)
         $("#a").trigger("click")
         specifyValue(model, ["a", "b"])
         $("#b").trigger("click")
         specifyValue(model, ["a"])
         $("#a").trigger("click")
         specifyValue(model, [])
-      })
+      }))
     })
   })
 

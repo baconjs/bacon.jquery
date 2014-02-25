@@ -184,6 +184,13 @@ describe('bacon.jquery', function() {
       specifyValue(model, null)
     })
   })
+  
+  describe('selectValue when element is not found', function() {
+    it('sets `undefined` as initial value of the model', function() {
+      var model = Bacon.$.selectValue($('.asdfqwer'))
+      specifyValue(model, undefined)
+    })
+  })
 
   describe('radioGroupValue', function() {
     var field

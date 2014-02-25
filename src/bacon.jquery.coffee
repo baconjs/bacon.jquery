@@ -16,7 +16,7 @@ init = (Bacon, BaconModel, $) ->
 
   # Input element bindings
   Bacon.$.textFieldValue = (element, initValue) ->
-    get = -> element.val()
+    get = -> element.val() || ""
     autofillPoller = ->
       Bacon.interval(50).take(10).map(get).filter(nonEmpty).take 1
     events = element.asEventStream("keyup input")

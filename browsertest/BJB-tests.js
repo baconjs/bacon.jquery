@@ -244,6 +244,13 @@ describe('bacon.jquery', function() {
         specifyValue(model, "a")
       })
     })
+
+    describe('when elements are not found', function() {
+      it('returns undefined as value', function() {
+        var model = Bacon.$.radioGroupValue($(".asdfqwer"))
+        specifyValue(model, undefined)
+      })
+    })
   })
 
   describe('checkBoxGroupValue', function() {
@@ -298,6 +305,12 @@ describe('bacon.jquery', function() {
         $("#b").trigger("click")
         specifyValue(model, ["a"])
         $("#a").trigger("click")
+        specifyValue(model, [])
+      })
+    })
+    describe('when elements are not found', function() {
+      it('returns [] as value', function() {
+        var model = Bacon.$.checkBoxGroupValue($(".asdfqwer"))
         specifyValue(model, [])
       })
     })

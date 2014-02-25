@@ -26,7 +26,7 @@
     Bacon.$.textFieldValue = function(element, initValue) {
       var autofillPoller, events, get;
       get = function() {
-        return element.val();
+        return element.val() || "";
       };
       autofillPoller = function() {
         return Bacon.interval(50).take(10).map(get).filter(nonEmpty).take(1);
@@ -45,7 +45,7 @@
       return Bacon.Binding({
         initValue: initValue,
         get: function() {
-          return element.prop("checked");
+          return element.prop("checked") || false;
         },
         events: element.asEventStream("change"),
         set: function(value) {

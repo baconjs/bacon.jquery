@@ -72,7 +72,7 @@ describe('bacon.jquery', function() {
 
     describe('when element is not found', function() {
       it('returns empty string as value', function() {
-        var model = Bacon.$.textFieldValue($('bacon-dom').find('.asdfqwer'))
+        var model = Bacon.$.textFieldValue($('.asdfqwer'))
         specifyValue(model, '')
       })
     })
@@ -122,6 +122,12 @@ describe('bacon.jquery', function() {
         var model = Bacon.$.checkBoxValue(field)
         field.trigger("click")
         specifyValue(model, true)
+      })
+    })
+    describe('when element is not found', function() {
+      it('returns false as value', function() {
+        var model = Bacon.$.checkBoxValue($('.asdfqwer'))
+        specifyValue(model, false)
       })
     })
   })

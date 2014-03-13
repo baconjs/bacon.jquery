@@ -88,6 +88,27 @@ init = (Bacon, BaconModel, $) ->
   Bacon.$.lazyAjax = (params) -> Bacon.once(params).flatMap(Bacon.$.ajax)
   Bacon.Observable::ajax = -> @flatMapLatest Bacon.$.ajax
 
+  # jQuery Deferred
+  Bacon.Observable::toDeferred = ->
+    value = undefined
+    
+    dfd = $.Deferred()
+    
+    unsub = @withHandler((evt) ->
+        if evt.hasValue()
+          value = evt.value()
+          dfd.notify(value)
+        else if evt.isError()
+          dfd.reject(evt.error)
+          unsub()
+        else if evt.isEnd()
+          dfd.resolve(value)
+          unsub()
+        ).assign()
+ 
+    dfd
+  
+
   # jQuery DOM Events
 
   eventNames = [

@@ -339,12 +339,24 @@ describe('bacon.jquery', function() {
   testEventHelper('keydown')
   testEventHelper('mouseup')
 
-  describe("AJAX", function() {
-    $.mockjax({
+  $.mockjax({
       url: "/test",
       responseTime: 0,
       responseText: "good"
     })
+
+  describe("Observable.prototype.toDeferred", function(){
+    it("Converts EventStream of requests into jQuery Deferred", function() {
+      var dfd = Bacon.$.lazyAjax({url:"/test"}).toDeferred(),  
+        cb = sinon.spy(),
+        stub = sinon.stub(dfd, "done", cb)
+      dfd.done(cb)
+      expect(cb).to.have.been.called 
+      stub.restore()
+    })
+  })
+
+  describe("AJAX", function() {
     describe("Converts EventStream of requests into EventStream of responses", function() {
       expectStreamValues(Bacon.once({url:"/test"}).ajax(), ["good"])
     })
@@ -352,7 +364,6 @@ describe('bacon.jquery', function() {
       expectStreamValues(Bacon.once({url:"/test"}).toProperty().ajax(), ["good"])
     })
   })
-
 })
 
 function expectStreamValues(stream, expectedValues) {

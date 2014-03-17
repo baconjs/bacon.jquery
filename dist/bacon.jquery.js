@@ -156,6 +156,24 @@
     Bacon.Observable.prototype.ajax = function() {
       return this.flatMapLatest(Bacon.$.ajax);
     };
+    Bacon.Observable.prototype.toDeferred = function() {
+      var dfd, unsub, value;
+      value = void 0;
+      dfd = $.Deferred();
+      unsub = this.withHandler(function(evt) {
+        if (evt.hasValue()) {
+          value = evt.value();
+          return dfd.notify(value);
+        } else if (evt.isError()) {
+          dfd.reject(evt.error);
+          return unsub();
+        } else if (evt.isEnd()) {
+          dfd.resolve(value);
+          return unsub();
+        }
+      }).assign();
+      return dfd;
+    };
     eventNames = ["keydown", "keyup", "keypress", "click", "dblclick", "mousedown", "mouseup", "mouseenter", "mouseleave", "mousemove", "mouseout", "mouseover", "resize", "scroll", "select", "change", "submit", "blur", "focus", "focusin", "focusout", "load", "unload"];
     events = {};
     _fn = function(e) {

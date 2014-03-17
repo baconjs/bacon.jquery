@@ -339,12 +339,42 @@ describe('bacon.jquery', function() {
   testEventHelper('keydown')
   testEventHelper('mouseup')
 
-  describe("AJAX", function() {
-    $.mockjax({
+  $.mockjax({
       url: "/test",
       responseTime: 0,
       responseText: "good"
     })
+
+  describe("Observable.prototype.toDeferred", function(){
+    it("Converts EventStream into jQuery Deferred", function() {
+      testDeferred(Bacon.fromArray([1,2,3]), [1], [])
+    })
+
+    it("Converts Property into jQuery Deferred", function() {
+      testDeferred(Bacon.fromArray([1,2,3]).toProperty(), [1], [])
+    })
+
+    it("Respects Property initial value", function() {
+      testDeferred(Bacon.fromArray([1,2,3]).toProperty(0), [0], [])
+    })
+
+    it("Converts Errors", function() {
+      testDeferred(Bacon.fromArray([new Bacon.Error("err1"), new Bacon.Error("err2")]), [], ["err1"])
+    })
+
+    function testDeferred(observable, expectedValues, expectedErrors) {
+      var values = [], errors = []
+      observable.toDeferred().done(function(value) {
+        values.push(value)
+      }).fail(function(error) {
+        errors.push(error)
+      })
+      expect(values).to.deep.equal(expectedValues)
+      expect(errors).to.deep.equal(expectedErrors)
+    }
+  })
+
+  describe("AJAX", function() {
     describe("Converts EventStream of requests into EventStream of responses", function() {
       expectStreamValues(Bacon.once({url:"/test"}).ajax(), ["good"])
     })
@@ -352,7 +382,6 @@ describe('bacon.jquery', function() {
       expectStreamValues(Bacon.once({url:"/test"}).toProperty().ajax(), ["good"])
     })
   })
-
 })
 
 function expectStreamValues(stream, expectedValues) {

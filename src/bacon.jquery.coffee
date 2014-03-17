@@ -91,23 +91,17 @@ init = (Bacon, BaconModel, $) ->
   # jQuery Deferred
   Bacon.Observable::toDeferred = ->
     value = undefined
-    
     dfd = $.Deferred()
-    
-    unsub = @withHandler((evt) ->
+    @take(1).subscribe((evt) ->
         if evt.hasValue()
           value = evt.value()
           dfd.notify(value)
         else if evt.isError()
           dfd.reject(evt.error)
-          unsub()
         else if evt.isEnd()
           dfd.resolve(value)
-          unsub()
-        ).assign()
- 
+        )
     dfd
-  
 
   # jQuery DOM Events
 

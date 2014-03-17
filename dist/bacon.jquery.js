@@ -160,7 +160,7 @@
       var dfd, value;
       value = void 0;
       dfd = $.Deferred();
-      this.take(1).subscribe(function(evt) {
+      this.take(1).endOnError().subscribe(function(evt) {
         if (evt.hasValue()) {
           value = evt.value();
           return dfd.notify(value);

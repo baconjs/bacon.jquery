@@ -92,7 +92,7 @@ init = (Bacon, BaconModel, $) ->
   Bacon.Observable::toDeferred = ->
     value = undefined
     dfd = $.Deferred()
-    @take(1).subscribe((evt) ->
+    @take(1).endOnError().subscribe((evt) ->
         if evt.hasValue()
           value = evt.value()
           dfd.notify(value)

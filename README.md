@@ -166,6 +166,10 @@ or
 
 ### Bacon.$.ajaxGetScripts(url)
 
+### stream.toDeferred()
+
+Turns your Bacon Ajax stream back to $.Deferred. It's useful if you need to provide a solution for users who are not familiar with Bacon.
+
 ## Model API
 
 All the BJQ methods, such as `textFieldValue` return a `Model` object, which is a Bacon.js `Property`, but extends that API by the following methods.

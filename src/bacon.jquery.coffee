@@ -94,7 +94,7 @@ init = (Bacon, BaconModel, $) ->
     
     dfd = $.Deferred()
     
-    unsub = @withHandler((evt) ->
+    unsub = @subscribe((evt) ->
         if evt.hasValue()
           value = evt.value()
           dfd.notify(value)
@@ -104,7 +104,7 @@ init = (Bacon, BaconModel, $) ->
         else if evt.isEnd()
           dfd.resolve(value)
           unsub()
-        ).assign()
+        )
  
     dfd
   

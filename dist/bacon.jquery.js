@@ -160,7 +160,7 @@
       var dfd, unsub, value;
       value = void 0;
       dfd = $.Deferred();
-      unsub = this.withHandler(function(evt) {
+      unsub = this.subscribe(function(evt) {
         if (evt.hasValue()) {
           value = evt.value();
           return dfd.notify(value);
@@ -171,7 +171,7 @@
           dfd.resolve(value);
           return unsub();
         }
-      }).assign();
+      });
       return dfd;
     };
     eventNames = ["keydown", "keyup", "keypress", "click", "dblclick", "mousedown", "mouseup", "mouseenter", "mouseleave", "mousemove", "mouseout", "mouseover", "resize", "scroll", "select", "change", "submit", "blur", "focus", "focusin", "focusout", "load", "unload"];

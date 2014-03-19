@@ -157,6 +157,10 @@ Performs an AJAX request and returns the results in an EventStream.
 or
 
     var results = Bacon.$.ajax({ url: "/get/results"})
+    
+### Bacon.$.lazyAjax(params)
+
+Like above, but performs the AJAX call lazily, i.e. not before it has a subscriber.
 
 ### Bacon.$.ajaxGet(url, data, dataType)
 

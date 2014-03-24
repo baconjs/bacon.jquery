@@ -66,6 +66,25 @@ init = (Bacon, BaconModel, $) ->
           $(elem).prop "checked", elem.value is value
     }
 
+  Bacon.$.intRadioGroupValue = (radios, initValue) ->
+    radioGroupValue = Bacon.$.radioGroupValue(radios)
+    Bacon.Binding {
+      initValue,
+      get: ->
+        value = radioGroupValue.get()
+        if value
+          parseInt(value)
+        else
+          value
+      events: radioGroupValue.syncEvents()
+      set: (value) ->
+        strValue = if value
+            Number(value).toString()
+          else
+            value
+        radioGroupValue.set strValue
+    }
+
   Bacon.$.checkBoxGroupValue = (checkBoxes, initValue) ->
     assertArrayOrJQueryObject(checkBoxes)
     checkBoxes = asJQueryObject(checkBoxes)

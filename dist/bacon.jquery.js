@@ -101,6 +101,28 @@
         }
       });
     };
+    Bacon.$.intRadioGroupValue = function(radios, initValue) {
+      var radioGroupValue;
+      radioGroupValue = Bacon.$.radioGroupValue(radios);
+      return Bacon.Binding({
+        initValue: initValue,
+        get: function() {
+          var value;
+          value = radioGroupValue.get();
+          if (value) {
+            return parseInt(value);
+          } else {
+            return value;
+          }
+        },
+        events: radioGroupValue.syncEvents(),
+        set: function(value) {
+          var strValue;
+          strValue = value ? Number(value).toString() : value;
+          return radioGroupValue.set(strValue);
+        }
+      });
+    };
     Bacon.$.checkBoxGroupValue = function(checkBoxes, initValue) {
       assertArrayOrJQueryObject(checkBoxes);
       checkBoxes = asJQueryObject(checkBoxes);

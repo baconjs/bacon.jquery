@@ -21,7 +21,7 @@
     "phantomjs": "~1",
     "mocha-phantomjs": "~3.3",
     "jquery": "~2",
-    "bacon.model": "~0.1.5-alpha-1"
+    "bacon.model": "~0.1.6"
   },
   "scripts": {
     "test": "./run-tests",

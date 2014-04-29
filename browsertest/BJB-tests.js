@@ -261,6 +261,75 @@ describe('bacon.jquery', function() {
     })
   })
 
+  describe('intRadioGroupValue', function() {
+    doTest = function(name, f) {
+      function setup() {
+        $('#bacon-dom').html('<label for="1">1</label><input type="radio" id="1" value="1"><br><label for="2">2</label><input type="radio" id="2" value="2" checked>')
+      }
+      describe("with single jQuery object", function() {
+        before(setup)
+        it(name, function() { f($('#1,#2')) })
+      })
+      describe("with array of jQuery objects", function() {
+        before(setup)
+        it(name, function() { f([$('#1'), $('#2')]) })
+      })
+    }
+
+    describe('with initVal', function() {
+      doTest('sets value to DOM', function(fields) {
+        var model = Bacon.$.intRadioGroupValue(fields, 1)
+        expect($("#1").prop("checked")).to.equal(true)
+        expect($("#2").prop("checked")).to.equal(false)
+      })
+      doTest('sets the initVal as the initial value of the model', function(fields) {
+        var model = Bacon.$.intRadioGroupValue(fields, 1)
+        specifyValue(model, 1)
+      })
+    })
+
+    describe('without initVal', function() {
+      doTest('leaves DOM unaffected', function(fields) {
+        var model = Bacon.$.intRadioGroupValue(fields)
+        expect($("#2").prop("checked")).to.equal(true)
+        expect($("#1").prop("checked")).to.equal(false)
+      })
+      doTest('uses value from DOM as initial value of the model', function(fields) {
+        var model = Bacon.$.intRadioGroupValue(fields)
+        specifyValue(model, 2)
+      })
+    })
+
+    describe('when setting value of model', function() {
+      doTest('sets value to DOM', function(fields) {
+        Bacon.$.intRadioGroupValue(fields).set(1)
+        expect($("#1").prop("checked")).to.equal(true)
+        expect($("#2").prop("checked")).to.equal(false)
+      })
+      doTest('leaves defaultChecked property as is', function(fields) {
+        Bacon.$.intRadioGroupValue(fields).set(1)
+        expect($("#1").prop("defaultChecked")).to.equal(false)
+        expect($("#2").prop("defaultChecked")).to.equal(true)
+      })
+    })
+
+    describe('when DOM value changes', function() {
+      doTest('updates value of model', function(fields) {
+        var model = Bacon.$.intRadioGroupValue(fields)
+        $("#2").click()
+        $("#1").click()
+        specifyValue(model, 1)
+      })
+    })
+
+    describe('when elements are not found', function() {
+      it('returns undefined as value', function() {
+        var model = Bacon.$.intRadioGroupValue($(".asdfqwer"))
+        specifyValue(model, undefined)
+      })
+    })
+  })
+
   describe('checkBoxGroupValue', function() {
     var fields
 

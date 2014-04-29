@@ -64,7 +64,11 @@ element, given as a JQuery object. The value of the model corresponds to the `va
 Creates a `Model` for a
 group of `<input type="radio">` elements, given as a JQuery object or an Array
 of jQuery objects. The value of the model corresponds to the `value` attribute
-of the selected radio input element.
+of the selected radio input element. Note that `value` is a string.
+
+###Bacon.$.intRadioGroupValue(fields [, initValue])
+
+Like `Bacon.$.radioGroupValue`, but for integer values. 
 
 ###Bacon.$.checkBoxGroupValue(fields, [,initValue])
 

@@ -152,8 +152,6 @@ For example:
     var requestRunning = searchParams.awaiting(ajaxRequest)
     requestRunning.assign($('#ajaxSpinner'), 'toggle')
 
-`stream.awaiting(stream.ajax())`.
-
 ### stream.ajax(fn)
 
 Performs an AJAX request on each event of your stream, collating results in the result stream.

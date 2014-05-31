@@ -1,6 +1,8 @@
 {
   "name": "bacon.jquery",
   "version": "0.4.7",
-  "main": "./dist/bacon.jquery.js",
-  "scripts": ["./dist/bacon.jquery.js"]
+  "main": "dist/bacon.jquery.js",
+  "scripts": [
+    "dist/bacon.jquery.js"
+    ]
 }

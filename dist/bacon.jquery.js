@@ -226,7 +226,11 @@
   };
 
   if (typeof module !== "undefined" && module !== null) {
-    Bacon = require("baconjs");
+    try{
+      Bacon = require("baconjs");
+    } catch(e){
+      Bacon = require("bacon");
+    }
     BaconModel = require("bacon.model");
     $ = require("jquery");
     module.exports = init(Bacon, BaconModel, $);

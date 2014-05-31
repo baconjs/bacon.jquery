@@ -4,5 +4,8 @@
   "main": "dist/bacon.jquery.js",
   "scripts": [
     "dist/bacon.jquery.js"
-    ]
+  ],
+  "dependencies":{
+  	"baconjs/bacon.js":"*"
+  }
 }

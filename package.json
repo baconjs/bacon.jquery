@@ -24,8 +24,6 @@
     "bacon.model": "~0.1.6"
   },
   "scripts": {
-    "test": "./run-tests",
-    "prepublish": "node_modules/grunt-cli/bin/grunt"
   },
   "main": "dist/bacon.jquery.js"
 }

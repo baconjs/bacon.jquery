@@ -21,8 +21,6 @@ init = (Bacon, BaconModel, $) ->
 
   Bacon.$.Model = Bacon.Model
 
-  $.fn.asEventStream = Bacon.$.asEventStream
-
   # Input element bindings
   Bacon.$.textFieldValue = (element, initValue) ->
     get = -> element.val() || ""
@@ -138,8 +136,6 @@ init = (Bacon, BaconModel, $) ->
     do (e) ->
       events[e + 'E'] = (args...) -> @asEventStream e, args...
 
-  $.fn.extend events
-
   # jQuery Effects
 
   effectNames = [
@@ -152,7 +148,10 @@ init = (Bacon, BaconModel, $) ->
     do (e) ->
       effects[e + 'E'] = (args...) -> Bacon.fromPromise @[e](args...).promise()
 
-  $.fn.extend effects
+  if $?.fn
+    $.fn.extend events
+    $.fn.extend effects
+    $.fn.asEventStream = Bacon.$.asEventStream 
 
   Bacon.$
 

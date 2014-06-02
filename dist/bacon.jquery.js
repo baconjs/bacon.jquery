@@ -42,7 +42,6 @@
       }
     };
     Bacon.$.Model = Bacon.Model;
-    $.fn.asEventStream = Bacon.$.asEventStream;
     Bacon.$.textFieldValue = function(element, initValue) {
       var autofillPoller, events, get;
       get = function() {
@@ -207,7 +206,6 @@
       e = eventNames[_i];
       _fn(e);
     }
-    $.fn.extend(events);
     effectNames = ["animate", "show", "hide", "toggle", "fadeIn", "fadeOut", "fadeTo", "fadeToggle", "slideDown", "slideUp", "slideToggle"];
     effects = {};
     _fn1 = function(e) {
@@ -221,7 +219,11 @@
       e = effectNames[_j];
       _fn1(e);
     }
-    $.fn.extend(effects);
+    if ($ != null ? $.fn : void 0) {
+      $.fn.extend(events);
+      $.fn.extend(effects);
+      $.fn.asEventStream = Bacon.$.asEventStream;
+    }
     return Bacon.$;
   };
 

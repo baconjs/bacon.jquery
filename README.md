@@ -104,6 +104,13 @@ Supported methods include the following:
 - mousemoveE
 - mouseoutE
 - mouseoverE
+- dragstart
+- drag
+- dragenter
+- dragleave
+- dragover
+- drop
+- dragend
 - resizeE
 - scrollE
 - selectE

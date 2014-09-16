@@ -198,6 +198,7 @@ describe('bacon.jquery', function() {
 
   describe('intRadioGroupValue', function() {
     testRadioGroupValueModel(Bacon.$.intRadioGroupValue, 1, 2)
+    testRadioGroupValueModel(Bacon.$.intRadioGroupValue, 0, 23)
   })
 
   testEventHelper('click')

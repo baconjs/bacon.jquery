@@ -70,13 +70,13 @@ init = (Bacon, BaconModel, $) ->
       initValue,
       get: ->
         value = radioGroupValue.get()
-        if value
+        if value?
           parseInt(value)
         else
           value
       events: radioGroupValue.syncEvents()
       set: (value) ->
-        strValue = if value
+        strValue = if value?
             Number(value).toString()
           else
             value

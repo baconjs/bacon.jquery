@@ -108,7 +108,7 @@
         get: function() {
           var value;
           value = radioGroupValue.get();
-          if (value) {
+          if (value != null) {
             return parseInt(value);
           } else {
             return value;
@@ -117,7 +117,7 @@
         events: radioGroupValue.syncEvents(),
         set: function(value) {
           var strValue;
-          strValue = value ? Number(value).toString() : value;
+          strValue = value != null ? Number(value).toString() : value;
           return radioGroupValue.set(strValue);
         }
       });

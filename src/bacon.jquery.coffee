@@ -26,7 +26,7 @@ init = (Bacon, BaconModel, $) ->
     get = -> element.val() || ""
     autofillPoller = ->
       Bacon.interval(50).take(10).map(get).filter(nonEmpty).take 1
-    events = element.asEventStream("keyup input")
+    events = element.asEventStream("keyup input change")
       .merge(element.asEventStream("cut paste").delay(1))
       .merge(autofillPoller())
 

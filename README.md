@@ -1,3 +1,5 @@
+*Note: This repository is not maintained anymore. You can still use it of course, or just use Bacon.js core which adds the `asEventStream` method to jQuery objects, for accessing events as `EventStream` objects.*
+
 # bacon.jquery
 
 A JQuery data binding library for [Bacon.js](https://github.com/baconjs/bacon.js).

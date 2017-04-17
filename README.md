@@ -45,34 +45,34 @@ state of a DOM element or a group of DOM elements. This API is published
 as `Bacon.$`, and the same object is returned when using AMD or
 CommonJS.
 
-###Bacon.$.textFieldValue(field [, initValue])
+### Bacon.$.textFieldValue(field [, initValue])
 
 Creates a `Model` for an
 `<input type="text">` element, given as a JQuery object. You can optionally supply an initial value.
 
-###Bacon.$.checkBoxValue(field [, initValue])
+### Bacon.$.checkBoxValue(field [, initValue])
 
 Creates a `Model` for a
 `<input type="checkbox">` element, given as a JQuery object. The value is `true` if the checkbox is checked and
 `false` otherwise.
 
-###Bacon.$.selectValue(field [,initValue])
+### Bacon.$.selectValue(field [,initValue])
 
 Creates a `Model` for a `<select>`
 element, given as a JQuery object. The value of the model corresponds to the `value` attribute of the selected `<option>` element.
 
-###Bacon.$.radioGroupValue(fields, [,initValue])
+### Bacon.$.radioGroupValue(fields, [,initValue])
 
 Creates a `Model` for a
 group of `<input type="radio">` elements, given as a JQuery object or an Array
 of jQuery objects. The value of the model corresponds to the `value` attribute
 of the selected radio input element. Note that `value` is a string.
 
-###Bacon.$.intRadioGroupValue(fields [, initValue])
+### Bacon.$.intRadioGroupValue(fields [, initValue])
 
 Like `Bacon.$.radioGroupValue`, but for integer values. 
 
-###Bacon.$.checkBoxGroupValue(fields, [,initValue])
+### Bacon.$.checkBoxGroupValue(fields, [,initValue])
 
 Creates a `Model` for a group
 of `<input type="checkbox">` elements, given as a JQuery object or an Array of
